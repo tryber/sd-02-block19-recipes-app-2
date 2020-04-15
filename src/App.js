@@ -13,10 +13,12 @@ import ExploreMealIngredients from './pages/ExploreMealIngredients';
 import ExploreDrinksIngrendients from './pages/ExploreDrinksIngrendients';
 import ExploreMealArea from './pages/ExploreMealArea';
 import NotFound from './pages/NotFound';
+import Header from './components/Header';
 
 function App() {
   return (
     <div className="App">
+      <Header />
       <BrowserRouter>
         <Switch>
           <Route exact path="/" component={Login} />
