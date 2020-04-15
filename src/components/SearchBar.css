@@ -1,0 +1,17 @@
+.search-bar-container {
+  border: 2px solid black;
+  display: flex;
+  flex-direction: column;
+  padding: 2%;
+}
+
+.search-input {
+  height: 20px;
+  width: 99%;
+}
+
+.input-radio-container {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 2%;
+}
