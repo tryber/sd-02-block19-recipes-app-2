@@ -28,7 +28,11 @@ export default function Header() {
           </span>
         </div>
         <div>
-          <button data-testid="search-top-btn" type="button" onClick={() => setDisplaySearchBar(!displaySearchBar)}>
+          <button
+            data-testid="search-top-btn"
+            type="button"
+            onClick={() => setDisplaySearchBar(!displaySearchBar)}
+          >
             <img src={SearchIcon} alt="Ícone de busca" />
           </button>
         </div>
