@@ -6,25 +6,15 @@ const Login = () => {
 
   const validateEmail = ({ target }) => {
     const { value } = target;
-    // const regex = /^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/;
     const regex = /[^@ \t\r\n]+@[^@ \t\r\n]+\.[^@ \t\r\n]+/;
 
-    if (regex.test(value)) {
-      setEmailIsValid(true);
-    } else {
-      setEmailIsValid(false);
-    }
-  }
+    regex.test(value) ? setEmailIsValid(true) : setEmailIsValid(false);
+  };
 
   const validatePassword = ({ target }) => {
     const { value } = target;
-
-    if (value.length > 6) {
-      setPasswordIsValid(true);
-    } else {
-      setPasswordIsValid(false);
-    }
-  }
+    (value.length > 6) ? setPasswordIsValid(true) : setPasswordIsValid(false);
+  };
 
   return (
     <div>
@@ -36,6 +26,6 @@ const Login = () => {
       </button>
     </div>
   );
-}
+};
 
 export default Login;
