@@ -8,12 +8,12 @@ const Login = () => {
     const { value } = target;
     const regex = /[^@ \t\r\n]+@[^@ \t\r\n]+\.[^@ \t\r\n]+/;
 
-    regex.test(value) ? setEmailIsValid(true) : setEmailIsValid(false);
+    return regex.test(value) ? setEmailIsValid(true) : setEmailIsValid(false);
   };
 
   const validatePassword = ({ target }) => {
     const { value } = target;
-    (value.length > 6) ? setPasswordIsValid(true) : setPasswordIsValid(false);
+    return (value.length > 6) ? setPasswordIsValid(true) : setPasswordIsValid(false);
   };
 
   return (
