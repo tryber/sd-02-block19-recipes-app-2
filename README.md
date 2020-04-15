@@ -121,7 +121,7 @@ areas: https://www.themealdb.com/api/json/v1/1/list.php?a=list
 ingredientes: https://www.themealdb.com/api/json/v1/1/list.php?i=list
 ```
 
-As fotos dos ingredientes veem de um end-point padronizado com a seguinte lógica:
+As fotos dos ingredientes vêm de um end-point padronizado com a seguinte lógica:
 
 ```
 https://www.themealdb.com/images/ingredients/{nome-do-ingrediente}.png
@@ -252,7 +252,7 @@ As telas sofrem variações dependendo do tipo da receita (se é comida ou bebid
 15. A barra de busca deve possuir 3 _radio buttons_: `Ingrediente`, `Nome` e `Primeira letra`. Eles devem mudar a forma como serão filtradas as receitas.  Os _endpoints_ da API que você deve usar podem ser consultados [aqui para a API de comidas](https://www.themealdb.com/api.php) e [aqui para a API de bebidas](https://www.thecocktaildb.com/api.php). _Exemplo_: Selecionar `Ingrediente` e buscar por `chicken`.
 `https://www.themealdb.com/api/json/v1/1/filter.php?i=chicken`.
 
-15. A busca deve ocorrer 600 milissegundos após a última iteração com o input. (Pesquise por debounce);
+15. A busca deve ocorrer 600 milissegundos após a última interação com o input. (Pesquise por debounce);
 
 16. A busca deve ocorrer na API de comidas caso a pessoa esteja na página de comidas e na de bebidas caso esteja na de bebidas;
 
@@ -465,7 +465,7 @@ Exemplo: `/receitas/comida/{id-da-receita}`
 
 Algumas coisas devem seguir um padrão pré-estabelecido para que os teste de correção funcionem corretamente.
 
-O uso de `localStorage` é necessário para que as informações não se percam caso a pessoal atualize a página.
+O uso de `localStorage` é necessário para que as informações não se percam caso a pessoa atualize a página.
 O correto é usar os valores para iniciar sua store ou seu context.
 
 No `localStorage` do navegador:
