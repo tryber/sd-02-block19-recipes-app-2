@@ -12,6 +12,8 @@ export default function Header() {
     displaySearchBar: [displaySearchBar, setDisplaySearchBar],
   } = useContext(RecipesAppContext);
 
+  const toggleSearchBar = () => setDisplaySearchBar(!displaySearchBar);
+
   return displayHeader ? (
     <div className="header-container">
       <nav>
@@ -28,11 +30,7 @@ export default function Header() {
           </span>
         </div>
         <div>
-          <button
-            data-testid="search-top-btn"
-            type="button"
-            onClick={() => setDisplaySearchBar(!displaySearchBar)}
-          >
+          <button data-testid="search-top-btn" type="button" onClick={toggleSearchBar}>
             <img src={SearchIcon} alt="Ícone de busca" />
           </button>
         </div>
