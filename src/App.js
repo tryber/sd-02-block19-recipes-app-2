@@ -13,15 +13,19 @@ import ExploreMealIngredients from './pages/ExploreMealIngredients';
 import ExploreDrinksIngrendients from './pages/ExploreDrinksIngrendients';
 import ExploreMealArea from './pages/ExploreMealArea';
 import NotFound from './pages/NotFound';
+import Profile from './pages/Profile';
+import Header from './components/Header';
 
 function App() {
   return (
     <div className="App">
       <BrowserRouter>
+        <Header />
         <Switch>
           <Route exact path="/" component={Login} />
           <Route exact path="/comidas" component={MealPage} />
           <Route exact path="/bebidas" component={DrinkPage} />
+          <Route exact path="/perfil" component={Profile} />
           <Route exact path="/receitas/comida/:id-da-receita" component={RecipeMealDetails} />
           <Route exact path="/receitas/bebidas/:id-da-receita" component={RecipeDrinkDetails} />
           <Route exact path="/receitas-feitas" component={DoneRecipes} />

@@ -4,11 +4,15 @@ import PropTypes from 'prop-types';
 export const RecipesAppContext = createContext();
 
 export default function RecipesAppProvider({ children }) {
-  const [displayHeader, setDisplayHeader] = useState(false);
+  const [headerTitle, setHeaderTitle] = useState('Receitas');
+  const [displayHeader, setDisplayHeader] = useState(true);
+  const [displaySearchBar, setDisplaySearchBar] = useState(false);
 
 
   const store = {
+    headerTitle: [headerTitle, setHeaderTitle],
     displayHeader: [displayHeader, setDisplayHeader],
+    displaySearchBar: [displaySearchBar, setDisplaySearchBar],
   };
 
   return <RecipesAppContext.Provider value={store}>{children}</RecipesAppContext.Provider>;
