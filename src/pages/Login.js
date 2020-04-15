@@ -18,8 +18,8 @@ const Login = () => {
   return (
     <div>
       <h1>Login</h1>
-      <input placeholder="Email" data-testid="email-input" onChange={(e) => validateEmail(e)} />
-      <input placeholder="Senha" data-testid="password-input" onChange={(e) => validatePassword(e)} />
+      <input placeholder="Email" data-testid="email-input" onChange={validateEmail} />
+      <input placeholder="Senha" data-testid="password-input" onChange={validatePassword} />
       <button
         type="button"
         data-testid="login-submit-btn"

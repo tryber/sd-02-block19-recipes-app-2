@@ -28,13 +28,15 @@ describe('Tests for Header component', () => {
     const [headerTitle, setHeaderTitle] = ['Receitas', jest.fn()];
     const [displayHeader, setDisplayHeader] = [false, jest.fn()];
     const [displaySearchBar, setDisplaySearchBar] = [false, jest.fn()];
-    const [displayProfileButton, setDisplayProfileButton] = [true, jest.fn()];
+    const [displayProfileButton, setDisplayProfileButton] = [false, jest.fn()];
+    const [displayFooter, setDisplayFooter] = [false, jest.fn()];
 
     const store = {
       headerTitle: [headerTitle, setHeaderTitle],
       displayHeader: [displayHeader, setDisplayHeader],
       displaySearchBar: [displaySearchBar, setDisplaySearchBar],
       displayProfileButton: [displayProfileButton, setDisplayProfileButton],
+      displayFooter: [displayFooter, setDisplayFooter],
     };
 
     const { queryByTestId } = render(
@@ -68,12 +70,14 @@ describe('Tests for Header component', () => {
     const [displayHeader, setDisplayHeader] = [false, jest.fn()];
     const [displaySearchBar, setDisplaySearchBar] = [false, jest.fn()];
     const [displayProfileButton, setDisplayProfileButton] = [false, jest.fn()];
+    const [displayFooter, setDisplayFooter] = [false, jest.fn()];
 
     const store = {
       headerTitle: [headerTitle, setHeaderTitle],
       displayHeader: [displayHeader, setDisplayHeader],
       displaySearchBar: [displaySearchBar, setDisplaySearchBar],
       displayProfileButton: [displayProfileButton, setDisplayProfileButton],
+      displayFooter: [displayFooter, setDisplayFooter],
     };
 
     const { queryByTestId } = render(
