@@ -1,4 +1,5 @@
 import React, { useContext } from 'react';
+import { Link } from 'react-router-dom';
 import UserIcon from '../images/user.svg';
 import SearchIcon from '../images/search.svg';
 import { RecipesAppContext } from '../context/RecipesAppContext';
@@ -8,13 +9,16 @@ export default function Header() {
   const {
     headerTitle: [headerTitle],
     displayHeader: [displayHeader],
+    displaySearchBar: [displaySearchBar, setDisplaySearchBar],
   } = useContext(RecipesAppContext);
 
   return displayHeader ? (
     <div className="header-container">
       <nav>
         <div>
-          <img data-testid="profile-top-btn" src={UserIcon} alt="Ícone de usuário" />
+          <Link to="/perfil">
+            <img data-testid="profile-top-btn" src={UserIcon} alt="Ícone de usuário" />
+          </Link>
         </div>
         <div>
           <span data-testid="page-title">
@@ -22,7 +26,9 @@ export default function Header() {
           </span>
         </div>
         <div>
-          <img data-testid="search-top-btn" src={SearchIcon} alt="Ícone de busca" />
+          <button type="button" onClick={() => setDisplaySearchBar(!displaySearchBar)}>
+            <img data-testid="search-top-btn" src={SearchIcon} alt="Ícone de busca" />
+          </button>
         </div>
       </nav>
     </div>

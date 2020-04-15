@@ -7,6 +7,11 @@
   width: 100%;
 }
 
+.header-container button {
+  all: unset;
+  cursor: pointer;
+}
+
 .header-container nav {
   align-items: center;
   display: inherit;
