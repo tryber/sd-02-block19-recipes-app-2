@@ -20,11 +20,9 @@ export default function Header() {
       <nav>
         {displayProfileButton && (
         <div>
-          <button type="button">
-            <Link to="/perfil">
-              <img data-testid="profile-top-btn" src={ProfileIcon} alt="Ícone do Perfil" />
-            </Link>
-          </button>
+          <Link to="/perfil">
+            <img data-testid="profile-top-btn" src={ProfileIcon} alt="Ícone do Perfil" />
+          </Link>
         </div>
         )}
         <div>

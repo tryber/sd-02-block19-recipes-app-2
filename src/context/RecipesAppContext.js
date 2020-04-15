@@ -8,12 +8,15 @@ export default function RecipesAppProvider({ children }) {
   const [displayHeader, setDisplayHeader] = useState(true);
   const [displayProfileButton, setDisplayProfileButton] = useState(true);
   const [displaySearchBar, setDisplaySearchBar] = useState(false);
+  const [displayFooter, setDisplayFooter] = useState(true);
+
 
   const store = {
     headerTitle: [headerTitle, setHeaderTitle],
     displayHeader: [displayHeader, setDisplayHeader],
     displayProfileButton: [displayProfileButton, setDisplayProfileButton],
     displaySearchBar: [displaySearchBar, setDisplaySearchBar],
+    displayFooter: [displayFooter, setDisplayFooter],
   };
 
   return <RecipesAppContext.Provider value={store}>{children}</RecipesAppContext.Provider>;

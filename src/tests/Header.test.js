@@ -62,4 +62,27 @@ describe('Tests for Header component', () => {
 
     expect(getByText('Profile Page')).toBeInTheDocument();
   });
+
+  it('displayProfileButton state is false, its not displayed', () => {
+    const [headerTitle, setHeaderTitle] = ['Receitas', jest.fn()];
+    const [displayHeader, setDisplayHeader] = [false, jest.fn()];
+    const [displaySearchBar, setDisplaySearchBar] = [false, jest.fn()];
+    const [displayProfileButton, setDisplayProfileButton] = [false, jest.fn()];
+
+    const store = {
+      headerTitle: [headerTitle, setHeaderTitle],
+      displayHeader: [displayHeader, setDisplayHeader],
+      displaySearchBar: [displaySearchBar, setDisplaySearchBar],
+      displayProfileButton: [displayProfileButton, setDisplayProfileButton],
+    };
+
+    const { queryByTestId } = render(
+      <RecipesAppContext.Provider value={store}>
+        <App />
+      </RecipesAppContext.Provider>,
+    );
+
+    const profileButton = queryByTestId('profile-top-btn');
+    expect(profileButton).not.toBeInTheDocument();
+  });
 });
