@@ -1,7 +1,6 @@
 import React, { useContext } from 'react';
-import { cleanup } from '@testing-library/react';
+import { render, cleanup, fireEvent } from '@testing-library/react';
 import { renderHook } from '@testing-library/react-hooks';
-import renderWithRouter from '../services/renderWithRouter';
 import RecipesAppProvider, { RecipesAppContext } from '../context/RecipesAppContext';
 import App from '../App';
 
@@ -9,25 +8,56 @@ import App from '../App';
 afterEach(cleanup);
 
 describe('Tests for Header component', () => {
-  it('Component is rendered if displayHeader is true', () => {
-    const { getByTestId } = renderWithRouter(
+  it('Component is rendered if displayHeader is true and dont if its false', async () => {
+    const { getByTestId } = render(
       <RecipesAppProvider>
         <App />
       </RecipesAppProvider>,
     );
 
     const wrapper = ({ children }) => <RecipesAppProvider>{children}</RecipesAppProvider>;
-    const { result: { current } } = renderHook(() => useContext(RecipesAppContext), { wrapper });
-    const { displayHeader: [displayHeader] } = current;
+    const { result } = renderHook(() => useContext(RecipesAppContext), { wrapper });
+    expect(result.current.displayHeader[0]).toBeTruthy();
 
-    expect(displayHeader).toBeTruthy();
+    expect(getByTestId('profile-top-btn')).toBeInTheDocument();
+    expect(getByTestId('search-top-btn')).toBeInTheDocument();
+    expect(getByTestId('page-title')).toBeInTheDocument();
+  });
+
+  it('If displayHeader is false, it doesnt get displayed', () => {
+    const [headerTitle, setHeaderTitle] = ['Receitas', jest.fn()];
+    const [displayHeader, setDisplayHeader] = [false, jest.fn()];
+    const [displaySearchBar, setDisplaySearchBar] = [false, jest.fn()];
+
+    const store = {
+      headerTitle: [headerTitle, setHeaderTitle],
+      displayHeader: [displayHeader, setDisplayHeader],
+      displaySearchBar: [displaySearchBar, setDisplaySearchBar],
+    };
+
+    const { queryByTestId } = render(
+      <RecipesAppContext.Provider value={store}>
+        <App />
+      </RecipesAppContext.Provider>,
+    );
+
+    expect(queryByTestId('profile-top-btn')).not.toBeInTheDocument();
+    expect(queryByTestId('search-top-btn')).not.toBeInTheDocument();
+    expect(queryByTestId('page-title')).not.toBeInTheDocument();
+  });
+
+  it('In clicking profile button, user is taken to profile page', () => {
+    const { getByTestId, getByText } = render(
+      <RecipesAppProvider>
+        <App />
+      </RecipesAppProvider>,
+    );
 
     const profileButton = getByTestId('profile-top-btn');
-    const searchButton = getByTestId('search-top-btn');
-    const pageTitle = getByTestId('page-title');
-
     expect(profileButton).toBeInTheDocument();
-    expect(searchButton).toBeInTheDocument();
-    expect(pageTitle).toBeInTheDocument();
+
+    fireEvent.click(profileButton);
+
+    expect(getByText('Profile Page')).toBeInTheDocument();
   });
 });
