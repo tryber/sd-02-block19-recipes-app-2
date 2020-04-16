@@ -111,6 +111,24 @@ const callApi = (setIsLoading, setRecipes, setInputValue, text, radio, mealOrDri
     );
 };
 
+const showRecipes = (recipes) => (
+  <div className="image-container">
+    {
+      recipes.map(({ strDrinkThumb, strDrink, strCategory }, index) => (
+        (index <= 11)
+          ? (
+            <div key={strDrink} className="recipe-content">
+              <img className="image-recipe" src={strDrinkThumb} alt="Foto" />
+              <h3>{strCategory}</h3>
+              <p>{strDrink}</p>
+            </div>
+          )
+          : null
+      ))
+    }
+  </div>
+);
+
 const SearchBar = () => {
   const [inputValue, setInputValue] = useState({ radio: '', text: '', didFetch: false });
   const { data: [recipes, setRecipes], loading: [, setIsLoading] } = useContext(RecipesAppContext);
@@ -127,15 +145,18 @@ const SearchBar = () => {
   }
   console.log(recipes);
   return (
-    <div className="search-bar-container">
-      <div>
-        {renderInputText(inputValue, setInputValue)}
+    <div>
+      <div className="search-bar-container">
+        <div>
+          {renderInputText(inputValue, setInputValue)}
+        </div>
+        <div className="input-radio-container">
+          {renderRadioButton('Ingrediente', 'ingredient', setInputValue)}
+          {renderRadioButton('Nome', 'name', setInputValue)}
+          {renderRadioButton('Primeira Letra', 'first-letter', setInputValue)}
+        </div>
       </div>
-      <div className="input-radio-container">
-        {renderRadioButton('Ingrediente', 'ingredient', setInputValue)}
-        {renderRadioButton('Nome', 'name', setInputValue)}
-        {renderRadioButton('Primeira Letra', 'first-letter', setInputValue)}
-      </div>
+      {showRecipes(recipes)}
     </div>
   );
 };

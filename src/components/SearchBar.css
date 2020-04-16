@@ -15,3 +15,30 @@
   justify-content: space-between;
   margin-top: 2%;
 }
+
+.image-recipe {
+  padding: 5%;
+  width: 90%;
+}
+
+.recipe-content {
+  border: solid 2px black;
+  margin-top: 2%;
+  width: 40%;
+}
+
+.recipe-content > h3 {
+  font-size: 1em;
+}
+
+.recipe-content > p {
+  font-size: 0.9em;
+}
+
+.image-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  margin-top: 5%;
+  padding: 0 5%;
+}
