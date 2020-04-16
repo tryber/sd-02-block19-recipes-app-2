@@ -28,14 +28,14 @@ describe('Tests for Header component', () => {
     const [headerTitle, setHeaderTitle] = ['Receitas', jest.fn()];
     const [displayHeader, setDisplayHeader] = [false, jest.fn()];
     const [displaySearchBar, setDisplaySearchBar] = [false, jest.fn()];
-    const [displayProfileButton, setDisplayProfileButton] = [false, jest.fn()];
+    const [displaySearchButton, setDisplaySearchButton] = [false, jest.fn()];
     const [displayFooter, setDisplayFooter] = [false, jest.fn()];
 
     const store = {
       headerTitle: [headerTitle, setHeaderTitle],
       displayHeader: [displayHeader, setDisplayHeader],
       displaySearchBar: [displaySearchBar, setDisplaySearchBar],
-      displayProfileButton: [displayProfileButton, setDisplayProfileButton],
+      displaySearchButton: [displaySearchButton, setDisplaySearchButton],
       displayFooter: [displayFooter, setDisplayFooter],
     };
 
@@ -65,18 +65,18 @@ describe('Tests for Header component', () => {
     expect(getByText('Profile Page')).toBeInTheDocument();
   });
 
-  it('displayProfileButton state is false, its not displayed', () => {
+  it('displaySearchButton state is false, its not displayed', () => {
     const [headerTitle, setHeaderTitle] = ['Receitas', jest.fn()];
     const [displayHeader, setDisplayHeader] = [false, jest.fn()];
     const [displaySearchBar, setDisplaySearchBar] = [false, jest.fn()];
-    const [displayProfileButton, setDisplayProfileButton] = [false, jest.fn()];
+    const [displaySearchButton, setDisplaySearchButton] = [false, jest.fn()];
     const [displayFooter, setDisplayFooter] = [false, jest.fn()];
 
     const store = {
       headerTitle: [headerTitle, setHeaderTitle],
       displayHeader: [displayHeader, setDisplayHeader],
       displaySearchBar: [displaySearchBar, setDisplaySearchBar],
-      displayProfileButton: [displayProfileButton, setDisplayProfileButton],
+      displaySearchButton: [displaySearchButton, setDisplaySearchButton],
       displayFooter: [displayFooter, setDisplayFooter],
     };
 
@@ -86,7 +86,7 @@ describe('Tests for Header component', () => {
       </RecipesAppContext.Provider>,
     );
 
-    const profileButton = queryByTestId('profile-top-btn');
-    expect(profileButton).not.toBeInTheDocument();
+    const searchButton = queryByTestId('search-top-btn');
+    expect(searchButton).not.toBeInTheDocument();
   });
 });

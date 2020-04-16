@@ -10,7 +10,7 @@ export default function Header() {
     headerTitle: [headerTitle],
     displayHeader: [displayHeader],
     displaySearchBar: [displaySearchBar, setDisplaySearchBar],
-    displayProfileButton: [displayProfileButton],
+    displaySearchButton: [displaySearchButton],
   } = useContext(RecipesAppContext);
 
   const toggleSearchBar = () => setDisplaySearchBar(!displaySearchBar);
@@ -18,23 +18,23 @@ export default function Header() {
   return displayHeader ? (
     <div className="header-container">
       <nav>
-        {displayProfileButton && (
         <div>
           <Link to="/perfil">
             <img data-testid="profile-top-btn" src={ProfileIcon} alt="Ícone do Perfil" />
           </Link>
         </div>
-        )}
         <div>
           <span data-testid="page-title">
             {headerTitle}
           </span>
         </div>
-        <div>
-          <button data-testid="search-top-btn" type="button" onClick={toggleSearchBar}>
-            <img src={SearchIcon} alt="Ícone de busca" />
-          </button>
-        </div>
+        {displaySearchButton && (
+          <div>
+            <button data-testid="search-top-btn" type="button" onClick={toggleSearchBar}>
+              <img src={SearchIcon} alt="Ícone de busca" />
+            </button>
+          </div>
+        )}
       </nav>
     </div>
   ) : null;

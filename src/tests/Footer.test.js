@@ -28,15 +28,14 @@ describe('Tests for Footer component', () => {
     const [headerTitle, setHeaderTitle] = ['Receitas', jest.fn()];
     const [displayHeader, setDisplayHeader] = [false, jest.fn()];
     const [displaySearchBar, setDisplaySearchBar] = [false, jest.fn()];
-    const [displayProfileButton, setDisplayProfileButton] = [true, jest.fn()];
+    const [displaySearchButton, setDisplaySearchButton] = [false, jest.fn()];
     const [displayFooter, setDisplayFooter] = [false, jest.fn()];
-
 
     const store = {
       headerTitle: [headerTitle, setHeaderTitle],
       displayHeader: [displayHeader, setDisplayHeader],
       displaySearchBar: [displaySearchBar, setDisplaySearchBar],
-      displayProfileButton: [displayProfileButton, setDisplayProfileButton],
+      displaySearchButton: [displaySearchButton, setDisplaySearchButton],
       displayFooter: [displayFooter, setDisplayFooter],
     };
 

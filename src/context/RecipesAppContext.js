@@ -6,7 +6,7 @@ export const RecipesAppContext = createContext();
 export default function RecipesAppProvider({ children }) {
   const [headerTitle, setHeaderTitle] = useState('Receitas');
   const [displayHeader, setDisplayHeader] = useState(true);
-  const [displayProfileButton, setDisplayProfileButton] = useState(true);
+  const [displaySearchButton, setDisplaySearchButton] = useState(true);
   const [displaySearchBar, setDisplaySearchBar] = useState(false);
   const [displayFooter, setDisplayFooter] = useState(true);
 
@@ -14,7 +14,7 @@ export default function RecipesAppProvider({ children }) {
   const store = {
     headerTitle: [headerTitle, setHeaderTitle],
     displayHeader: [displayHeader, setDisplayHeader],
-    displayProfileButton: [displayProfileButton, setDisplayProfileButton],
+    displaySearchButton: [displaySearchButton, setDisplaySearchButton],
     displaySearchBar: [displaySearchBar, setDisplaySearchBar],
     displayFooter: [displayFooter, setDisplayFooter],
   };
