@@ -89,4 +89,29 @@ describe('Tests for Header component', () => {
     const searchButton = queryByTestId('search-top-btn');
     expect(searchButton).not.toBeInTheDocument();
   });
+
+  it('Header title displays headerTitle Context state content', () => {
+    const [headerTitle, setHeaderTitle] = ['Receitas', jest.fn()];
+    const [displayHeader, setDisplayHeader] = [true, jest.fn()];
+    const [displaySearchBar, setDisplaySearchBar] = [false, jest.fn()];
+    const [displaySearchButton, setDisplaySearchButton] = [false, jest.fn()];
+    const [displayFooter, setDisplayFooter] = [false, jest.fn()];
+
+    const store = {
+      headerTitle: [headerTitle, setHeaderTitle],
+      displayHeader: [displayHeader, setDisplayHeader],
+      displaySearchBar: [displaySearchBar, setDisplaySearchBar],
+      displaySearchButton: [displaySearchButton, setDisplaySearchButton],
+      displayFooter: [displayFooter, setDisplayFooter],
+    };
+
+    const { queryByTestId } = render(
+      <RecipesAppContext.Provider value={store}>
+        <App />
+      </RecipesAppContext.Provider>,
+    );
+
+    const pageTitle = queryByTestId('page-title');
+    expect(pageTitle.innerHTML).toBe('Receitas');
+  });
 });
