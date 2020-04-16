@@ -73,6 +73,7 @@ const SearchBar = () => {
         });
     }
   }, [text, radio]);
+  console.log(recipes);
   if (recipes.length <= 1 && inputValue.didFetch) {
     return renderByRecipes(recipes, inputValue.didFetch, setInputValue);
   }
