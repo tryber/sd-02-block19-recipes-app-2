@@ -1,11 +1,23 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
+import { Redirect } from 'react-router-dom';
 
-import './SearchBar.css';
-import useDebounce from '../hooks/useDebounce';
-import useFetchMeal from '../hooks/useFetchMeal';
+import { RecipesAppContext } from '../context/RecipesAppContext';
 import {
   searchMealByName,
+  searchAllMealsByFirstLetter,
+  searchMealsByMainIngredient,
 } from '../services/searchBarApi';
+import useDebounce from '../hooks/useDebounce';
+import './SearchBar.css';
+
+const selectFetch = (value, type) => {
+  if (type === 'name') return searchMealByName(value);
+  if (type === 'ingredient') {
+    const newValue = value.split(' ').join('_').toLowerCase();
+    return searchMealsByMainIngredient(newValue);
+  }
+  return searchAllMealsByFirstLetter(value);
+};
 
 const renderInputText = (inputValue, setInputValue) => (
   <input
@@ -37,38 +49,33 @@ const renderRadioButton = (radioValue, type, setInputValue) => (
   </label>
 );
 
+const renderByRecipes = (recipes, didFetch, setInputValue) => {
+  if ((recipes.length === 0) && didFetch) {
+    setInputValue((prevState) => ({ ...prevState, didFetch: false }));
+    return alert('Não foi econtrado nenhum resultado');
+  }
+  if (recipes.length === 1) return <Redirect to={`/receita/comida/${recipes[0].idMeal}`} />;
+  return null;
+};
+
 const SearchBar = () => {
-  const [inputValue, setInputValue] = useState({
-    radio: '',
-    text: '',
-    canFecth: false,
-  });
-
-  const debouncedInputValue = useDebounce(inputValue.text, 600);
-  const teste = useFetchMeal(inputValue.text, inputValue.radio, inputValue.canFecth);
-
+  const [inputValue, setInputValue] = useState({ radio: '', text: '', didFetch: false });
+  const { data: [recipes, setRecipes], loading: [, setIsLoading] } = useContext(RecipesAppContext);
+  const { text, radio } = useDebounce(inputValue.text, inputValue.radio, 600);
   useEffect(() => {
-    const fetchName = async () => {
-      await searchMealByName('Arrabiata')
-        .then(
-          (data) => console.log('didMount :', data),
-          (err) => console.log(err),
-        );
-    };
-    fetchName();
-  }, []);
-
-  useEffect(() => {
-    if (debouncedInputValue && inputValue.radio) {
-      setInputValue((prevState) => (
-        {
-          ...prevState,
-          canFecth: true,
-        }
-      ));
+    if (text && radio) {
+      setIsLoading(true);
+      selectFetch(text, radio)
+        .then(({ meals }) => {
+          setRecipes(meals || []);
+          setIsLoading(false);
+          setInputValue((prevState) => ({ ...prevState, didFetch: true }));
+        });
     }
-  }, [debouncedInputValue, inputValue.radio]);
-
+  }, [text, radio]);
+  if (recipes.length <= 1 && inputValue.didFetch) {
+    return renderByRecipes(recipes, inputValue.didFetch, setInputValue);
+  }
   return (
     <div className="search-bar-container">
       <div>

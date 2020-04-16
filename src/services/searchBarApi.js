@@ -6,22 +6,22 @@ export const searchMealByName = (name) => (
   fetch(`${SEARCH_MEAL_BY_NAME}${name}`)
     .then((response) => (
       response.json()
-        .then((json) => (response.ok ? (console.log('resposta :', json) || Promise.resolve(json)) : Promise.reject(json)))
+        .then((json) => (response.ok ? Promise.resolve(json) : Promise.reject(json)))
     ))
 );
 
-export const searchAllMealsByFirstLetter = (firstLetter) => {
+export const searchAllMealsByFirstLetter = (firstLetter) => (
   fetch(`${SEARCH_ALL_MEALS_BY_FIRST_LETTER}${firstLetter}`)
     .then((response) => (
       response.json()
         .then((json) => (response.ok ? Promise.resolve(json) : Promise.reject(json)))
-    ));
-};
+    ))
+);
 
-export const searchMealsByMainIngredient = (ingredient) => {
+export const searchMealsByMainIngredient = (ingredient) => (
   fetch(`${SEARCH_MEAL_BY_MAIN_INGREDIENT}${ingredient}`)
     .then((response) => (
       response.json()
         .then((json) => (response.ok ? Promise.resolve(json) : Promise.reject(json)))
-    ));
-};
+    ))
+);
