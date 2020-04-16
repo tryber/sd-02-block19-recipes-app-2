@@ -33,7 +33,7 @@ const renderInputText = (inputValue, setInputValue) => (
 );
 
 const renderRadioButton = (radioValue, type, setInputValue) => (
-  <label forhtml={type}>
+  <label htmlFor={type}>
     <input
       data-testid={`${type}-search-radio`}
       type="radio"
@@ -55,7 +55,7 @@ const renderByRecipes = (recipes, didFetch, setInputValue) => {
     return alert('Não foi econtrado nenhum resultado');
   }
   if (recipes.length === 1) return <Redirect to={`/receita/comida/${recipes[0].idMeal}`} />;
-  return null;
+  return recipes;
 };
 
 const SearchBar = () => {
