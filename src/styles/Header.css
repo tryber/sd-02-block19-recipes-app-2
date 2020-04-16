@@ -1,0 +1,26 @@
+.header-container {
+  background: #c4c4c4;
+  display: flex;
+  flex-flow: column nowrap;
+  height: 58px;
+  justify-content: center;
+  width: 100%;
+}
+
+.header-container button {
+  all: unset;
+  cursor: pointer;
+}
+
+.header-container nav {
+  align-items: center;
+  display: inherit;
+  justify-content: space-between;
+  margin: 0 15px;
+}
+
+.header-container span {
+  font-family: Roboto, sans-serif;
+  font-size: 30px;
+  line-height: 35px;
+}
