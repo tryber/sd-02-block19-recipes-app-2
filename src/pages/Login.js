@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import SearchBar from '../components/SearchBar';
 
 const Login = () => {
   const [emailIsValid, setEmailIsValid] = useState(false);
@@ -18,7 +17,6 @@ const Login = () => {
 
   return (
     <div>
-      <SearchBar />
       <h1>Login</h1>
       <input placeholder="Email" data-testid="email-input" onChange={validateEmail} />
       <input placeholder="Senha" data-testid="password-input" onChange={validatePassword} />
