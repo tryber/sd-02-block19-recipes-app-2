@@ -9,6 +9,7 @@ export default function RecipesAppProvider({ children }) {
   const [displaySearchBar, setDisplaySearchBar] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [recipes, setRecipes] = useState([]);
+  const [recipeType, setRecipeType] = useState('Comidas');
 
   const store = {
     headerTitle: [headerTitle, setHeaderTitle],
@@ -16,6 +17,7 @@ export default function RecipesAppProvider({ children }) {
     loading: [isLoading, setIsLoading],
     data: [recipes, setRecipes],
     displaySearchBar: [displaySearchBar, setDisplaySearchBar],
+    recipeType: [recipeType, setRecipeType],
   };
 
   return <RecipesAppContext.Provider value={store}>{children}</RecipesAppContext.Provider>;

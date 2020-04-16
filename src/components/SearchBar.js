@@ -61,8 +61,8 @@ const renderRadioButton = (radioValue, type, setInputValue) => (
   </label>
 );
 
-const renderByMealRecipes = (mealRecipes, didFetch, setInputValue) => {
-  if ((mealRecipes === null) && didFetch) {
+const redirectMealRecipes = (mealRecipes, didFetch, setInputValue) => {
+  if ((mealRecipes === null || mealRecipes.length === 0) && didFetch) {
     setInputValue((prevState) => ({ ...prevState, didFetch: false }));
     alert('Não foi econtrado nenhum resultado de comida');
     return null;
@@ -72,7 +72,7 @@ const renderByMealRecipes = (mealRecipes, didFetch, setInputValue) => {
   return null;
 };
 
-const renderByDrinkRecipes = (drinkRecipes, didFetch, setInputValue) => {
+const redirectDrinkRecipes = (drinkRecipes, didFetch, setInputValue) => {
   if ((drinkRecipes === null || drinkRecipes.length === 0) && didFetch) {
     setInputValue((prevState) => ({ ...prevState, didFetch: false }));
     alert('Não foi econtrado nenhum resultado de bebida');
@@ -86,67 +86,69 @@ const renderByDrinkRecipes = (drinkRecipes, didFetch, setInputValue) => {
 const callApi = (setIsLoading, setRecipes, setInputValue, text, radio, mealOrDrink) => {
   setIsLoading(true);
   if (mealOrDrink === 'Comidas') {
-    selectMealFetch(text, radio)
+    return selectMealFetch(text, radio)
       .then(
         ({ meals }) => {
+          console.log(meals);
           setRecipes(meals);
           setIsLoading(false);
-          setInputValue((prevState) => ({ ...prevState, didFetch: true }));
         },
         () => {
           setRecipes([]);
           setIsLoading(false);
-          setInputValue((prevState) => ({ ...prevState, didFetch: true }));
         },
-      );
+      )
+      .then(() => setInputValue((prevState) => ({ ...prevState, didFetch: true })));
   }
-  selectDrinkFetch(text, radio)
+
+  return selectDrinkFetch(text, radio)
     .then(
       ({ drinks }) => {
         setRecipes(drinks);
         setIsLoading(false);
-        setInputValue((prevState) => ({ ...prevState, didFetch: true }));
       },
       () => {
         setRecipes([]);
         setIsLoading(false);
-        setInputValue((prevState) => ({ ...prevState, didFetch: true }));
       },
-    );
+    )
+    .then(() => setInputValue((prevState) => ({ ...prevState, didFetch: true })));
 };
 
-const showRecipes = (recipes) => (
-  <div className="image-container">
-    {
-      recipes.map(({ strDrinkThumb, strDrink, strCategory }, index) => (
-        (index <= 11)
-          ? (
-            <div key={strDrink} className="recipe-content">
-              <img className="image-recipe" src={strDrinkThumb} alt="Foto" />
-              <h3 className="category-drink">{strCategory}</h3>
-              <p className="name-drink">{strDrink}</p>
-            </div>
-          )
-          : null
-      ))
-    }
-  </div>
-);
+// const showRecipes = (recipes) => (
+//   <div className="image-container">
+//     {
+//       (!recipes) ? null : recipes.map(({ strDrinkThumb, strDrink, strCategory }, index) => (
+//         (index <= 11)
+//           ? (
+//             <div key={strDrink} className="recipe-content">
+//               <img className="image-recipe" src={strDrinkThumb} alt="Foto" />
+//               <h3 className="category-drink">{strCategory}</h3>
+//               <p className="name-drink">{strDrink}</p>
+//             </div>
+//           )
+//           : null
+//       ))
+//     }
+//   </div>
+// );
 
 const SearchBar = () => {
   const [inputValue, setInputValue] = useState({ radio: '', text: '', didFetch: false });
-  const { data: [recipes, setRecipes], loading: [, setIsLoading] } = useContext(RecipesAppContext);
+  const {
+    data: [recipes, setRecipes], loading: [, setIsLoading], recipeType: [recipeType],
+  } = useContext(RecipesAppContext);
   const { text, radio } = useDebounce(inputValue.text, inputValue.radio, 600);
-  const mealOrDrink = 'Bebidas';
+
   useEffect(() => {
-    if (text && radio) callApi(setIsLoading, setRecipes, setInputValue, text, radio, mealOrDrink);
-  }, [text, radio]);
-  console.log(recipes);
-  if (inputValue.didFetch && mealOrDrink === 'Comidas') {
-    return renderByMealRecipes(recipes, inputValue.didFetch, setInputValue);
+    if (text && radio) callApi(setIsLoading, setRecipes, setInputValue, text, radio, recipeType);
+  }, [text, radio, setIsLoading, setRecipes, recipeType]);
+  console.log('teste');
+  if (inputValue.didFetch && recipeType === 'Comidas') {
+    return redirectMealRecipes(recipes, inputValue.didFetch, setInputValue);
   }
-  if (inputValue.didFetch && mealOrDrink === 'Bebidas') {
-    return renderByDrinkRecipes(recipes, inputValue.didFetch, setInputValue);
+  if (inputValue.didFetch && recipeType === 'Bebidas') {
+    return redirectDrinkRecipes(recipes, inputValue.didFetch, setInputValue);
   }
   return (
     <div>
@@ -160,7 +162,6 @@ const SearchBar = () => {
           {renderRadioButton('Primeira Letra', 'first-letter', setInputValue)}
         </div>
       </div>
-      {showRecipes(recipes)}
     </div>
   );
 };
