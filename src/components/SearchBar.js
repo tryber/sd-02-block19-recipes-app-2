@@ -119,8 +119,8 @@ const showRecipes = (recipes) => (
           ? (
             <div key={strDrink} className="recipe-content">
               <img className="image-recipe" src={strDrinkThumb} alt="Foto" />
-              <h3>{strCategory}</h3>
-              <p>{strDrink}</p>
+              <h3 className="category-drink">{strCategory}</h3>
+              <p className="name-drink">{strDrink}</p>
             </div>
           )
           : null
