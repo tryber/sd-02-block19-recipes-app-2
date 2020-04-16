@@ -1,5 +1,7 @@
 import React from 'react';
-import { cleanup, render, fireEvent, wait } from '@testing-library/react';
+import {
+  cleanup, render, fireEvent, wait,
+} from '@testing-library/react';
 
 import RecipesAppProvider from '../context/RecipesAppContext';
 import SearchBar from './SearchBar';
@@ -65,12 +67,16 @@ describe('SearchBar tests', () => {
     await wait(() => expect(global.fetch).toHaveBeenCalledTimes(1));
     expect(global.fetch).toHaveBeenCalledWith('https://www.themealdb.com/api/json/v1/1/search.php?s=Orange');
 
+    jest.spyOn(global, 'fetch').mockImplementation(() => callApi(byIngredients.meals));
+
     fireEvent.change(queryByTestId(/search-input/i), { target: { value: 'Chicken Breast' } });
     fireEvent.click(queryByTestId(/ingredient-search-radio/i));
     expect(queryByTestId(/ingredient-search-radio/i).value).toBe('ingredient');
 
     await wait(() => expect(global.fetch).toHaveBeenCalledTimes(2));
     expect(global.fetch).toHaveBeenCalledWith('https://www.themealdb.com/api/json/v1/1/filter.php?i=chicken_breast');
+
+    jest.spyOn(global, 'fetch').mockImplementation(() => callApi(byFirstLetter.meals));
 
     fireEvent.change(queryByTestId(/search-input/i), { target: { value: 'a' } });
     fireEvent.click(queryByTestId(/first-letter-search-radio/i));
