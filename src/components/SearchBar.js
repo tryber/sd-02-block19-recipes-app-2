@@ -64,23 +64,19 @@ const renderRadioButton = (radioValue, type, setInputValue) => (
 const redirectMealRecipes = (mealRecipes, didFetch, setInputValue) => {
   if ((mealRecipes === null || mealRecipes.length === 0) && didFetch) {
     setInputValue((prevState) => ({ ...prevState, didFetch: false }));
-    alert('Não foi econtrado nenhum resultado de comida');
-    return null;
+    return alert('Não foi encontrado nenhum resultado de comida');
   }
-  if (mealRecipes.length === 1) return <Redirect to={`/receita/bebidas/${mealRecipes[0].idMeal}`} />;
-  setInputValue((prevState) => ({ ...prevState, didFetch: false }));
-  return null;
+  if (mealRecipes.length === 1) return <Redirect to={`/receita/comidas/${mealRecipes[0].idMeal}`} />;
+  return <Redirect to="/comidas" />;
 };
 
 const redirectDrinkRecipes = (drinkRecipes, didFetch, setInputValue) => {
   if ((drinkRecipes === null || drinkRecipes.length === 0) && didFetch) {
     setInputValue((prevState) => ({ ...prevState, didFetch: false }));
-    alert('Não foi econtrado nenhum resultado de bebida');
-    return null;
+    return alert('Não foi encontrado nenhum resultado de bebida');
   }
   if (drinkRecipes.length === 1) return <Redirect to={`/receita/bebidas/${drinkRecipes[0].idDrink}`} />;
-  setInputValue((prevState) => ({ ...prevState, didFetch: false }));
-  return null;
+  return <Redirect to="/bebidas" />;
 };
 
 const callApi = (setIsLoading, setRecipes, setInputValue, text, radio, mealOrDrink) => {
@@ -139,11 +135,11 @@ const SearchBar = () => {
     data: [recipes, setRecipes], loading: [, setIsLoading], recipeType: [recipeType],
   } = useContext(RecipesAppContext);
   const { text, radio } = useDebounce(inputValue.text, inputValue.radio, 600);
-
+  console.log(inputValue.didFetch);
   useEffect(() => {
     if (text && radio) callApi(setIsLoading, setRecipes, setInputValue, text, radio, recipeType);
   }, [text, radio, setIsLoading, setRecipes, recipeType]);
-  console.log('teste');
+
   if (inputValue.didFetch && recipeType === 'Comidas') {
     return redirectMealRecipes(recipes, inputValue.didFetch, setInputValue);
   }
