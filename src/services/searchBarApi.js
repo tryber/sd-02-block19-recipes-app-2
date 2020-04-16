@@ -1,25 +1,52 @@
 const SEARCH_MEAL_BY_NAME = 'https://www.themealdb.com/api/json/v1/1/search.php?s=';
 const SEARCH_ALL_MEALS_BY_FIRST_LETTER = 'https://www.themealdb.com/api/json/v1/1/search.php?f=';
 const SEARCH_MEAL_BY_MAIN_INGREDIENT = 'https://www.themealdb.com/api/json/v1/1/filter.php?i=';
+const SEARCH_DRINK_BY_NAME = 'https://www.thecocktaildb.com/api/json/v1/1/search.php?s=';
+const SEARCH_ALL_DRINKS_BY_FIRST_LETTER = 'https://www.thecocktaildb.com/api/json/v1/1/search.php?f=';
+const SEARCH_DRINK_BY_MAIN_INGREDIENT = 'https://www.thecocktaildb.com/api/json/v1/1/filter.php?i=';
 
-export const searchMealByName = (name) => (
-  fetch(`${SEARCH_MEAL_BY_NAME}${name}`)
+export const searchMealByName = (mealName) => (
+  fetch(`${SEARCH_MEAL_BY_NAME}${mealName}`)
     .then((response) => (
       response.json()
         .then((json) => (response.ok ? Promise.resolve(json) : Promise.reject(json)))
     ))
 );
 
-export const searchAllMealsByFirstLetter = (firstLetter) => (
-  fetch(`${SEARCH_ALL_MEALS_BY_FIRST_LETTER}${firstLetter}`)
+export const searchAllMealsByFirstLetter = (mealFirstLetter) => (
+  fetch(`${SEARCH_ALL_MEALS_BY_FIRST_LETTER}${mealFirstLetter}`)
     .then((response) => (
       response.json()
         .then((json) => (response.ok ? Promise.resolve(json) : Promise.reject(json)))
     ))
 );
 
-export const searchMealsByMainIngredient = (ingredient) => (
-  fetch(`${SEARCH_MEAL_BY_MAIN_INGREDIENT}${ingredient}`)
+export const searchMealsByMainIngredient = (mealIngredient) => (
+  fetch(`${SEARCH_MEAL_BY_MAIN_INGREDIENT}${mealIngredient}`)
+    .then((response) => (
+      response.json()
+        .then((json) => (response.ok ? Promise.resolve(json) : Promise.reject(json)))
+    ))
+);
+
+export const searchDrinkByName = (drinkName) => (
+  fetch(`${SEARCH_DRINK_BY_NAME}${drinkName}`)
+    .then((response) => (
+      response.json()
+        .then((json) => (response.ok ? Promise.resolve(json) : Promise.reject(json)))
+    ))
+);
+
+export const searchAllDrinksByFirstLetter = (drinkFirstLetter) => (
+  fetch(`${SEARCH_ALL_DRINKS_BY_FIRST_LETTER}${drinkFirstLetter}`)
+    .then((response) => (
+      response.json()
+        .then((json) => (response.ok ? Promise.resolve(json) : Promise.reject(json)))
+    ))
+);
+
+export const searchDrinksByMainIngredient = (drinkIngredient) => (
+  fetch(`${SEARCH_DRINK_BY_MAIN_INGREDIENT}${drinkIngredient}`)
     .then((response) => (
       response.json()
         .then((json) => (response.ok ? Promise.resolve(json) : Promise.reject(json)))

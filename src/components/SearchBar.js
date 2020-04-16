@@ -6,17 +6,28 @@ import {
   searchMealByName,
   searchAllMealsByFirstLetter,
   searchMealsByMainIngredient,
+  searchDrinkByName,
+  searchAllDrinksByFirstLetter,
+  searchDrinksByMainIngredient,
 } from '../services/searchBarApi';
 import useDebounce from '../hooks/useDebounce';
 import './SearchBar.css';
 
-const selectFetch = (value, type) => {
-  if (type === 'name') return searchMealByName(value);
+const selectFetch = (value, type, mealOrDrink) => {
+  if (mealOrDrink === 'Comidas') {
+    if (type === 'name') return searchMealByName(value);
+    if (type === 'ingredient') {
+      const newValue = value.split(' ').join('_').toLowerCase();
+      return searchMealsByMainIngredient(newValue);
+    }
+    return searchAllMealsByFirstLetter(value);
+  }
+  if (type === 'name') return searchDrinkByName(value);
   if (type === 'ingredient') {
     const newValue = value.split(' ').join('_').toLowerCase();
-    return searchMealsByMainIngredient(newValue);
+    return searchDrinksByMainIngredient(newValue);
   }
-  return searchAllMealsByFirstLetter(value);
+  return searchAllDrinksByFirstLetter(value);
 };
 
 const renderInputText = (inputValue, setInputValue) => (
@@ -49,34 +60,51 @@ const renderRadioButton = (radioValue, type, setInputValue) => (
   </label>
 );
 
-const renderByRecipes = (recipes, didFetch, setInputValue) => {
+const renderByRecipes = (recipes, didFetch, setInputValue, mealOrDrink) => {
+  if (mealOrDrink === 'Comidas') {
+    if ((recipes.length === 0) && didFetch) {
+      setInputValue((prevState) => ({ ...prevState, didFetch: false }));
+      return alert('Não foi econtrado nenhum resultado de comida');
+    }
+    if (recipes.length === 1) return <Redirect to={`/receita/comida/${recipes[0].idMeal}`} />;
+  }
   if ((recipes.length === 0) && didFetch) {
     setInputValue((prevState) => ({ ...prevState, didFetch: false }));
-    return alert('Não foi econtrado nenhum resultado');
+    return alert('Não foi econtrado nenhum resultado de bebida');
   }
-  if (recipes.length === 1) return <Redirect to={`/receita/comida/${recipes[0].idMeal}`} />;
+  if (recipes.length === 1) return <Redirect to={`/receita/bebidas/${recipes[0].idDrink}`} />;
   return recipes;
+};
+
+const callApi = (setIsLoading, setRecipes, setInputValue, text, radio, mealOrDrink) => {
+  setIsLoading(true);
+  selectFetch(text, radio, mealOrDrink)
+    .then(
+      ({ meals, drinks }) => {
+        setRecipes(meals || drinks || []);
+        setIsLoading(false);
+        setInputValue((prevState) => ({ ...prevState, didFetch: true }));
+      },
+      () => {
+        setRecipes([]);
+        setIsLoading(false);
+        setInputValue((prevState) => ({ ...prevState, didFetch: true }));
+      },
+    );
 };
 
 const SearchBar = () => {
   const [inputValue, setInputValue] = useState({ radio: '', text: '', didFetch: false });
   const { data: [recipes, setRecipes], loading: [, setIsLoading] } = useContext(RecipesAppContext);
   const { text, radio } = useDebounce(inputValue.text, inputValue.radio, 600);
+  const mealOrDrink = 'Bebidas';
   useEffect(() => {
-    if (text && radio) {
-      setIsLoading(true);
-      selectFetch(text, radio)
-        .then(({ meals }) => {
-          setRecipes(meals || []);
-          setIsLoading(false);
-          setInputValue((prevState) => ({ ...prevState, didFetch: true }));
-        });
-    }
+    if (text && radio) callApi(setIsLoading, setRecipes, setInputValue, text, radio, mealOrDrink);
   }, [text, radio]);
-  console.log(recipes);
   if (recipes.length <= 1 && inputValue.didFetch) {
-    return renderByRecipes(recipes, inputValue.didFetch, setInputValue);
+    return renderByRecipes(recipes, inputValue.didFetch, setInputValue, mealOrDrink);
   }
+  console.log(recipes);
   return (
     <div className="search-bar-container">
       <div>
