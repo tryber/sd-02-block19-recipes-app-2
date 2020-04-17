@@ -21,9 +21,7 @@ import SearchBar from './components/SearchBar';
 import { RecipesAppContext } from './context/RecipesAppContext';
 
 function App() {
-  const {
-    displaySearchBar: [displaySearchBar],
-    displayHeader: [displayHeader],
+  const { displaySearchBar: [displaySearchBar], displayHeader: [displayHeader],
     displayFooter: [displayFooter],
   } = useContext(RecipesAppContext);
   return (

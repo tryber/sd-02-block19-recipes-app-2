@@ -25,7 +25,8 @@ const submitForm = (email, setShouldRedirect) => {
 };
 
 const renderLoginPage = (setEmail, setEmailIsValid, setPasswordIsValid,
-  emailIsValid, passwordIsValid, email, setShouldRedirect) => (
+  emailIsValid, passwordIsValid, email, setShouldRedirect
+) => (
   <div>
     <h1>Login</h1>
     <input
@@ -67,10 +68,12 @@ const Login = () => {
     [],
   );
 
-  return shouldRedirect ?
-    <Redirect to="/comidas" /> :
-    renderLoginPage(setEmail, setEmailIsValid, setPasswordIsValid,
-      emailIsValid, passwordIsValid, email, setShouldRedirect)
+  return (
+    shouldRedirect ?
+      <Redirect to="/comidas" /> :
+      renderLoginPage(setEmail, setEmailIsValid, setPasswordIsValid,
+        emailIsValid, passwordIsValid, email, setShouldRedirect)
+  );
 };
 
 export default Login;
