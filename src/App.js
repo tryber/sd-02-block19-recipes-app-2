@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import Login from './pages/Login';
 import MealPage from './pages/MealPage';
@@ -17,12 +17,16 @@ import NotFound from './pages/NotFound';
 import Profile from './pages/Profile';
 import Header from './components/Header';
 import Footer from './components/Footer';
+import SearchBar from './components/SearchBar';
+import { RecipesAppContext } from './context/RecipesAppContext';
 
 function App() {
+  const { displaySearchBar: [displaySearchBar] } = useContext(RecipesAppContext);
   return (
     <div className="App">
       <BrowserRouter>
         <Header />
+        {displaySearchBar && <SearchBar />}
         <Switch>
           <Route exact path="/" component={Login} />
           <Route exact path="/comidas" component={MealPage} />

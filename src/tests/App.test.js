@@ -9,7 +9,7 @@ afterEach(cleanup);
 
 describe('Tests for App component', () => {
   it('To be tested', () => {
-    const { getByTestId } = render(
+    const { queryByTestId } = render(
       <RecipesAppProvider>
         <App />
       </RecipesAppProvider>,
