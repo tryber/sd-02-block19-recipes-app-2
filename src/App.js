@@ -21,11 +21,15 @@ import SearchBar from './components/SearchBar';
 import { RecipesAppContext } from './context/RecipesAppContext';
 
 function App() {
-  const { displaySearchBar: [displaySearchBar] } = useContext(RecipesAppContext);
+  const {
+    displaySearchBar: [displaySearchBar],
+    displayHeader: [displayHeader],
+    displayFooter: [displayFooter],
+  } = useContext(RecipesAppContext);
   return (
     <div className="App">
       <BrowserRouter>
-        <Header />
+        {displayHeader && <Header />}
         {displaySearchBar && <SearchBar />}
         <Switch>
           <Route exact path="/" component={Login} />
@@ -44,7 +48,7 @@ function App() {
           <Route exact path="/explorar/comidas/area" component={ExploreMealArea} />
           <Route component={NotFound} />
         </Switch>
-        <Footer />
+        {displayFooter && <Footer />}
       </BrowserRouter>
     </div>
 
