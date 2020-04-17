@@ -11,10 +11,10 @@ import {
   byFirstLetter,
   byIngredients,
   mealNull,
-  byDrinkName,
-  byDrinkIngredients,
-  byDrinkFirstLetter,
-  drinksNull,
+  // byDrinkName,
+  // byDrinkIngredients,
+  // byDrinkFirstLetter,
+  // drinksNull,
 } from '../__mocks__/recipesMock';
 
 const callApi = ({ meals }) => {
@@ -30,18 +30,18 @@ const callApi = ({ meals }) => {
   return mockFetchPromise;
 };
 
-const callDrinkApi = ({ drinks }) => {
-  const mockSuccessResponse = {
-    drinks,
-  };
-  const mockJsonPromise = Promise.resolve(mockSuccessResponse);
-  const mockFetchPromise = Promise.resolve({
-    status: 200,
-    ok: true,
-    json: () => mockJsonPromise,
-  });
-  return mockFetchPromise;
-};
+// const callDrinkApi = ({ drinks }) => {
+//   const mockSuccessResponse = {
+//     drinks,
+//   };
+//   const mockJsonPromise = Promise.resolve(mockSuccessResponse);
+//   const mockFetchPromise = Promise.resolve({
+//     status: 200,
+//     ok: true,
+//     json: () => mockJsonPromise,
+//   });
+//   return mockFetchPromise;
+// };
 
 afterEach(cleanup);
 
@@ -149,7 +149,7 @@ describe('SearchBar tests', () => {
   });
   describe('tests with drinks', () => {
     test('if search with Chicken Breast and radio ingrediente working and change route to /comidas', async () => {
-      const { queryByTestId, history } = renderWithRouter(
+      const { queryByTestId } = renderWithRouter(
         <RecipesAppProvider>
           <SearchBar />
         </RecipesAppProvider>,
