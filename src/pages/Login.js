@@ -7,17 +7,22 @@ const Login = () => {
   const [email, setEmail] = useState('');
   const [shouldRedirect, setShouldRedirect] = useState(false);
 
-  const validateEmail = ({ target }) => {
-    const { value } = target;
-    const regex = /[^@ \t\r\n]+@[^@ \t\r\n]+\.[^@ \t\r\n]+/;
-    setEmail(value);
-    return regex.test(value) ? setEmailIsValid(true) : setEmailIsValid(false);
-  };
+  const validateForm = ({ target }) => {
+    const { name, value } = target;
 
-  const validatePassword = ({ target }) => {
-    const { value } = target;
+    if (name === 'email') {
+      const regex = /[^@ \t\r\n]+@[^@ \t\r\n]+\.[^@ \t\r\n]+/;
+      setEmail(value);
+      return regex.test(value) ? setEmailIsValid(true) : setEmailIsValid(false);
+    }
+
     return (value.length > 6) ? setPasswordIsValid(true) : setPasswordIsValid(false);
   };
+
+  // const validatePassword = ({ target }) => {
+  //   const { value } = target;
+  //   return (value.length > 6) ? setPasswordIsValid(true) : setPasswordIsValid(false);
+  // };
 
   const submitForm = () => {
     localStorage.setItem('meals-token', '1');
@@ -32,8 +37,8 @@ const Login = () => {
   return shouldRedirect ? <Redirect to="/comidas" /> : (
     <div>
       <h1>Login</h1>
-      <input placeholder="Email" data-testid="email-input" onChange={validateEmail} />
-      <input placeholder="Senha" data-testid="password-input" onChange={validatePassword} />
+      <input placeholder="Email" name="email" data-testid="email-input" onChange={validateForm} />
+      <input placeholder="Senha" name="password" data-testid="password-input" onChange={validateForm} />
       <button
         type="button"
         data-testid="login-submit-btn"
