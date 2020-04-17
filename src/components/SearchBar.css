@@ -1,0 +1,44 @@
+.search-bar-container {
+  border: 2px solid black;
+  display: flex;
+  flex-direction: column;
+  padding: 2%;
+}
+
+.search-input {
+  height: 20px;
+  width: 99%;
+}
+
+.input-radio-container {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 2%;
+}
+
+.image-recipe {
+  padding: 5%;
+  width: 90%;
+}
+
+.recipe-content {
+  border: solid 2px black;
+  margin-top: 2%;
+  width: 40%;
+}
+
+.category-drink {
+  font-size: 1em;
+}
+
+.name-drink {
+  font-size: 0.9em;
+}
+
+.image-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  margin-top: 5%;
+  padding: 0 5%;
+}
