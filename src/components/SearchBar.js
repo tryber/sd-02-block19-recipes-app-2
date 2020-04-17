@@ -71,6 +71,7 @@ const redirectMealRecipes = (mealRecipes, didFetch, setInputValue) => {
 };
 
 const redirectDrinkRecipes = (drinkRecipes, didFetch, setInputValue) => {
+  console.log(drinkRecipes);
   if ((drinkRecipes === null || drinkRecipes.length === 0) && didFetch) {
     setInputValue((prevState) => ({ ...prevState, didFetch: false }));
     return alert('Não foi encontrado nenhum resultado de bebida');
@@ -85,7 +86,6 @@ const callApi = (setIsLoading, setRecipes, setInputValue, text, radio, mealOrDri
     return selectMealFetch(text, radio)
       .then(
         ({ meals }) => {
-          console.log(meals);
           setRecipes(meals);
           setIsLoading(false);
         },
@@ -135,7 +135,6 @@ const SearchBar = () => {
     data: [recipes, setRecipes], loading: [, setIsLoading], recipeType: [recipeType],
   } = useContext(RecipesAppContext);
   const { text, radio } = useDebounce(inputValue.text, inputValue.radio, 600);
-  console.log(inputValue.didFetch);
   useEffect(() => {
     if (text && radio) callApi(setIsLoading, setRecipes, setInputValue, text, radio, recipeType);
   }, [text, radio, setIsLoading, setRecipes, recipeType]);
