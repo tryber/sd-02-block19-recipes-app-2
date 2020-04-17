@@ -4,12 +4,13 @@ import { RecipesAppContext } from '../context/RecipesAppContext';
 
 const DrinkPage = () => {
   const { recipeType: [recipeType, setRecipeType] } = useContext(RecipesAppContext);
+  if (recipeType !== 'Bebidas') setRecipeType('Bebidas');
 
   return (
     <div>
       <h1>Drink Page</h1>
       <div>
-        {recipeType === 'Bebidas' ? <RecipesGenerator /> : setRecipeType('Bebidas')}
+        {recipeType === 'Bebidas' && <RecipesGenerator />}
       </div>
     </div>
   );

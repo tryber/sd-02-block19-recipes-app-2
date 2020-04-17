@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { RecipesAppContext } from '../context/RecipesAppContext';
 import { getRandomRecipe } from '../services/searchBarApi';
 import '../styles/RecipesGenerator.css';
@@ -20,17 +20,34 @@ export default function RecipesGenerator() {
     data: [recipes, setRecipes],
     recipeType: [recipeType],
     loading: [, setIsLoading],
-    inputValue: [inputValue],
+    isSearching: [isSearching],
   } = useContext(RecipesAppContext);
 
   const typeQueryString = recipeType === 'Comidas' ? 'meals' : 'drinks';
-  if (recipes.length < 12) {
+
+  useEffect(() => {
     getRandomRecipe(recipeType)
       .then(
         (recipe) => {
           setIsLoading(false);
           return setRecipes(
-            (existingRecipes) => [...existingRecipes, ...recipe[`${typeQueryString}`]],
+            (existingRecipes) => (existingRecipes ? [...existingRecipes, ...recipe[`${typeQueryString}`]] : []),
+          );
+        },
+        () => {
+          setRecipes([]);
+          setIsLoading(false);
+        },
+      );
+  }, [typeQueryString, setRecipes, setIsLoading, recipeType]);
+
+  if (recipes && !isSearching && recipes.length < 12) {
+    getRandomRecipe(recipeType)
+      .then(
+        (recipe) => {
+          setIsLoading(false);
+          return setRecipes(
+            (existingRecipes) => (existingRecipes ? [...existingRecipes, ...recipe[`${typeQueryString}`]] : []),
           );
         },
         () => {
@@ -39,6 +56,8 @@ export default function RecipesGenerator() {
         },
       );
   }
+
+  useEffect(() => setRecipes([]), [setRecipes]);
 
   return (
     <div className="recipes-container">
