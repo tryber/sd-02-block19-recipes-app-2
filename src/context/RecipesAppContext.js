@@ -13,6 +13,7 @@ export default function RecipesAppProvider({ children }) {
   const [recipes, setRecipes] = useState([]);
   const [recipeType, setRecipeType] = useState('Comidas');
   const [inputValue, setInputValue] = useState({ radio: '', text: '', didFetch: false });
+  const [isSearching, setIsSearching] = useState(false);
 
 
   const store = {
@@ -25,6 +26,7 @@ export default function RecipesAppProvider({ children }) {
     data: [recipes, setRecipes],
     recipeType: [recipeType, setRecipeType],
     inputValue: [inputValue, setInputValue],
+    isSearching: [isSearching, setIsSearching],
   };
 
   return <RecipesAppContext.Provider value={store}>{children}</RecipesAppContext.Provider>;

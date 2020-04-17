@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useEffect, useContext } from 'react';
 import { Redirect } from 'react-router-dom';
 import { RecipesAppContext } from '../context/RecipesAppContext';
 import {
@@ -13,6 +13,7 @@ import useDebounce from '../hooks/useDebounce';
 import '../styles/SearchBar.css';
 
 const selectMealFetch = (value, type) => {
+  setIsSearching(true);
   if (type === 'name') return searchMealByName(value);
   if (type === 'ingredient') {
     const newValue = value.split(' ').join('_').toLowerCase();
@@ -22,6 +23,7 @@ const selectMealFetch = (value, type) => {
 };
 
 const selectDrinkFetch = (value, type) => {
+  setIsSearching(true);
   if (type === 'name') return searchDrinkByName(value);
   if (type === 'ingredient') {
     const newValue = value.split(' ').join('_').toLowerCase();
@@ -79,9 +81,10 @@ const redirectDrinkRecipes = (drinkRecipes, didFetch, setInputValue) => {
 };
 
 const callApi = (setIsLoading, setRecipes, setInputValue, text, radio, mealOrDrink) => {
+  const { isSearching: [, setIsSearching] } = useContext(RecipesAppContext);
   setIsLoading(true);
   if (mealOrDrink === 'Comidas') {
-    return selectMealFetch(text, radio)
+    return selectMealFetch(text, radio, setIsSearching)
       .then(
         ({ meals }) => {
           setRecipes(meals);
@@ -95,7 +98,7 @@ const callApi = (setIsLoading, setRecipes, setInputValue, text, radio, mealOrDri
       .then(() => setInputValue((prevState) => ({ ...prevState, didFetch: true })));
   }
 
-  return selectDrinkFetch(text, radio)
+  return selectDrinkFetch(text, radio, setIsSearching)
     .then(
       ({ drinks }) => {
         setRecipes(drinks);
@@ -121,7 +124,9 @@ const SearchBar = () => {
 
   useEffect(() => {
     if (text && radio) callApi(setIsLoading, setRecipes, setInputValue, text, radio, recipeType);
-  }, [text, radio, setIsLoading, setRecipes, recipeType]);
+
+    return (() => setInputValue((prevState) => ({ ...prevState, didFetch: false })));
+  }, [text, radio, setIsLoading, setRecipes, recipeType, setInputValue]);
 
   if (inputValue.didFetch && recipeType === 'Comidas') {
     return redirectMealRecipes(recipes, inputValue.didFetch, setInputValue);

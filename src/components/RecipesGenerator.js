@@ -1,10 +1,9 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext } from 'react';
 import { RecipesAppContext } from '../context/RecipesAppContext';
 import { getRandomRecipe } from '../services/searchBarApi';
 import '../styles/RecipesGenerator.css';
 
 const RecipeCard = ({ recipe }) => {
-  console.log(recipe);
   const { recipeType: [recipeType] } = useContext(RecipesAppContext);
   const stringRecipeType = recipeType === 'Comidas' ? 'Meal' : 'Drink';
   return (
@@ -24,30 +23,28 @@ export default function RecipesGenerator() {
     inputValue: [inputValue],
   } = useContext(RecipesAppContext);
 
-  useEffect(() => {
-    console.log('recipes length: ', recipes.length, 'recipes: ', recipes, 'inputValue: ', inputValue);
-    console.log('recipe Types:', recipeType);
-    if (recipes.length < 11 && !inputValue.didFetch) {
-      getRandomRecipe(recipeType)
-        .then(
-          (recipe) => {
-            setIsLoading(false);
-            return recipe.meals ? setRecipes((existingRecipes) => [...existingRecipes, ...recipe.meals])
-              : setRecipes((existingRecipes) => [...existingRecipes, ...recipe.drinks]);
-          },
-          () => {
-            setRecipes([]);
-            setIsLoading(false);
-          },
-        );
-    }
-  }, [recipes, recipeType, setRecipes, setIsLoading]);
+  const typeQueryString = recipeType === 'Comidas' ? 'meals' : 'drinks';
+  if (recipes.length < 12) {
+    getRandomRecipe(recipeType)
+      .then(
+        (recipe) => {
+          setIsLoading(false);
+          return setRecipes(
+            (existingRecipes) => [...existingRecipes, ...recipe[`${typeQueryString}`]],
+          );
+        },
+        () => {
+          setRecipes([]);
+          setIsLoading(false);
+        },
+      );
+  }
 
   return (
     <div className="recipes-container">
       {(!recipes) ? null : recipes.map((recipe, index) => (
         (index <= 11) && (
-          <RecipeCard recipe={recipe} />
+          <RecipeCard key={`${index + 1}`} recipe={recipe} />
         )
       ))}
     </div>

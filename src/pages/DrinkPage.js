@@ -1,17 +1,15 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext } from 'react';
 import RecipesGenerator from '../components/RecipesGenerator';
 import { RecipesAppContext } from '../context/RecipesAppContext';
 
 const DrinkPage = () => {
-  const { recipeType: [, setRecipeType] } = useContext(RecipesAppContext);
-
-  useEffect(() => setRecipeType('Bebidas'), [setRecipeType]);
+  const { recipeType: [recipeType, setRecipeType] } = useContext(RecipesAppContext);
 
   return (
     <div>
-      <h1>Drinks Page</h1>
+      <h1>Drink Page</h1>
       <div>
-        <RecipesGenerator />
+        {recipeType === 'Bebidas' ? <RecipesGenerator /> : setRecipeType('Bebidas')}
       </div>
     </div>
   );
