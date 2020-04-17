@@ -5,7 +5,7 @@ import {
 
 import renderWithRouter from '../services/renderWithRouter';
 import RecipesAppProvider from '../context/RecipesAppContext';
-import SearchBar from './SearchBar';
+import SearchBar from '../components/SearchBar';
 import {
   byName,
   byFirstLetter,
