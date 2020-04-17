@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { Redirect } from 'react-router-dom';
-
 import { RecipesAppContext } from '../context/RecipesAppContext';
 import {
   searchMealByName,
@@ -11,7 +10,7 @@ import {
   searchDrinksByMainIngredient,
 } from '../services/searchBarApi';
 import useDebounce from '../hooks/useDebounce';
-import './SearchBar.css';
+import '../styles/SearchBar.css';
 
 const selectMealFetch = (value, type) => {
   if (type === 'name') return searchMealByName(value);
@@ -71,7 +70,6 @@ const redirectMealRecipes = (mealRecipes, didFetch, setInputValue) => {
 };
 
 const redirectDrinkRecipes = (drinkRecipes, didFetch, setInputValue) => {
-  console.log(drinkRecipes);
   if ((drinkRecipes === null || drinkRecipes.length === 0) && didFetch) {
     setInputValue((prevState) => ({ ...prevState, didFetch: false }));
     return alert('Não foi encontrado nenhum resultado de bebida');
@@ -111,30 +109,16 @@ const callApi = (setIsLoading, setRecipes, setInputValue, text, radio, mealOrDri
     .then(() => setInputValue((prevState) => ({ ...prevState, didFetch: true })));
 };
 
-// const showRecipes = (recipes) => (
-//   <div className="image-container">
-//     {
-//       (!recipes) ? null : recipes.map(({ strDrinkThumb, strDrink, strCategory }, index) => (
-//         (index <= 11)
-//           ? (
-//             <div key={strDrink} className="recipe-content">
-//               <img className="image-recipe" src={strDrinkThumb} alt="Foto" />
-//               <h3 className="category-drink">{strCategory}</h3>
-//               <p className="name-drink">{strDrink}</p>
-//             </div>
-//           )
-//           : null
-//       ))
-//     }
-//   </div>
-// );
-
 const SearchBar = () => {
-  const [inputValue, setInputValue] = useState({ radio: '', text: '', didFetch: false });
   const {
-    data: [recipes, setRecipes], loading: [, setIsLoading], recipeType: [recipeType],
+    data: [recipes, setRecipes],
+    loading: [, setIsLoading],
+    recipeType: [recipeType],
+    inputValue: [inputValue, setInputValue],
   } = useContext(RecipesAppContext);
+
   const { text, radio } = useDebounce(inputValue.text, inputValue.radio, 600);
+
   useEffect(() => {
     if (text && radio) callApi(setIsLoading, setRecipes, setInputValue, text, radio, recipeType);
   }, [text, radio, setIsLoading, setRecipes, recipeType]);
@@ -145,6 +129,7 @@ const SearchBar = () => {
   if (inputValue.didFetch && recipeType === 'Bebidas') {
     return redirectDrinkRecipes(recipes, inputValue.didFetch, setInputValue);
   }
+
   return (
     <div>
       <div className="search-bar-container">
