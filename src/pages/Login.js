@@ -25,7 +25,7 @@ const submitForm = (email, setShouldRedirect) => {
 };
 
 const renderLoginPage = (setEmail, setEmailIsValid, setPasswordIsValid,
-  emailIsValid, passwordIsValid, email, setShouldRedirect
+  emailIsValid, passwordIsValid, email, setShouldRedirect,
 ) => (
   <div>
     <h1>Login</h1>
