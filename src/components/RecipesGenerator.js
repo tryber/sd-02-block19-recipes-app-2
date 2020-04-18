@@ -1,15 +1,21 @@
 import React, { useContext, useEffect } from 'react';
+import PropTypes from 'prop-types';
 import { RecipesAppContext } from '../context/RecipesAppContext';
 import { getRandomRecipe } from '../services/searchBarApi';
 import '../styles/RecipesGenerator.css';
 
 const RecipeCard = ({ recipe }) => {
   const { recipeType: [recipeType] } = useContext(RecipesAppContext);
+  const { strDrink, strCategory } = recipe;
   const stringRecipeType = recipeType === 'Comidas' ? 'Meal' : 'Drink';
   return (
-    <div className="recipe-content" key={recipe.strDrink}>
-      <span className="recipe-category">{recipe.strCategory}</span>
-      <img className="recipe-thumbnail" src={recipe[`str${stringRecipeType}Thumb`]} alt={`Foto de ${recipe[`str${stringRecipeType}`]} `} />
+    <div className="recipe-content" key={strDrink}>
+      <span className="recipe-category">{strCategory}</span>
+      <img
+        className="recipe-thumbnail"
+        src={recipe[`str${stringRecipeType}Thumb`]}
+        alt={`Foto de ${recipe[`str${stringRecipeType}`]} `}
+      />
       <span className="recipe-name">{recipe[`str${stringRecipeType}`]}</span>
     </div>
   );
@@ -31,7 +37,9 @@ export default function RecipesGenerator() {
         (recipe) => {
           setIsLoading(false);
           return setRecipes(
-            (existingRecipes) => (existingRecipes ? [...existingRecipes, ...recipe[`${typeQueryString}`]] : []),
+            (existingRecipes) => (
+              existingRecipes ? [...existingRecipes, ...recipe[`${typeQueryString}`]] : []
+            ),
           );
         },
         () => {
@@ -69,3 +77,9 @@ export default function RecipesGenerator() {
     </div>
   );
 }
+
+RecipeCard.propTypes = {
+  recipe: PropTypes.instanceOf(Object).isRequired,
+  strDrink: PropTypes.string.isRequired,
+  strCategory: PropTypes.string.isRequired,
+};
