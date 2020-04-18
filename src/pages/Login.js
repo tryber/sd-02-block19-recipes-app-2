@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useState, useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { RecipesAppContext } from '../context/RecipesAppContext';
 
@@ -23,7 +23,7 @@ const submitForm = (email) => {
 };
 
 const renderLoginPage = (setEmail, setEmailIsValid, setPasswordIsValid,
-  emailIsValid, passwordIsValid, email, setShouldRedirect,
+  emailIsValid, passwordIsValid, email,
 ) => (
   <div>
     <h1>Login</h1>
@@ -43,7 +43,7 @@ const renderLoginPage = (setEmail, setEmailIsValid, setPasswordIsValid,
         data-testid="login-submit-btn"
         disabled={!(emailIsValid && passwordIsValid)}
         onClick={() => submitForm(email)}
-        >
+      >
         Entrar
       </button>
     </Link>
