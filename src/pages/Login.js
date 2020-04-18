@@ -1,6 +1,7 @@
 import React, { useState, useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { RecipesAppContext } from '../context/RecipesAppContext';
+import '../styles/Login.css';
 
 const validateEmail = ({ target }, setEmail, setEmailIsValid) => {
   const { value } = target;
@@ -22,32 +23,33 @@ const submitForm = (email) => {
   localStorage.setItem('user', JSON.stringify(emailObject));
 };
 
-const renderLoginPage = (setEmail, setEmailIsValid, setPasswordIsValid,
-  emailIsValid, passwordIsValid, email,
-) => (
-  <div>
-    <h1>Login</h1>
-    <input
-      placeholder="Email"
-      data-testid="email-input"
-      onChange={(event) => validateEmail(event, setEmail, setEmailIsValid)}
-    />
-    <input
-      placeholder="Senha"
-      data-testid="password-input"
-      onChange={(event) => validatePassword(event, setPasswordIsValid)}
-    />
-    <Link to="/comidas">
-      <button
-        type="button"
-        data-testid="login-submit-btn"
-        disabled={!(emailIsValid && passwordIsValid)}
-        onClick={() => submitForm(email)}
-      >
-        Entrar
-      </button>
-    </Link>
-  </div>
+const renderEmailInput = (setEmail, setEmailIsValid) => (
+  <input
+    placeholder="Email"
+    data-testid="email-input"
+    onChange={(event) => validateEmail(event, setEmail, setEmailIsValid)}
+  />
+);
+
+const renderPasswordInput = (setPasswordIsValid) => (
+  <input
+    placeholder="Senha"
+    data-testid="password-input"
+    onChange={(event) => validatePassword(event, setPasswordIsValid)}
+  />
+);
+
+const renderLoginSubmitBtn = (emailIsValid, passwordIsValid, email) => (
+  <Link to="/comidas" className="link">
+    <button
+      type="button"
+      data-testid="login-submit-btn"
+      disabled={!(emailIsValid && passwordIsValid)}
+      onClick={() => submitForm(email)}
+    >
+      Entrar
+    </button>
+  </Link>
 );
 
 const Login = () => {
@@ -62,8 +64,13 @@ const Login = () => {
   setDisplayHeader(false);
   setDisplayFooter(false);
 
-  return renderLoginPage(setEmail, setEmailIsValid, setPasswordIsValid,
-      emailIsValid, passwordIsValid, email,
+  return (
+    <div className="login-page">
+      <h1>Login</h1>
+      {renderEmailInput(setEmail, setEmailIsValid)}
+      {renderPasswordInput(setPasswordIsValid)}
+      {renderLoginSubmitBtn(emailIsValid, passwordIsValid, email)}
+    </div>
   );
 };
 

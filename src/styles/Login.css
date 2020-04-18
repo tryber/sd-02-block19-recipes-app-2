@@ -1,0 +1,27 @@
+.login-page {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  font-size: 1.5em;
+}
+
+.login-page input {
+  font-size: 1em;
+  margin: 0.5em;
+  padding: 0.3em;
+  width: 70%;
+}
+
+.link {
+  height: 2.5em;
+  margin: 2em;
+  width: 90%;
+}
+
+.link button {
+  background: #6ce34f;
+  border: 0;
+  font-size: 1em;
+  height: 100%;
+  width: 100%;
+}
