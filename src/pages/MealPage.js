@@ -85,19 +85,20 @@ const MealPage = () => {
     loading: [isLoading, setIsLoading],
     toggleCategory,
     recipesByCategory,
-    recipeType: [, setRecipeType],
+    headerTitle: [, setHeaderTitle],
+    displaySearchBar: [displaySearchBar],
   } = useContext(RecipesAppContext);
   useEffect(() => {
     const setToggleCategory = toggleCategory[1];
     setToggleCategory({ category: '', toggleCat: false });
-    setRecipeType('Comidas');
+    setHeaderTitle('Comidas');
     fetchCategories(setIsLoading, setCategories);
-  }, [setIsLoading, setRecipeType]);
+  }, [setIsLoading, setHeaderTitle]);
   return (
     <div>
       {(isLoading)
         ? <div>Loading...</div>
-        : renderCategories(categories, toggleCategory, recipesByCategory)}
+        : displaySearchBar || renderCategories(categories, toggleCategory, recipesByCategory)}
     </div>
   );
 };

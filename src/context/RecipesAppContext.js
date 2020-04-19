@@ -4,14 +4,13 @@ import PropTypes from 'prop-types';
 export const RecipesAppContext = createContext();
 
 export default function RecipesAppProvider({ children }) {
-  const [headerTitle, setHeaderTitle] = useState('Receitas');
+  const [headerTitle, setHeaderTitle] = useState('Comidas');
   const [displayHeader, setDisplayHeader] = useState(true);
   const [displaySearchButton, setDisplaySearchButton] = useState(true);
   const [displaySearchBar, setDisplaySearchBar] = useState(false);
   const [displayFooter, setDisplayFooter] = useState(true);
   const [isLoading, setIsLoading] = useState(true);
   const [recipes, setRecipes] = useState([]);
-  const [recipeType, setRecipeType] = useState('Comidas');
   const [recipesByCategory, setRecipesByCategory] = useState([]);
   const [toggleCategory, setToggleCategory] = useState({ category: '', toggleCat: false });
 
@@ -24,7 +23,6 @@ export default function RecipesAppProvider({ children }) {
     displayFooter: [displayFooter, setDisplayFooter],
     loading: [isLoading, setIsLoading],
     data: [recipes, setRecipes],
-    recipeType: [recipeType, setRecipeType],
     recipesByCategory: [recipesByCategory, setRecipesByCategory],
     toggleCategory: [toggleCategory, setToggleCategory],
   };
