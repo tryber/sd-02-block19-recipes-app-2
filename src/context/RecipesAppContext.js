@@ -10,6 +10,9 @@ export default function RecipesAppProvider({ children }) {
   const [isLoading, setIsLoading] = useState(true);
   const [recipes, setRecipes] = useState([]);
   const [recipeType, setRecipeType] = useState('Comidas');
+  const [recipesByCategory, setRecipesByCategory] = useState([]);
+  const [toggleCategory, setToggleCategory] = useState({ category: '', toggleCat: false });
+
 
   const store = {
     headerTitle: [headerTitle, setHeaderTitle],
@@ -18,6 +21,8 @@ export default function RecipesAppProvider({ children }) {
     data: [recipes, setRecipes],
     displaySearchBar: [displaySearchBar, setDisplaySearchBar],
     recipeType: [recipeType, setRecipeType],
+    recipesByCategory: [recipesByCategory, setRecipesByCategory],
+    toggleCategory: [toggleCategory, setToggleCategory],
   };
 
   return <RecipesAppContext.Provider value={store}>{children}</RecipesAppContext.Provider>;
