@@ -1,4 +1,4 @@
-export const categories = {
+const categories = {
   meals: [
     {
       strCategory: 'Beef',
@@ -44,3 +44,5 @@ export const categories = {
     },
   ],
 };
+
+export default categories;

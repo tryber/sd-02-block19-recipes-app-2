@@ -85,10 +85,14 @@ const MealPage = () => {
     loading: [isLoading, setIsLoading],
     toggleCategory,
     recipesByCategory,
+    recipeType: [, setRecipeType],
   } = useContext(RecipesAppContext);
   useEffect(() => {
+    const setToggleCategory = toggleCategory[1];
+    setToggleCategory({ category: '', toggleCat: false });
+    setRecipeType('Comidas');
     fetchCategories(setIsLoading, setCategories);
-  }, [setIsLoading]);
+  }, [setIsLoading, setRecipeType]);
   return (
     <div>
       {(isLoading)

@@ -5,12 +5,12 @@ import {
 
 import renderWithRouter from '../services/renderWithRouter';
 import RecipesAppProvider from '../context/RecipesAppContext';
-import MealPage from '../pages/MealPage';
-import { byName } from '../__mocks__/recipesMock';
+import DrinkPage from '../pages/DrinkPage';
+import { byDrinkName } from '../__mocks__/recipesDrinksMock';
 
-const callCategoriesApi = ({ meals }) => {
+const callCategoriesApi = ({ drinks }) => {
   const mockSuccessResponse = {
-    meals,
+    drinks,
   };
   const mockJsonPromise = Promise.resolve(mockSuccessResponse);
   const mockFetchPromise = Promise.resolve({
@@ -21,9 +21,9 @@ const callCategoriesApi = ({ meals }) => {
   return mockFetchPromise;
 };
 
-const callRandomMealApi = ({ meals }) => {
+const callRandomMealApi = ({ drinks }) => {
   const mockSuccessResponse = {
-    meals,
+    drinks,
   };
   const mockJsonPromise = Promise.resolve(mockSuccessResponse);
   const mockFetchPromise = Promise.resolve({
@@ -35,21 +35,21 @@ const callRandomMealApi = ({ meals }) => {
 };
 
 const catMock = {
-  meals: [
+  drinks: [
     {
-      strCategory: 'COCO',
+      strCategory: 'Ordinary Drink',
     },
     {
-      strCategory: 'Breakfast',
+      strCategory: 'Cocktail',
     },
     {
-      strCategory: 'Chicken',
+      strCategory: 'Milk Shake',
     },
     {
-      strCategory: 'Dessert',
+      strCategory: 'Other',
     },
     {
-      strCategory: 'Goat',
+      strCategory: 'Cocoa',
     },
   ],
 };
@@ -57,7 +57,7 @@ const catMock = {
 const testCategoryByName = async (queryByTestId, category) => {
   fireEvent.click(queryByTestId(`${category}-category-filter`));
   await wait();
-  catMock.meals.forEach(({ strCategory }) => {
+  catMock.drinks.forEach(({ strCategory }) => {
     if (strCategory === category) {
       expect(queryByTestId(`${strCategory}-category-filter`).disabled).toBeFalsy();
     } else {
@@ -65,40 +65,40 @@ const testCategoryByName = async (queryByTestId, category) => {
     }
   });
   fireEvent.click(queryByTestId(`${category}-category-filter`));
-  catMock.meals.forEach(({ strCategory }) => {
+  catMock.drinks.forEach(({ strCategory }) => {
     expect(queryByTestId(`${strCategory}-category-filter`).disabled).toBeFalsy();
   });
 };
 
 afterEach(cleanup);
 
-describe('Meal Page tests', () => {
-  test('if component rendering', () => {
+describe('Drink page tests', () => {
+  test('if component rendering', async () => {
     const { queryByText, history } = renderWithRouter(
       <RecipesAppProvider>
-        <MealPage />
+        <DrinkPage />
       </RecipesAppProvider>,
       {
-        route: '/comidas',
+        route: '/bebidas',
       },
     );
     expect(queryByText(/Loading/i)).toBeInTheDocument();
-    expect(history.location.pathname).toBe('/comidas');
+    expect(history.location.pathname).toBe('/bebidas');
   });
   test('if inputsCategory is rendering', async () => {
     jest.spyOn(global, 'fetch').mockImplementation(() => callCategoriesApi(catMock));
 
     const { queryByTestId } = renderWithRouter(
       <RecipesAppProvider>
-        <MealPage />
+        <DrinkPage />
       </RecipesAppProvider>,
     );
 
     await wait(() => expect(global.fetch).toHaveBeenCalledTimes(1));
-    expect(global.fetch).toHaveBeenCalledWith('https://www.themealdb.com/api/json/v1/1/list.php?c=list');
+    expect(global.fetch).toHaveBeenCalledWith('https://www.thecocktaildb.com/api/json/v1/1/list.php?c=list');
 
     expect(queryByTestId(/all-category-filter/i)).toBeInTheDocument();
-    catMock.meals.forEach(({ strCategory }, index) => {
+    catMock.drinks.forEach(({ strCategory }, index) => {
       if (index < 5) {
         expect(queryByTestId(`${strCategory}-category-filter`)).toBeInTheDocument();
       }
@@ -107,49 +107,49 @@ describe('Meal Page tests', () => {
   test('if buttons without toggled is working with disable and enable button', async () => {
     jest.spyOn(global, 'fetch').mockImplementationOnce(() => callCategoriesApi(catMock));
     expect(global.fetch).toHaveBeenCalledTimes(1);
-    expect(global.fetch).toHaveBeenCalledWith('https://www.themealdb.com/api/json/v1/1/list.php?c=list');
+    expect(global.fetch).toHaveBeenCalledWith('https://www.thecocktaildb.com/api/json/v1/1/list.php?c=list');
     const { queryByTestId } = renderWithRouter(
       <RecipesAppProvider>
-        <MealPage />
+        <DrinkPage />
       </RecipesAppProvider>,
     );
 
     await wait();
 
     jest.restoreAllMocks();
-    jest.spyOn(global, 'fetch').mockImplementationOnce(() => callRandomMealApi(byName));
+    jest.spyOn(global, 'fetch').mockImplementationOnce(() => callRandomMealApi(byDrinkName));
     await testCategoryByName(queryByTestId, 'all');
     expect(global.fetch).toHaveBeenCalledTimes(12);
-    expect(global.fetch).toHaveBeenCalledWith('https://www.themealdb.com/api/json/v1/1/random.php');
+    expect(global.fetch).toHaveBeenCalledWith('https://www.thecocktaildb.com/api/json/v1/1/random.php');
 
     jest.restoreAllMocks();
-    jest.spyOn(global, 'fetch').mockImplementationOnce(() => callRandomMealApi(byName));
-    await testCategoryByName(queryByTestId, 'COCO');
+    jest.spyOn(global, 'fetch').mockImplementationOnce(() => callRandomMealApi(byDrinkName));
+    await testCategoryByName(queryByTestId, 'Ordinary Drink');
     expect(global.fetch).toHaveBeenCalledTimes(1);
-    expect(global.fetch).toHaveBeenCalledWith('https://www.themealdb.com/api/json/v1/1/filter.php?c=COCO');
+    expect(global.fetch).toHaveBeenCalledWith('https://www.thecocktaildb.com/api/json/v1/1/filter.php?c=Ordinary Drink');
 
     jest.restoreAllMocks();
-    jest.spyOn(global, 'fetch').mockImplementationOnce(() => callRandomMealApi(byName));
-    await testCategoryByName(queryByTestId, 'Breakfast');
+    jest.spyOn(global, 'fetch').mockImplementationOnce(() => callRandomMealApi(byDrinkName));
+    await testCategoryByName(queryByTestId, 'Cocktail');
     expect(global.fetch).toHaveBeenCalledTimes(1);
-    expect(global.fetch).toHaveBeenCalledWith('https://www.themealdb.com/api/json/v1/1/filter.php?c=Breakfast');
+    expect(global.fetch).toHaveBeenCalledWith('https://www.thecocktaildb.com/api/json/v1/1/filter.php?c=Cocktail');
 
     jest.restoreAllMocks();
-    jest.spyOn(global, 'fetch').mockImplementationOnce(() => callRandomMealApi(byName));
-    await testCategoryByName(queryByTestId, 'Chicken');
+    jest.spyOn(global, 'fetch').mockImplementationOnce(() => callRandomMealApi(byDrinkName));
+    await testCategoryByName(queryByTestId, 'Milk Shake');
     expect(global.fetch).toHaveBeenCalledTimes(1);
-    expect(global.fetch).toHaveBeenCalledWith('https://www.themealdb.com/api/json/v1/1/filter.php?c=Chicken');
+    expect(global.fetch).toHaveBeenCalledWith('https://www.thecocktaildb.com/api/json/v1/1/filter.php?c=Milk Shake');
 
     jest.restoreAllMocks();
-    jest.spyOn(global, 'fetch').mockImplementationOnce(() => callRandomMealApi(byName));
-    await testCategoryByName(queryByTestId, 'Dessert');
+    jest.spyOn(global, 'fetch').mockImplementationOnce(() => callRandomMealApi(byDrinkName));
+    await testCategoryByName(queryByTestId, 'Other');
     expect(global.fetch).toHaveBeenCalledTimes(1);
-    expect(global.fetch).toHaveBeenCalledWith('https://www.themealdb.com/api/json/v1/1/filter.php?c=Dessert');
+    expect(global.fetch).toHaveBeenCalledWith('https://www.thecocktaildb.com/api/json/v1/1/filter.php?c=Other');
 
     jest.restoreAllMocks();
-    jest.spyOn(global, 'fetch').mockImplementationOnce(() => callRandomMealApi(byName));
-    await testCategoryByName(queryByTestId, 'Goat');
+    jest.spyOn(global, 'fetch').mockImplementationOnce(() => callRandomMealApi(byDrinkName));
+    await testCategoryByName(queryByTestId, 'Cocoa');
     expect(global.fetch).toHaveBeenCalledTimes(1);
-    expect(global.fetch).toHaveBeenCalledWith('https://www.themealdb.com/api/json/v1/1/filter.php?c=Goat');
+    expect(global.fetch).toHaveBeenCalledWith('https://www.thecocktaildb.com/api/json/v1/1/filter.php?c=Cocoa');
   });
 });
