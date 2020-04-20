@@ -1,5 +1,5 @@
 export const byDrinkName = {
-  meals: [
+  drinks: [
     {
       idMeal: '52970',
       strMeal: 'Tunisian Orange Cake',

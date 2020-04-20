@@ -132,17 +132,17 @@ const callApi = (setIsLoading, setRecipes, setInputValue, text, radio, mealOrDri
 const SearchBar = () => {
   const [inputValue, setInputValue] = useState({ radio: '', text: '', didFetch: false });
   const {
-    data: [recipes, setRecipes], loading: [, setIsLoading], recipeType: [recipeType],
+    data: [recipes, setRecipes], loading: [, setIsLoading], headerTitle: [headerTitle],
   } = useContext(RecipesAppContext);
   const { text, radio } = useDebounce(inputValue.text, inputValue.radio, 600);
   useEffect(() => {
-    if (text && radio) callApi(setIsLoading, setRecipes, setInputValue, text, radio, recipeType);
-  }, [text, radio, setIsLoading, setRecipes, recipeType]);
+    if (text && radio) callApi(setIsLoading, setRecipes, setInputValue, text, radio, headerTitle);
+  }, [text, radio, setIsLoading, setRecipes, headerTitle]);
 
-  if (inputValue.didFetch && recipeType === 'Comidas') {
+  if (inputValue.didFetch && headerTitle === 'Comidas') {
     return redirectMealRecipes(recipes, inputValue.didFetch, setInputValue);
   }
-  if (inputValue.didFetch && recipeType === 'Bebidas') {
+  if (inputValue.didFetch && headerTitle === 'Bebidas') {
     return redirectDrinkRecipes(recipes, inputValue.didFetch, setInputValue);
   }
   return (
