@@ -31,8 +31,8 @@ function App() {
           <Route exact path="/comidas" component={MealPage} />
           <Route exact path="/bebidas" component={DrinkPage} />
           <Route exact path="/perfil" component={Profile} />
-          <Route exact path="/receitas/comida/:id-da-receita" component={RecipeMealDetails} />
-          <Route exact path="/receitas/bebidas/:id-da-receita" component={RecipeDrinkDetails} />
+          <Route exact path="/receitas/comida/:id" component={RecipeMealDetails} />
+          <Route exact path="/receitas/bebidas/:id" component={RecipeDrinkDetails} />
           <Route exact path="/receitas-feitas" component={DoneRecipes} />
           <Route exact path="/receitas-favoritas" component={FavoriteRecipes} />
           <Route exact path="/explorar/comidas" component={ExploreMeal} />
