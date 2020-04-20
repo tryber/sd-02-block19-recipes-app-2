@@ -13,8 +13,8 @@ export default function RecipesAppProvider({ children }) {
   const [recipes, setRecipes] = useState([]);
   const [recipeType, setRecipeType] = useState('Comidas');
   const [inputValue, setInputValue] = useState({ radio: '', text: '', didFetch: false });
+  const [isFetching, setIsFetching] = useState(false);
   const [isSearching, setIsSearching] = useState(false);
-  const [recipesByCategory, setRecipesByCategory] = useState([]);
   const [toggleCategory, setToggleCategory] = useState({ category: '', toggleCat: false });
 
 
@@ -28,8 +28,8 @@ export default function RecipesAppProvider({ children }) {
     data: [recipes, setRecipes],
     recipeType: [recipeType, setRecipeType],
     inputValue: [inputValue, setInputValue],
+    fetchingStatus: [isFetching, setIsFetching],
     isSearching: [isSearching, setIsSearching],
-    recipesByCategory: [recipesByCategory, setRecipesByCategory],
     toggleCategory: [toggleCategory, setToggleCategory],
   };
 

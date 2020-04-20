@@ -7,14 +7,15 @@ import {
   fetchMealByAllCategories,
 } from '../services/mealPageApis';
 import '../styles/MealPage.css';
+import RecipesGenerator from '../components/RecipesGenerator';
 
-const fetchsCategories = async (setRecipesByCategory, category) => {
+const fetchsCategories = async (setRecipes, category) => {
   if (category === 'All') {
-    // setRecipesByCategory[recipes] ||
+    setRecipes([]);
     const callFetch = async () => {
       await fetchMealByAllCategories()
         .then(({ meals }) => {
-          setRecipesByCategory((prevState) => [...prevState, ...meals]);
+          setRecipes((prevState) => [...prevState, ...meals]);
         });
     };
     for (let i = 0; i < 12; i += 1) {
@@ -22,31 +23,34 @@ const fetchsCategories = async (setRecipesByCategory, category) => {
     }
   } else {
     await fetchMealByCategories(category)
-      .then(({ meals }) => setRecipesByCategory(meals));
+      .then(({ meals }) => setRecipes(meals));
   }
 };
 
 
 const setToggleAndRecipes = (
-  toggleCategoryContext, recipesByCategoryContext, category,
+  toggleCategoryContext, setRecipes, category, setIsFetching,
 ) => {
   const [toggleCategory, setToggleCategory] = toggleCategoryContext;
-  const [, setRecipesByCategory] = recipesByCategoryContext;
-  if (!toggleCategory.toggleCat) fetchsCategories(setRecipesByCategory, category);
+  if (!toggleCategory.toggleCat) fetchsCategories(setRecipes, category);
   setToggleCategory({
     category: (!toggleCategory.toggleCat) ? category : '',
     toggleCat: !toggleCategory.toggleCat,
   });
+  setIsFetching(false);
+  setRecipes([]);
 };
 
-const renderCategories = (categories, toggleCategory, recipesByCategory, disabled = false) => (
+const renderCategories = (
+  categories, toggleCategory, setRecipes, setIsFetching, disabled = false,
+) => (
   <div className="categories-container">
     <button
       className="category-button"
       type="button"
       data-testid="all-category-filter"
       disabled={(toggleCategory[0].category === 'All') ? disabled : toggleCategory[0].toggleCat}
-      onClick={() => setToggleAndRecipes(toggleCategory, recipesByCategory, 'All')}
+      onClick={() => setToggleAndRecipes(toggleCategory, setRecipes, 'All', setIsFetching)}
     >
       All
     </button>
@@ -59,7 +63,8 @@ const renderCategories = (categories, toggleCategory, recipesByCategory, disable
         disabled={
           (toggleCategory[0].category === strCategory) ? disabled : toggleCategory[0].toggleCat
         }
-        onClick={() => (setToggleAndRecipes(toggleCategory, recipesByCategory, strCategory))}
+        onClick={() => (
+          setToggleAndRecipes(toggleCategory, setRecipes, strCategory, setIsFetching))}
       >
         {strCategory}
       </button>
@@ -84,21 +89,24 @@ const MealPage = () => {
   const {
     loading: [isLoading, setIsLoading],
     toggleCategory,
-    recipesByCategory,
+    toggleCategory: [, setToggleCategory],
+    data: [, setRecipes],
     headerTitle: [, setHeaderTitle],
-    displaySearchBar: [displaySearchBar],
+    fetchingStatus: [, setIsFetching],
   } = useContext(RecipesAppContext);
+
+
   useEffect(() => {
-    const setToggleCategory = toggleCategory[1];
     setToggleCategory({ category: '', toggleCat: false });
     setHeaderTitle('Comidas');
     fetchCategories(setIsLoading, setCategories);
-  }, [setIsLoading, setHeaderTitle]);
+  }, [setIsLoading, setHeaderTitle, setToggleCategory]);
   return (
     <div>
       {(isLoading)
         ? <div>Loading...</div>
-        : displaySearchBar || renderCategories(categories, toggleCategory, recipesByCategory)}
+        : renderCategories(categories, toggleCategory, setRecipes, setIsFetching)}
+      <RecipesGenerator recipeType="Comidas" />
     </div>
   );
 };
