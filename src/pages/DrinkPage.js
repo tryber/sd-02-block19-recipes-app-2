@@ -102,9 +102,10 @@ const DrinkPage = () => {
   }, [setIsLoading, setHeaderTitle]);
   return (
     <div>
-      {(isLoading)
-        ? <div>Loading...</div>
-        : renderCategories(categories, toggleCategory, setRecipes, setIsFetching)}
+      <nav>
+        {categories && renderCategories(categories, toggleCategory, setRecipes, setIsFetching)}
+      </nav>
+      {(isLoading) && <div>Loading...</div>}
       <RecipesGenerator recipeType="Bebidas" />
     </div>
   );
