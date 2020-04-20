@@ -84,11 +84,9 @@ RecipesGenerator.propTypes = {
 
 RecipeCard.propTypes = {
   recipe: PropTypes.instanceOf(Object).isRequired,
-  strCategory: PropTypes.string,
   recipeType: PropTypes.string,
 };
 
 RecipeCard.defaultProps = {
-  strCategory: '',
   recipeType: '',
 };

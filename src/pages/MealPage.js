@@ -1,13 +1,11 @@
-import React, { useContext, useEffect, useState } from 'react';
-
-import { RecipesAppContext } from '../context/RecipesAppContext';
+import React from 'react';
 import {
   listMealCategories,
   fetchMealByCategories,
   fetchMealByAllCategories,
 } from '../services/mealPageApis';
 import '../styles/MealPage.css';
-import RecipesGenerator from '../components/RecipesGenerator';
+import RenderRecipePage from '../components/RenderRecipePage';
 
 const fetchsCategories = async (setRecipes, category) => {
   if (category === 'All') {
@@ -83,38 +81,6 @@ const fetchCategories = async (setIsLoading, setCategories) => {
     );
 };
 
-const MealPage = () => {
-  const [categories, setCategories] = useState([]);
-  const {
-    loading: [isLoading, setIsLoading],
-    toggleCategory,
-    toggleCategory: [, setToggleCategory],
-    data: [, setRecipes],
-    headerTitle: [, setHeaderTitle],
-    fetchingStatus: [, setIsFetching],
-    recipeType: [recipeType, setRecipeType],
-  } = useContext(RecipesAppContext);
-
-  if (recipeType !== 'Comidas') setRecipeType('Comidas');
-
-  useEffect(() => {
-    setToggleCategory({ category: '', toggleCat: false });
-    setHeaderTitle('Comidas');
-    fetchCategories(setIsLoading, setCategories);
-    return (() => {
-      setToggleCategory({ category: '', toggleCat: false });
-      setIsFetching(false);
-    });
-  }, [setIsLoading, setHeaderTitle, setIsFetching, setToggleCategory]);
-  return (
-    <div>
-      <nav>
-        {categories && renderCategories(categories, toggleCategory, setRecipes, setIsFetching)}
-      </nav>
-      {(isLoading) && <div>Loading...</div>}
-      <RecipesGenerator recipeType="Comidas" />
-    </div>
-  );
-};
+const MealPage = () => <RenderRecipePage kindOfRecipe="Comidas" fetchCategories={fetchCategories} renderCategories={renderCategories} />;
 
 export default MealPage;
