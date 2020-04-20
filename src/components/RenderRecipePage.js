@@ -27,7 +27,8 @@ export default function RenderRecipePage({ kindOfRecipe, fetchCategories, render
       setToggleCategory({ category: '', toggleCat: false });
       setIsFetching(false);
     });
-  }, [setIsLoading, setHeaderTitle, setIsFetching, setToggleCategory]);
+  }, [
+    setIsLoading, setHeaderTitle, setIsFetching, setToggleCategory, fetchCategories, kindOfRecipe]);
   return (
     <div>
       <nav>
