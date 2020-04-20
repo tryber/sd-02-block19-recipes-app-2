@@ -12,11 +12,12 @@ import ExploreDrink from './pages/ExploreDrink';
 import ExploreMealIngredients from './pages/ExploreMealIngredients';
 import ExploreDrinksIngrendients from './pages/ExploreDrinksIngrendients';
 import ExploreMealArea from './pages/ExploreMealArea';
+import Explore from './pages/Explore';
 import NotFound from './pages/NotFound';
 import Profile from './pages/Profile';
 import Header from './components/Header';
+import Footer from './components/Footer';
 import SearchBar from './components/SearchBar';
-
 import { RecipesAppContext } from './context/RecipesAppContext';
 
 function App() {
@@ -24,13 +25,14 @@ function App() {
   return (
     <div className="App">
       <BrowserRouter>
-        <Header />
+        {<Header />}
         {displaySearchBar && <SearchBar />}
         <Switch>
           <Route exact path="/" component={Login} />
           <Route exact path="/comidas" component={MealPage} />
           <Route exact path="/bebidas" component={DrinkPage} />
           <Route exact path="/perfil" component={Profile} />
+          <Route exact path="/explorar" component={Explore} />
           <Route exact path="/receitas/comida/:id" component={RecipeMealDetails} />
           <Route exact path="/receitas/bebidas/:id" component={RecipeDrinkDetails} />
           <Route exact path="/receitas-feitas" component={DoneRecipes} />
@@ -42,6 +44,7 @@ function App() {
           <Route exact path="/explorar/comidas/area" component={ExploreMealArea} />
           <Route component={NotFound} />
         </Switch>
+        {<Footer />}
       </BrowserRouter>
     </div>
 
