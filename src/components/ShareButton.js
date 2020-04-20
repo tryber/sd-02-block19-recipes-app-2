@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import ShareIcon from '../images/shareIcon.svg';
 import '../styles/ShareButton.css';
 
-const ShareButton = () => {
+const ShareButton = ({ index }) => {
   const [tooltipText, setTooltipText] = useState('Copiar link');
 
   const copyToClipboard = () => {
@@ -13,9 +13,12 @@ const ShareButton = () => {
 
   return (
     <div className="share-button">
-      <button onClick={copyToClipboard}>
+      <button
+        onClick={copyToClipboard}
+        data-testid={index ? `${index}-horizontal-share-btn` : 'share-btn'}
+      >
         <span className="tooltip-text" >{tooltipText}</span>
-        <img alt="sdfsdfsfsfsfds" src={ShareIcon} />
+        <img alt="" src={ShareIcon} />
       </button>
     </div>
   );
