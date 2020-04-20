@@ -1,7 +1,6 @@
 import React from 'react';
 import { render, cleanup, fireEvent } from '@testing-library/react';
 import renderWithRouter from '../services/renderWithRouter';
-import Login from '../pages/Login';
 import App from '../App';
 import RecipesAppProvider from '../context/RecipesAppContext';
 

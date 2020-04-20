@@ -3,12 +3,13 @@ import propTypes from 'prop-types';
 import ShareIcon from '../images/shareIcon.svg';
 import '../styles/ShareButton.css';
 
-const ShareButton = ({ index }) => {
+const ShareButton = ({ index, id, type }) => {
   const [tooltipText, setTooltipText] = useState('Copiar link');
 
   const copyToClipboard = () => {
-    const pageURL = document.URL;
-    navigator.clipboard.writeText(pageURL);
+    // const pageURL = document.URL;
+    const link = `http://localhost:3000/receitas/${type}/${id}`;
+    navigator.clipboard.writeText(link);
     setTooltipText('Link copiado!');
   };
 
@@ -16,9 +17,9 @@ const ShareButton = ({ index }) => {
     <div className="share-button">
       <button
         onClick={copyToClipboard}
-        data-testid={index ? `${index}-horizontal-share-btn` : 'share-btn'}
+        data-testid={(index !== null) ? `${index}-horizontal-share-btn` : 'share-btn'}
       >
-        <span className="tooltip-text" >{tooltipText}</span>
+        <span className="tooltip-text" data-testid="tooltip-text" >{tooltipText}</span>
         <img alt="" src={ShareIcon} />
       </button>
     </div>
@@ -27,6 +28,8 @@ const ShareButton = ({ index }) => {
 
 ShareButton.propTypes = {
   index: propTypes.number,
+  id: propTypes.string.isRequired,
+  type: propTypes.oneOf(['comidas', 'bebidas']).isRequired,
 };
 
 ShareButton.defaultProps = {

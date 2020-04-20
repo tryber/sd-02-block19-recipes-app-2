@@ -33,7 +33,7 @@ function App() {
           <Route exact path="/bebidas" component={DrinkPage} />
           <Route exact path="/perfil" component={Profile} />
           <Route exact path="/explorar" component={Explore} />
-          <Route exact path="/receitas/comida/:id-da-receita" component={RecipeMealDetails} />
+          <Route exact path="/receitas/comidas/:id-da-receita" component={RecipeMealDetails} />
           <Route exact path="/receitas/bebidas/:id-da-receita" component={RecipeDrinkDetails} />
           <Route exact path="/receitas-feitas" component={DoneRecipes} />
           <Route exact path="/receitas-favoritas" component={FavoriteRecipes} />

@@ -30,7 +30,7 @@ const FavoriteButton = ({ index, id, category, image }) => {
     <div className="favorite-button">
       <button
         onClick={() => changeState(isFavorite, setIsFavorite, id, category, image)}
-        data-testid={index ? `${index}-horizontal-favorite-btn` : 'favorite-btn'}
+        data-testid={(index !== null) ? `${index}-horizontal-favorite-btn` : 'favorite-btn'}
       >
         <img
           alt=""
