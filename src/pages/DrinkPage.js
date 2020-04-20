@@ -82,6 +82,12 @@ const fetchCategories = async (setIsLoading, setCategories) => {
     );
 };
 
-const DrinkPage = () => <RenderRecipePage kindOfRecipe="Bebidas" fetchCategories={fetchCategories} renderCategories={renderCategories} />;
+const DrinkPage = () => (
+  <RenderRecipePage
+    kindOfRecipe="Bebidas"
+    fetchCategories={fetchCategories}
+    renderCategories={renderCategories}
+  />
+);
 
 export default DrinkPage;
