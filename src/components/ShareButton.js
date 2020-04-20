@@ -6,7 +6,7 @@ const ShareButton = () => {
   const [tooltipText, setTooltipText] = useState('Copiar link');
 
   const copyToClipboard = () => {
-    const pageURL = document.URL
+    const pageURL = document.URL;
     navigator.clipboard.writeText(pageURL);
     setTooltipText('Link copiado!');
   };
