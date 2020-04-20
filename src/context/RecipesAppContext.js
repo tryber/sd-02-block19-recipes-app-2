@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 export const RecipesAppContext = createContext();
 
 export default function RecipesAppProvider({ children }) {
-  const [headerTitle, setHeaderTitle] = useState('Receitas');
+  const [headerTitle, setHeaderTitle] = useState('Comidas');
   const [displayHeader, setDisplayHeader] = useState(true);
   const [displaySearchButton, setDisplaySearchButton] = useState(true);
   const [displaySearchBar, setDisplaySearchBar] = useState(false);
@@ -14,6 +14,8 @@ export default function RecipesAppProvider({ children }) {
   const [recipeType, setRecipeType] = useState('Comidas');
   const [inputValue, setInputValue] = useState({ radio: '', text: '', didFetch: false });
   const [isSearching, setIsSearching] = useState(false);
+  const [recipesByCategory, setRecipesByCategory] = useState([]);
+  const [toggleCategory, setToggleCategory] = useState({ category: '', toggleCat: false });
 
 
   const store = {
@@ -27,6 +29,8 @@ export default function RecipesAppProvider({ children }) {
     recipeType: [recipeType, setRecipeType],
     inputValue: [inputValue, setInputValue],
     isSearching: [isSearching, setIsSearching],
+    recipesByCategory: [recipesByCategory, setRecipesByCategory],
+    toggleCategory: [toggleCategory, setToggleCategory],
   };
 
   return <RecipesAppContext.Provider value={store}>{children}</RecipesAppContext.Provider>;

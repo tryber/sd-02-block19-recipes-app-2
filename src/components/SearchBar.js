@@ -105,6 +105,7 @@ const SearchBar = () => {
     recipeType: [recipeType],
     isSearching: [, setIsSearching],
     inputValue: [inputValue, setInputValue],
+    headerTitle: [headerTitle],
   } = useContext(RecipesAppContext);
 
   const { text, radio } = useDebounce(inputValue.text, inputValue.radio, 600);
