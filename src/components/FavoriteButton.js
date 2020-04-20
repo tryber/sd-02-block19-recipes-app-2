@@ -7,20 +7,21 @@ import '../styles/FavoriteButton.css';
 const changeState = (isFavorite, setIsFavorite, id, category, image) => {
   let favoriteRecipes = JSON.parse(localStorage.getItem('favoriteRecipes')) || [];
 
-  if (isFavorite) {
-    setIsFavorite(false);
-    favoriteRecipes = favoriteRecipes.reduce((acc, item) => (
+  setIsFavorite(!isFavorite);
+
+  favoriteRecipes = (isFavorite)
+    ? favoriteRecipes.reduce((acc, item) => (
       (item.id === id) ? acc : [...acc, item]
-    ), []);
-  } else {
-    setIsFavorite(true);
-    favoriteRecipes = [...favoriteRecipes, { id, category, image }];
-  }
+    ), [])
+    : [...favoriteRecipes, { id, category, image }];
+
 
   localStorage.setItem('favoriteRecipes', JSON.stringify(favoriteRecipes));
 };
 
-const FavoriteButton = ({ index, id, category, image }) => {
+const FavoriteButton = ({
+  index, id, category, image,
+}) => {
   const initialFavoriteRecipes = JSON.parse(localStorage.getItem('favoriteRecipes')) || [];
   const initialState = initialFavoriteRecipes.some((item) => item.id === id);
 
@@ -29,6 +30,7 @@ const FavoriteButton = ({ index, id, category, image }) => {
   return (
     <div className="favorite-button">
       <button
+        type="button"
         onClick={() => changeState(isFavorite, setIsFavorite, id, category, image)}
         data-testid={(index !== null) ? `${index}-horizontal-favorite-btn` : 'favorite-btn'}
       >
