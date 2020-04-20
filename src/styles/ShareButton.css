@@ -1,0 +1,42 @@
+.share-button {
+  display: inline-block;
+  position: relative;
+}
+
+.share-button button {
+  all: unset;
+  cursor: pointer;
+}
+
+.share-button .tooltip-text {
+  background-color: #555;
+  border-radius: 6px;
+  bottom: 150%;
+  color: #fff;
+  left: 50%;
+  margin-left: -75px;
+  padding: 5px;
+  position: absolute;
+  opacity: 0;
+  text-align: center;
+  transition: opacity 0.3s;
+  visibility: hidden;
+  width: 140px;
+  z-index: 1;
+}
+
+.share-button .tooltip-text::after {
+  border-color: #555 transparent transparent transparent;
+  margin-left: -5px;
+  border-style: solid;
+  border-width: 5px;
+  content: "";
+  left: 50%;
+  position: absolute;
+  top: 100%;
+}
+
+.share-button:hover .tooltip-text {
+  opacity: 1;
+  visibility: visible;
+}

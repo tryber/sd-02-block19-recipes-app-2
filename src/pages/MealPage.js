@@ -1,7 +1,9 @@
 import React from 'react';
 
 const MealPage = () => (
-  <div>Comidas</div>
+  <div>
+    <h1>Comidas</h1>
+  </div>
 );
 
 export default MealPage;
