@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import propTypes from 'prop-types';
 import ShareIcon from '../images/shareIcon.svg';
 import '../styles/ShareButton.css';
 
@@ -22,6 +23,14 @@ const ShareButton = ({ index }) => {
       </button>
     </div>
   );
+};
+
+ShareButton.propTypes = {
+  index: propTypes.number,
+};
+
+ShareButton.defaultProps = {
+  index: null,
 };
 
 export default ShareButton;

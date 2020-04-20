@@ -7,11 +7,3 @@
   all: unset;
   cursor: pointer;
 }
-
-.is-favorite {
-  background-color: black;
-}
-
-.is-not-favorite {
-  background-color: white;
-}
