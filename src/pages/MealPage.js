@@ -92,8 +92,10 @@ const MealPage = () => {
     data: [, setRecipes],
     headerTitle: [, setHeaderTitle],
     fetchingStatus: [, setIsFetching],
+    recipeType: [recipeType, setRecipeType],
   } = useContext(RecipesAppContext);
 
+  if (recipeType !== 'Comidas') setRecipeType('Comidas');
 
   useEffect(() => {
     setToggleCategory({ category: '', toggleCat: false });

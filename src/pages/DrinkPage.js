@@ -92,14 +92,17 @@ const DrinkPage = () => {
     data: [, setRecipes],
     headerTitle: [, setHeaderTitle],
     fetchingStatus: [, setIsFetching],
+    recipeType: [recipeType, setRecipeType],
   } = useContext(RecipesAppContext);
+
+  if (recipeType !== 'Bebidas') setRecipeType('Bebidas');
 
 
   useEffect(() => {
     setToggleCategory({ category: '', toggleCat: false });
     setHeaderTitle('Bebidas');
     fetchCategories(setIsLoading, setCategories);
-  }, [setIsLoading, setHeaderTitle]);
+  }, [setIsLoading, setHeaderTitle, setRecipeType, setToggleCategory]);
   return (
     <div>
       <nav>
