@@ -16,10 +16,11 @@ const ShareButton = ({ index, id, type }) => {
   return (
     <div className="share-button">
       <button
+        type="button"
         onClick={copyToClipboard}
         data-testid={(index !== null) ? `${index}-horizontal-share-btn` : 'share-btn'}
       >
-        <span className="tooltip-text" data-testid="tooltip-text" >{tooltipText}</span>
+        <span className="tooltip-text" data-testid="tooltip-text">{tooltipText}</span>
         <img alt="" src={ShareIcon} />
       </button>
     </div>

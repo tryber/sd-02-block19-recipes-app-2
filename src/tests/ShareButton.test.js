@@ -2,6 +2,12 @@ import React from 'react';
 import { render, cleanup, fireEvent } from '@testing-library/react';
 import ShareButton from '../components/ShareButton';
 
+const mockWriteText = {
+  writeText: jest.fn(),
+};
+
+global.navigator.clipboard = mockWriteText;
+
 afterEach(cleanup);
 
 test('renderiza o botão quando não se passa "index" como prop', () => {
@@ -21,8 +27,8 @@ test('renderiza o botão quando se passa "index" como prop', () => {
   let tooltipText = getByText('Copiar link');
   expect(tooltipText).toBeInTheDocument();
 
-  // fireEvent.click(button);
+  fireEvent.click(button);
 
-  // tooltipText = getByText('Link copiado!');
-  // expect(tooltipText).toBeInTheDocument();
+  tooltipText = getByText('Link copiado!');
+  expect(tooltipText).toBeInTheDocument();
 });
