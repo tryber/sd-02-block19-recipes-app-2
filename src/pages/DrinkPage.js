@@ -78,9 +78,8 @@ const fetchCategories = async (setIsLoading, setCategories) => {
     .then(
       (({ drinks }) => {
         setCategories(drinks);
-        setIsLoading(false);
       }),
-      () => setIsLoading(false),
+      (err) => console.log(err),
     );
 };
 

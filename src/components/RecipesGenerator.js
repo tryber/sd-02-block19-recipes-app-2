@@ -25,9 +25,9 @@ const RecipeCard = ({ recipe, recipeType }) => {
 export default function RecipesGenerator({ recipeType }) {
   const {
     data: [recipes, setRecipes],
-    loading: [, setIsLoading],
+    loading: [isLoading, setIsLoading],
     toggleCategory: [{ toggleCat }],
-    fetchingStatus: [isFetching, setIsFetching],
+    fetchingStatus: [isFetching],
   } = useContext(RecipesAppContext);
 
   const typeQueryString = recipeType === 'Comidas' ? 'meals' : 'drinks';
@@ -36,12 +36,10 @@ export default function RecipesGenerator({ recipeType }) {
     setRecipes([]);
   }, [setRecipes]);
 
-  async function fetchRandomRecipes() {
-    setIsLoading(true);
-    setIsFetching(true);
-
-    for (let i = 0; i < 12; i += 1) {
-      console.log(recipeType);
+  useEffect(() => {
+    async function fetchRandomRecipes() {
+      console.log('rendered one random recipe');
+      setIsLoading(true);
       getRandomRecipe(recipeType)
         .then(
           (recipe) => setRecipes(
@@ -55,13 +53,21 @@ export default function RecipesGenerator({ recipeType }) {
         )
         .then(() => setIsLoading(false));
     }
-  }
+    if (
+      toggleCat === false
+      && isFetching === false
+      && recipes
+      && recipes.length < 12
+    ) fetchRandomRecipes();
+  }, [isFetching, recipeType, recipes, setIsLoading, setRecipes, toggleCat, typeQueryString]);
 
-  if (!toggleCat && !isFetching && (recipes !== undefined || recipes === [])) fetchRandomRecipes();
+  console.log('isFetching: ', isFetching, 'toggleCat: ', toggleCat, 'recipes length: ', recipes.length, 'recipes: ', !!recipes);
+
+
 
   return (
     <div className="recipes-container">
-      {recipes === [] ? null : recipes.map((recipe, index) => (
+      {isLoading ? null : recipes.map((recipe, index) => (
         (index <= 11) && (
           <RecipeCard key={`${index + 1}`} recipe={recipe} recipeType={recipeType} />
         )

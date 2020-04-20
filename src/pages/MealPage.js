@@ -78,9 +78,8 @@ const fetchCategories = async (setIsLoading, setCategories) => {
     .then(
       (({ meals }) => {
         setCategories(meals);
-        setIsLoading(false);
       }),
-      () => setIsLoading(false),
+      (err) => console.log(err),
     );
 };
 
@@ -100,7 +99,11 @@ const MealPage = () => {
     setToggleCategory({ category: '', toggleCat: false });
     setHeaderTitle('Comidas');
     fetchCategories(setIsLoading, setCategories);
-  }, [setIsLoading, setHeaderTitle, setToggleCategory]);
+    return (() => {
+      setToggleCategory({ category: '', toggleCat: false });
+      setIsFetching(false);
+    });
+  }, [setIsLoading, setHeaderTitle, setIsFetching, setToggleCategory]);
   return (
     <div>
       {(isLoading)
