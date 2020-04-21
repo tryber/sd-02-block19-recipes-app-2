@@ -31,7 +31,8 @@ export default function RenderRecipePage({ kindOfRecipe, fetchCategories, render
       setRecipes([]);
     });
   }, [
-    setIsLoading, setHeaderTitle, setIsFetching, setToggleCategory, fetchCategories, kindOfRecipe]);
+    setIsLoading, setHeaderTitle, setIsFetching, setToggleCategory,
+    fetchCategories, kindOfRecipe, setIsFiltering, setRecipes]);
   return (
     <div>
       <nav>
