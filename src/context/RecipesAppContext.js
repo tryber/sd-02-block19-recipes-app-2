@@ -16,6 +16,7 @@ export default function RecipesAppProvider({ children }) {
   const [isFetching, setIsFetching] = useState(false);
   const [isSearching, setIsSearching] = useState(false);
   const [toggleCategory, setToggleCategory] = useState({ category: '', toggleCat: false });
+  const [isFiltering, setIsFiltering] = useState(false);
 
   function toggleHeaderAndFooter() {
     setDisplayHeader(!displayHeader);
@@ -36,6 +37,7 @@ export default function RecipesAppProvider({ children }) {
     isSearching: [isSearching, setIsSearching],
     toggleCategory: [toggleCategory, setToggleCategory],
     toggleHeaderAndFooter,
+    filtering: [isFiltering, setIsFiltering],
   };
 
   return <RecipesAppContext.Provider value={store}>{children}</RecipesAppContext.Provider>;

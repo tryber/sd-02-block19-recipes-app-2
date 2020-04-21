@@ -14,6 +14,7 @@ export default function RenderRecipePage({ kindOfRecipe, fetchCategories, render
     fetchingStatus: [, setIsFetching],
     recipeType: [recipeType, setRecipeType],
     inputValue: [{ didFetch }, setInputValue],
+    filtering: [, setIsFiltering],
   } = useContext(RecipesAppContext);
 
   if (recipeType !== kindOfRecipe) setRecipeType(kindOfRecipe);
@@ -23,16 +24,19 @@ export default function RenderRecipePage({ kindOfRecipe, fetchCategories, render
     setToggleCategory({ category: '', toggleCat: false });
     setHeaderTitle(kindOfRecipe);
     fetchCategories(setIsLoading, setCategories);
+    setIsFiltering(false);
     return (() => {
       setToggleCategory({ category: '', toggleCat: false });
       setIsFetching(false);
+      setRecipes([]);
     });
   }, [
     setIsLoading, setHeaderTitle, setIsFetching, setToggleCategory, fetchCategories, kindOfRecipe]);
   return (
     <div>
       <nav>
-        {categories && renderCategories(categories, toggleCategory, setRecipes, setIsFetching)}
+        {categories
+        && renderCategories(categories, toggleCategory, setRecipes, setIsFetching, setIsFiltering)}
       </nav>
       {(isLoading) && <div>Loading...</div>}
       <RecipesGenerator recipeType={kindOfRecipe} />

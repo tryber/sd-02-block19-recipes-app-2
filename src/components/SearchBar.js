@@ -105,11 +105,12 @@ const RenderInputItems = ({ inputValue, setInputValue }) => (
 
 const SearchBar = ({ history }) => {
   const {
-    data: [, setRecipes],
+    data: [recipes, setRecipes],
     loading: [, setIsLoading],
     recipeType: [recipeType],
     isSearching: [, setIsSearching],
     inputValue: [inputValue, setInputValue],
+    filtering: [isFiltering],
   } = useContext(RecipesAppContext);
 
   const {
@@ -118,6 +119,7 @@ const SearchBar = ({ history }) => {
 
   if ((text === '' || radio === '') && !didFetch) setIsSearching(false);
 
+  console.log('didFetch ', inputValue.didFetch, 'recipes: ', recipes);
   useEffect(() => {
     const callApi = async () => {
       if (text.length > 1 && radio === 'first-letter') return alert('Sua busca deve conter somente 1 (um) caracter');
@@ -136,10 +138,10 @@ const SearchBar = ({ history }) => {
           return alert('Não foi encontrado nenhum resultado de bebida');
         });
     };
-    if (text && radio && !didFetch) callApi();
+    if (text && radio && !didFetch && !isFiltering) callApi();
   }, [
     text, radio, setIsLoading, setIsSearching, setRecipes,
-    recipeType, setInputValue, didFetch, history]);
+    recipeType, setInputValue, didFetch, history, isFiltering]);
 
   return <RenderInputItems inputValue={inputValue} setInputValue={setInputValue} />;
 };
