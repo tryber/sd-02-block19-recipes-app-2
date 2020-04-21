@@ -23,7 +23,6 @@ test('renderiza o botão quando se passa "index" como prop', () => {
   const button = getByTestId('0-horizontal-share-btn');
   expect(button).toBeInTheDocument();
 
-  // const tooltipTextBefore = getByTestId('tooltip-text');
   let tooltipText = getByText('Copiar link');
   expect(tooltipText).toBeInTheDocument();
 

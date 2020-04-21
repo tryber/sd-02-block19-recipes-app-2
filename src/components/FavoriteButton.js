@@ -10,11 +10,8 @@ const changeState = (isFavorite, setIsFavorite, id, category, image) => {
   setIsFavorite(!isFavorite);
 
   favoriteRecipes = (isFavorite)
-    ? favoriteRecipes.reduce((acc, item) => (
-      (item.id === id) ? acc : [...acc, item]
-    ), [])
+    ? favoriteRecipes.filter((item) => item.id !== id)
     : [...favoriteRecipes, { id, category, image }];
-
 
   localStorage.setItem('favoriteRecipes', JSON.stringify(favoriteRecipes));
 };
