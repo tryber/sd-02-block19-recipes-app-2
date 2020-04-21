@@ -71,3 +71,23 @@
 .video-youtube {
   width: 100%;
 }
+
+.image-carousel {
+  padding: 4%;
+  width: 90%;
+}
+
+.start-button-container {
+  padding: 2%;
+}
+
+.start-button {
+  all: unset;
+  background-color: rgb(108, 227, 79);
+  cursor: pointer;
+  font-size: 1.5em;
+  font-weight: 700;
+  height: 50px;
+  text-align: center;
+  width: 100%;
+}

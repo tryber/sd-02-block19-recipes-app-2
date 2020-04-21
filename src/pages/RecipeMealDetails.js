@@ -1,9 +1,33 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import YouTube from 'react-youtube';
 import propTypes from 'prop-types';
 
+import Carousel from 'react-multi-carousel';
 import { searchMealDetailsById } from '../services/recipeDetailsApi';
+import { fetchMealByAllCategories } from '../services/mealPageApis';
 import '../styles/RecipeMealDetails.css';
+import 'react-multi-carousel/lib/styles.css';
+import { RecipesAppContext } from '../context/RecipesAppContext';
+
+const responsive = {
+  superLargeDesktop: {
+    // the naming can be any, depends on you.
+    breakpoint: { max: 4000, min: 3000 },
+    items: 5,
+  },
+  desktop: {
+    breakpoint: { max: 3000, min: 1024 },
+    items: 3,
+  },
+  tablet: {
+    breakpoint: { max: 1024, min: 464 },
+    items: 2,
+  },
+  mobile: {
+    breakpoint: { max: 464, min: 0 },
+    items: 2,
+  },
+};
 
 const allIngredients = (meals) => {
   let indexMeasure = 0;
@@ -59,11 +83,55 @@ const renderVideo = (youtube) => (
   </div>
 );
 
-const renderCarousel = () => {
-  console.log('Aqui vai o carousel');
+const fetchRecomendedRecipes = async (setCarousel) => {
+  await fetchMealByAllCategories()
+    .then(
+      (({ meals }) => {
+        setCarousel((prevState) => (
+          {
+            ...prevState,
+            data: [...prevState.data, ...meals],
+          }));
+      }),
+      () => console.log('ERROR DETAILS'),
+    );
 };
 
-const renderAllDetails = (meals) => {
+const createImageCarousel = (strMeal, strCategory, strMealThumb, index) => (
+  <div data-testid={`${index}-recomendation-card`} key={strMeal}>
+    <img className="image-carousel" src={strMealThumb} alt="Imagem" />
+    <div>{strCategory}</div>
+    <div>{strMeal}</div>
+  </div>
+);
+
+const renderCarousel = (carousel, setCarousel) => {
+  if (carousel.data.length < 6) {
+    fetchRecomendedRecipes(setCarousel);
+  }
+  return (carousel.data.length === 6) && (
+    <Carousel responsive={responsive}>
+      {carousel.data.map(({ strMeal, strCategory, strMealThumb }, index) => (
+        createImageCarousel(strMeal, strCategory, strMealThumb, index)
+      ))}
+    </Carousel>
+  );
+};
+
+const renderStartRecipeButton = () => (
+  <div className="start-button-container">
+    <button
+      className="start-button"
+      data-testid="start-recipe-btn"
+      type="button"
+      onClick={() => alert('Voce Clicou')}
+    >
+      Iniciar receita
+    </button>
+  </div>
+);
+
+const renderAllDetails = (meals, carousel, setCarousel) => {
   const {
     strMeal, strCategory, strInstructions, strMealThumb, strYoutube,
   } = meals[0];
@@ -80,31 +148,41 @@ const renderAllDetails = (meals) => {
       {renderIngredients(meals)}
       {renderInstructions(strInstructions)}
       {renderVideo(strYoutube)}
-      {renderCarousel()}
+      {renderCarousel(carousel, setCarousel)}
+      {renderStartRecipeButton()}
     </div>
   );
+};
+
+const fetchMealById = async (id, setDetailsRecipe, setIsLoading) => {
+  await searchMealDetailsById(id)
+    .then(
+      (({ meals }) => {
+        setDetailsRecipe(meals);
+        setIsLoading(false);
+      }),
+      () => console.log('error'),
+    );
 };
 
 const RecipeMealDetails = ({ match: { params: { id } } }) => {
   const [detailsRecipe, setDetailsRecipe] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [carousel, setCarousel] = useState({ isLoading: false, data: [] });
+  const {
+    displayHeader: [, setDisplayHeader], displayFooter: [, setDisplayFooter],
+  } = useContext(RecipesAppContext);
   useEffect(() => {
+    setDisplayHeader(false);
+    setDisplayFooter(false);
     setIsLoading(true);
-    const fetchMealById = async () => {
-      await searchMealDetailsById(id)
-        .then(
-          (({ meals }) => {
-            setDetailsRecipe(meals);
-            setIsLoading(false);
-          }),
-          () => console.log('error'),
-        );
-    };
-    fetchMealById();
-  }, [setIsLoading, setDetailsRecipe, id]);
+    fetchMealById(id, setDetailsRecipe, setIsLoading);
+  }, [setIsLoading, setDetailsRecipe, id, setDisplayFooter, setDisplayHeader]);
   return (
     <div>
-      {(isLoading) ? <div>Loading...</div> : detailsRecipe && renderAllDetails(detailsRecipe)}
+      {(isLoading)
+        ? <div>Loading...</div>
+        : detailsRecipe && renderAllDetails(detailsRecipe, carousel, setCarousel)}
     </div>
   );
 };
