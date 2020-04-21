@@ -25,7 +25,7 @@ function App() {
   return (
     <div className="App">
       <BrowserRouter>
-        {<Header />}
+        <Header />
         {displaySearchBar && <SearchBar />}
         <Switch>
           <Route exact path="/" component={Login} />
@@ -33,8 +33,8 @@ function App() {
           <Route exact path="/bebidas" component={DrinkPage} />
           <Route exact path="/perfil" component={Profile} />
           <Route exact path="/explorar" component={Explore} />
-          <Route exact path="/receitas/comida/:id-da-receita" component={RecipeMealDetails} />
-          <Route exact path="/receitas/bebidas/:id-da-receita" component={RecipeDrinkDetails} />
+          <Route exact path="/receitas/comidas/:id" component={RecipeMealDetails} />
+          <Route exact path="/receitas/bebidas/:id" component={RecipeDrinkDetails} />
           <Route exact path="/receitas-feitas" component={DoneRecipes} />
           <Route exact path="/receitas-favoritas" component={FavoriteRecipes} />
           <Route exact path="/explorar/comidas" component={ExploreMeal} />
@@ -44,7 +44,7 @@ function App() {
           <Route exact path="/explorar/comidas/area" component={ExploreMealArea} />
           <Route component={NotFound} />
         </Switch>
-        {<Footer />}
+        <Footer />
       </BrowserRouter>
     </div>
 
