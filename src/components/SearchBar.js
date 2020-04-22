@@ -131,13 +131,13 @@ const SearchBar = ({ history }) => {
           setIsLoading(false);
           if ('meals' in recipe) return redirectMealRecipes(recipe.meals, history, setRecipes);
           return redirectDrinkRecipes(recipe.drinks, history, setRecipes);
-        })
-        .catch(() => {
+        },
+        () => {
           setRecipes([]);
           setIsLoading(false);
           return alert('Não foi encontrado nenhum resultado de bebida.');
         })
-        .finally(() => setInputValue(((prevState) => ({ ...prevState, didFetch: false }))));
+        .then(() => setInputValue(((prevState) => ({ ...prevState, didFetch: false }))));
     };
     if (text && radio && !didFetch && !isFiltering) callApi();
   }, [

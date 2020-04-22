@@ -72,6 +72,8 @@ describe('SearchBar tests', () => {
 
   describe('tests with meals', () => {
     test('if search with Chicken Breast and radio ingrediente working and change route to /comidas', async () => {
+      await wait();
+
       const { queryByTestId, history } = renderWithRouter(
         <RecipesAppProvider>
           <SearchBar />
@@ -85,11 +87,13 @@ describe('SearchBar tests', () => {
 
       jest.spyOn(global, 'fetch').mockImplementation(() => callApi(byIngredients));
 
-      await wait(() => expect(global.fetch).toHaveBeenCalledTimes(1));
+      await wait(() => expect(global.fetch).toHaveBeenCalledWith('https://www.themealdb.com/api/json/v1/1/filter.php?i=chicken_breast'));
       expect(global.fetch).toHaveBeenCalledWith('https://www.themealdb.com/api/json/v1/1/filter.php?i=chicken_breast');
       expect(history.location.pathname).toBe('/comidas');
     });
     test('if search with Orange and radio name working and change route to /receita/comidas/:id-da-receita', async () => {
+      await wait();
+
       const { queryByTestId, history } = renderWithRouter(
         <RecipesAppProvider>
           <SearchBar />
@@ -103,12 +107,14 @@ describe('SearchBar tests', () => {
 
       jest.spyOn(global, 'fetch').mockImplementation(() => callApi(byName));
 
-      await wait(() => expect(global.fetch).toHaveBeenCalledTimes(2));
-      expect(global.fetch).toHaveBeenCalledWith('https://www.themealdb.com/api/json/v1/1/search.php?s=Orange');
-      expect(history.location.pathname).toBe('/receita/comidas/52970');
+      await wait(() => expect(global.fetch).toHaveBeenLastCalledWith('https://www.themealdb.com/api/json/v1/1/search.php?s=Orange'));
+      expect(global.fetch).toHaveBeenLastCalledWith('https://www.themealdb.com/api/json/v1/1/search.php?s=Orange');
+      expect(history.location.pathname).toBe('/receita/comida/52970');
     });
 
     test('if search with "a" and radio first letter working and change route to /comidas', async () => {
+      await wait();
+
       const { queryByTestId, history } = renderWithRouter(
         <RecipesAppProvider>
           <SearchBar />
@@ -122,11 +128,14 @@ describe('SearchBar tests', () => {
 
       jest.spyOn(global, 'fetch').mockImplementation(() => callApi(byFirstLetter));
 
-      await wait(() => expect(global.fetch).toHaveBeenCalledTimes(3));
-      expect(global.fetch).toHaveBeenCalledWith('https://www.themealdb.com/api/json/v1/1/search.php?f=a');
+      await wait(() => expect(global.fetch).toHaveBeenLastCalledWith('https://www.themealdb.com/api/json/v1/1/search.php?f=a'));
+      expect(global.fetch).toHaveBeenLastCalledWith('https://www.themealdb.com/api/json/v1/1/search.php?f=a');
       expect(history.location.pathname).toBe('/comidas');
     });
+
     test('if search with Cake and radio ingredients working and change route to /receita/comidas/:id-da-receita', async () => {
+      await wait();
+
       const { queryByTestId } = renderWithRouter(
         <RecipesAppProvider>
           <SearchBar />
@@ -142,13 +151,15 @@ describe('SearchBar tests', () => {
 
       jest.spyOn(global, 'fetch').mockImplementation(() => callApi(mealNull));
 
-      await wait(() => expect(global.fetch).toHaveBeenCalledTimes(4));
-      expect(window.alert).toHaveBeenCalledTimes(1);
-      expect(window.alert).toHaveBeenCalledWith('Não foi encontrado nenhum resultado de comida');
+      await wait(() => expect(global.fetch).toHaveBeenLastCalledWith('https://www.themealdb.com/api/json/v1/1/search.php?s=Cake'));
+      expect(window.alert).toHaveBeenCalled();
+      expect(window.alert).toHaveBeenLastCalledWith('Não foi encontrado nenhum resultado de comida.');
     });
   });
   describe('tests with drinks', () => {
     test('if search with Chicken Breast and radio ingrediente working and change route to /comidas', async () => {
+      await wait();
+
       const { queryByTestId } = renderWithRouter(
         <RecipesAppProvider>
           <SearchBar />
@@ -162,7 +173,7 @@ describe('SearchBar tests', () => {
 
       // jest.spyOn(global, 'fetch').mockImplementation(() => callDrinkApi(byDrinkIngredients));
 
-      // await wait(() => expect(global.fetch).toHaveBeenCalledTimes(5));
+      // await wait(() => expect(global.fetch).toHaveBeenCalled());
       // expect(global.fetch).toHaveBeenCalledWith('https://www.thecocktaildb.com/api/json/v1/1/filter.php?i=chicken_breast');
       // expect(history.location.pathname).toBe('/bebidas');
     });
