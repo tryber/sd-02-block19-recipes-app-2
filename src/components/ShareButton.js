@@ -5,10 +5,10 @@ import '../styles/ShareButton.css';
 
 const ShareButton = ({ index, id, type }) => {
   const [tooltipText, setTooltipText] = useState('Copiar link');
-
+  const trimmedType = type.toLocaleLowerCase().substring(0, type.length - 1);
   const copyToClipboard = () => {
     // const pageURL = document.URL;
-    const link = `http://localhost:3000/receitas/${type}/${id}`;
+    const link = `http://localhost:3000/receitas/${trimmedType}/${id}`;
     navigator.clipboard.writeText(link);
     setTooltipText('Link copiado!');
   };
@@ -30,7 +30,7 @@ const ShareButton = ({ index, id, type }) => {
 ShareButton.propTypes = {
   index: propTypes.number,
   id: propTypes.string.isRequired,
-  type: propTypes.oneOf(['comidas', 'bebidas']).isRequired,
+  type: propTypes.oneOf(['Comidas', 'Bebidas']).isRequired,
 };
 
 ShareButton.defaultProps = {

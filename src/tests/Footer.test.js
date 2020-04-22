@@ -1,23 +1,50 @@
 import React, { useContext } from 'react';
 import { render, cleanup, fireEvent } from '@testing-library/react';
 import { renderHook } from '@testing-library/react-hooks';
+import renderWithRouter from '../services/renderWithRouter';
 import RecipesAppProvider, { RecipesAppContext } from '../context/RecipesAppContext';
 import App from '../App';
 
+let [headerTitle, setHeaderTitle] = ['Receitas', jest.fn()];
+let [displayHeader, setDisplayHeader] = [false, jest.fn()];
+let [displaySearchBar, setDisplaySearchBar] = [false, jest.fn()];
+let [displaySearchButton, setDisplaySearchButton] = [false, jest.fn()];
+let [displayFooter, setDisplayFooter] = [true, jest.fn()];
+let [isLoading, setIsLoading] = [true, jest.fn()];
+let [recipes, setRecipes] = [[], jest.fn()];
+let [recipeType, setRecipeType] = ['Comidas', jest.fn()];
+let [inputValue, setInputValue] = [{ radio: '', text: '', didFetch: false }, jest.fn()];
+let [isFetching, setIsFetching] = [false, jest.fn()];
+let [isSearching, setIsSearching] = [false, jest.fn()];
+let [toggleCategory, setToggleCategory] = [{ category: '', toggleCat: false }, jest.fn()];
+let [isFiltering, setIsFiltering] = [false, jest.fn()];
+
+let store = {
+  headerTitle: [headerTitle, setHeaderTitle],
+  displayHeader: [displayHeader, setDisplayHeader],
+  displaySearchButton: [displaySearchButton, setDisplaySearchButton],
+  displaySearchBar: [displaySearchBar, setDisplaySearchBar],
+  displayFooter: [displayFooter, setDisplayFooter],
+  loading: [isLoading, setIsLoading],
+  data: [recipes, setRecipes],
+  recipeType: [recipeType, setRecipeType],
+  inputValue: [inputValue, setInputValue],
+  fetchingStatus: [isFetching, setIsFetching],
+  isSearching: [isSearching, setIsSearching],
+  toggleCategory: [toggleCategory, setToggleCategory],
+  toggleHeaderAndFooter: jest.fn(),
+  filtering: [isFiltering, setIsFiltering],
+};
 
 afterEach(cleanup);
 
 describe('Tests for Footer component', () => {
   it('Component is rendered if displayFooter is true and dont if its false', async () => {
-    const { getByTestId } = render(
-      <RecipesAppProvider>
+    const { getByTestId } = renderWithRouter(
+      <RecipesAppContext.Provider value={store}>
         <App />
-      </RecipesAppProvider>,
+      </RecipesAppContext.Provider>,
     );
-
-    const wrapper = ({ children }) => <RecipesAppProvider>{children}</RecipesAppProvider>;
-    const { result } = renderHook(() => useContext(RecipesAppContext), { wrapper });
-    expect(result.current.displayFooter[0]).toBeTruthy();
 
     expect(getByTestId('drinks-bottom-btn')).toBeInTheDocument();
     expect(getByTestId('explore-bottom-btn')).toBeInTheDocument();
@@ -25,21 +52,10 @@ describe('Tests for Footer component', () => {
   });
 
   it('If displayFooter is false, it doesnt get displayed', () => {
-    const [headerTitle, setHeaderTitle] = ['Receitas', jest.fn()];
-    const [displayHeader, setDisplayHeader] = [false, jest.fn()];
-    const [displaySearchBar, setDisplaySearchBar] = [false, jest.fn()];
-    const [displaySearchButton, setDisplaySearchButton] = [false, jest.fn()];
-    const [displayFooter, setDisplayFooter] = [false, jest.fn()];
+    [displayFooter, setDisplayFooter] = [false, jest.fn()];
+    store = { ...store, displayFooter: [displayFooter, setDisplayFooter] };
 
-    const store = {
-      headerTitle: [headerTitle, setHeaderTitle],
-      displayHeader: [displayHeader, setDisplayHeader],
-      displaySearchBar: [displaySearchBar, setDisplaySearchBar],
-      displaySearchButton: [displaySearchButton, setDisplaySearchButton],
-      displayFooter: [displayFooter, setDisplayFooter],
-    };
-
-    const { queryByTestId } = render(
+    const { queryByTestId } = renderWithRouter(
       <RecipesAppContext.Provider value={store}>
         <App />
       </RecipesAppContext.Provider>,
@@ -51,10 +67,13 @@ describe('Tests for Footer component', () => {
   });
 
   it('In clicking Explore button, user is taken to Explore page', () => {
-    const { getByTestId, getByText } = render(
-      <RecipesAppProvider>
+    [displayFooter, setDisplayFooter] = [true, jest.fn()];
+    store = { ...store, displayFooter: [displayFooter, setDisplayFooter] };
+
+    const { getByTestId, getByText } = renderWithRouter(
+      <RecipesAppContext.Provider value={store}>
         <App />
-      </RecipesAppProvider>,
+      </RecipesAppContext.Provider>,
     );
 
     const exploreButton = getByTestId('explore-bottom-btn');
@@ -66,10 +85,10 @@ describe('Tests for Footer component', () => {
   });
 
   it('In clicking Cocktails button, user is taken to Cocktail page', () => {
-    const { getByTestId, getByText } = render(
-      <RecipesAppProvider>
+    const { getByTestId, getByText } = renderWithRouter(
+      <RecipesAppContext.Provider value={store}>
         <App />
-      </RecipesAppProvider>,
+      </RecipesAppContext.Provider>,
     );
 
     const cocktailButton = getByTestId('drinks-bottom-btn');
@@ -77,14 +96,14 @@ describe('Tests for Footer component', () => {
 
     fireEvent.click(cocktailButton);
 
-    expect(getByText(/drink/gi)).toBeInTheDocument();
+    expect(getByText(/Loading.../gi)).toBeInTheDocument();
   });
 
   it('In clicking Meals button, user is taken to Meals page', () => {
-    const { getByTestId, getByText } = render(
-      <RecipesAppProvider>
+    const { getByTestId, getByText } = renderWithRouter(
+      <RecipesAppContext.Provider value={store}>
         <App />
-      </RecipesAppProvider>,
+      </RecipesAppContext.Provider>,
     );
 
     const mealsButton = getByTestId('food-bottom-btn');
@@ -92,6 +111,6 @@ describe('Tests for Footer component', () => {
 
     fireEvent.click(mealsButton);
 
-    expect(getByText(/meal/gi)).toBeInTheDocument();
+    expect(getByText(/Loading.../gi)).toBeInTheDocument();
   });
 });

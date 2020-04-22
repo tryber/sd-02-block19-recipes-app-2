@@ -5,15 +5,23 @@ export const RecipesAppContext = createContext();
 
 export default function RecipesAppProvider({ children }) {
   const [headerTitle, setHeaderTitle] = useState('Comidas');
-  const [displayHeader, setDisplayHeader] = useState(true);
+  const [displayHeader, setDisplayHeader] = useState(false);
   const [displaySearchButton, setDisplaySearchButton] = useState(true);
   const [displaySearchBar, setDisplaySearchBar] = useState(false);
-  const [displayFooter, setDisplayFooter] = useState(true);
+  const [displayFooter, setDisplayFooter] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [recipes, setRecipes] = useState([]);
-  const [recipesByCategory, setRecipesByCategory] = useState([]);
+  const [recipeType, setRecipeType] = useState('Comidas');
+  const [inputValue, setInputValue] = useState({ radio: '', text: '', didFetch: false });
+  const [isFetching, setIsFetching] = useState(false);
+  const [isSearching, setIsSearching] = useState(false);
   const [toggleCategory, setToggleCategory] = useState({ category: '', toggleCat: false });
+  const [isFiltering, setIsFiltering] = useState(false);
 
+  function toggleHeaderAndFooter() {
+    setDisplayHeader(!displayHeader);
+    setDisplayFooter(!displayFooter);
+  }
 
   const store = {
     headerTitle: [headerTitle, setHeaderTitle],
@@ -23,8 +31,13 @@ export default function RecipesAppProvider({ children }) {
     displayFooter: [displayFooter, setDisplayFooter],
     loading: [isLoading, setIsLoading],
     data: [recipes, setRecipes],
-    recipesByCategory: [recipesByCategory, setRecipesByCategory],
+    recipeType: [recipeType, setRecipeType],
+    inputValue: [inputValue, setInputValue],
+    fetchingStatus: [isFetching, setIsFetching],
+    isSearching: [isSearching, setIsSearching],
     toggleCategory: [toggleCategory, setToggleCategory],
+    toggleHeaderAndFooter,
+    filtering: [isFiltering, setIsFiltering],
   };
 
   return <RecipesAppContext.Provider value={store}>{children}</RecipesAppContext.Provider>;
