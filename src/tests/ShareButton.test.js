@@ -18,7 +18,7 @@ test('renderiza o botão quando não se passa "index" como prop', () => {
 });
 
 test('renderiza o botão quando se passa "index" como prop', () => {
-  const { getByTestId, getByText } = render(<ShareButton id="454" type="comida" index={0} />);
+  const { getByTestId, getByText } = render(<ShareButton id="454" type="Comidas" index={0} />);
 
   const button = getByTestId('0-horizontal-share-btn');
   expect(button).toBeInTheDocument();

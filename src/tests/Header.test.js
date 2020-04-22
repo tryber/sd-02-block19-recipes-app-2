@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { render, cleanup, fireEvent } from '@testing-library/react';
+import { render, cleanup, fireEvent, wait } from '@testing-library/react';
 import renderWithRouter from '../services/renderWithRouter';
 import RecipesAppProvider, { RecipesAppContext } from '../context/RecipesAppContext';
 import App from '../App';
@@ -102,6 +102,25 @@ describe('Tests for Header component', () => {
 
     const searchButton = queryByTestId('search-top-btn');
     expect(searchButton).not.toBeInTheDocument();
+  });
+
+  it('By clicking Search icon, SearchBar is displayed', async () => {
+    [displaySearchButton, setDisplaySearchButton] = [true, jest.fn()];
+
+    store = {
+      ...store,
+      displaySearchButton: [displaySearchButton, setDisplaySearchButton],
+    };
+
+    const { queryByTestId } = renderWithRouter(
+      <RecipesAppContext.Provider value={store}>
+        <App />
+      </RecipesAppContext.Provider>,
+    );
+
+    fireEvent.click(queryByTestId('search-top-btn'));
+    await wait();
+    expect(queryByTestId('search-input'));
   });
 
   it('Header title displays headerTitle Context state content', () => {
