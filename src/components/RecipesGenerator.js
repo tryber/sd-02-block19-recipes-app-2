@@ -59,12 +59,8 @@ export default function RecipesGenerator({ recipeType }) {
         .then(() => setIsLoading(false));
     }
     if (
-      toggleCat === false
-      && isFetching === false
-      && isSearching === false
-      && isFiltering === false
-      && recipes
-      && recipes.length < 12
+      !toggleCat && !isFetching && !isSearching
+      && !isFiltering && recipes && recipes.length < 12
     ) fetchRandomRecipes();
   }, [
     isFetching, recipeType, recipes, isSearching, setIsLoading,
