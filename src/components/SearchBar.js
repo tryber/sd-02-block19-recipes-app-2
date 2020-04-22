@@ -73,7 +73,7 @@ const redirectMealRecipes = (mealRecipes, history, setRecipes) => {
   if (!mealRecipes || mealRecipes === null || mealRecipes === undefined) {
     return alert('Não foi encontrado nenhum resultado de comida.');
   }
-  if (mealRecipes && mealRecipes.length === 1) return history.push(`/receita/comida/${mealRecipes[0].idMeal}`);
+  if (mealRecipes && mealRecipes.length === 1) return history.push(`/receitas/comida/${mealRecipes[0].idMeal}`);
   if (history.location.pathname === '/comidas') return setRecipes(mealRecipes);
   setRecipes(mealRecipes);
   return history.push('/comidas');
@@ -83,7 +83,7 @@ const redirectDrinkRecipes = (drinkRecipes, history, setRecipes) => {
   if (!drinkRecipes || drinkRecipes === null || drinkRecipes === undefined) {
     return alert('Não foi encontrado nenhum resultado de bebida.');
   }
-  if (drinkRecipes && drinkRecipes.length === 1) return history.push(`/receita/bebida/${drinkRecipes[0].idDrink}`);
+  if (drinkRecipes && drinkRecipes.length === 1) return history.push(`/receitas/bebida/${drinkRecipes[0].idDrink}`);
   if (history.location.pathname === '/bebidas') return setRecipes(drinkRecipes);
   setRecipes(drinkRecipes);
   return history.push('/bebidas');
