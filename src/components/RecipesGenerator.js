@@ -59,7 +59,7 @@ export default function RecipesGenerator({ recipeType }) {
         .then(() => setIsLoading(false));
     }
     if (
-      !toggleCat && !isFetching && !isSearching
+      (!toggleCat && !isFetching && !isSearching)
       && !isFiltering && recipes && recipes.length < 12
     ) fetchRandomRecipes();
   }, [
