@@ -1,5 +1,6 @@
 import React, { useContext, useEffect } from 'react';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 import { RecipesAppContext } from '../context/RecipesAppContext';
 import { getRandomRecipe } from '../services/searchBarApi';
 import '../styles/RecipesGenerator.css';
@@ -7,17 +8,20 @@ import '../styles/RecipesGenerator.css';
 const RecipeCard = ({ recipe, recipeType }) => {
   const { strCategory } = recipe;
   const recipeTypeString = recipeType === 'Comidas' ? 'Meal' : 'Drink';
+  const trimmedUrlString = recipeType.toLocaleLowerCase().substring(0, recipeType.length - 1);
   return (
     <div className="recipe-content" key={`str${recipeTypeString}`}>
-      <span className="recipe-category">{strCategory}</span>
-      <div>
-        <img
-          className="recipe-thumbnail"
-          src={recipe[`str${recipeTypeString}Thumb`]}
-          alt={`Foto de ${recipe[`str${recipeTypeString}`]} `}
-        />
-      </div>
-      <span className="recipe-name">{recipe[`str${recipeTypeString}`]}</span>
+      <Link to={`/receita/${trimmedUrlString}/${recipe[`id${recipeTypeString}`]}`}>
+        <span className="recipe-category">{strCategory}</span>
+        <div>
+          <img
+            className="recipe-thumbnail"
+            src={recipe[`str${recipeTypeString}Thumb`]}
+            alt={`Foto de ${recipe[`str${recipeTypeString}`]} `}
+          />
+        </div>
+        <span className="recipe-name">{recipe[`str${recipeTypeString}`]}</span>
+      </Link>
     </div>
   );
 };
@@ -25,11 +29,11 @@ const RecipeCard = ({ recipe, recipeType }) => {
 export default function RecipesGenerator({ recipeType }) {
   const {
     data: [recipes, setRecipes],
-    loading: [, setIsLoading],
+    loading: [isLoading, setIsLoading],
     toggleCategory: [{ toggleCat }],
     fetchingStatus: [isFetching],
     isSearching: [isSearching],
-
+    filtering: [isFiltering],
   } = useContext(RecipesAppContext);
 
   const typeQueryString = recipeType === 'Comidas' ? 'meals' : 'drinks';
@@ -58,6 +62,7 @@ export default function RecipesGenerator({ recipeType }) {
       toggleCat === false
       && isFetching === false
       && isSearching === false
+      && isFiltering === false
       && recipes
       && recipes.length < 12
     ) fetchRandomRecipes();
@@ -68,12 +73,10 @@ export default function RecipesGenerator({ recipeType }) {
 
   return (
     <div className="recipes-container">
-      {recipes && recipes.length > 0 ? recipes.map((recipe, index) => {
-        if (index <= 11) {
-          return <RecipeCard key={`${index + 1}`} recipe={recipe} recipeType={recipeType} />;
-        }
-        return setIsLoading(false);
-      }) : <span>Não foi encontrado nenhum resultado.</span>}
+      {!isLoading && recipes && recipes.length > 0 ? recipes.map((recipe, index) => (
+        (index <= 11)
+        && <RecipeCard key={`${index + 1}`} recipe={recipe} recipeType={recipeType} />
+      )) : (!isLoading) && <span>Não foi encontrado nenhum resultado.</span>}
     </div>
   );
 }

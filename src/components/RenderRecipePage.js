@@ -11,12 +11,20 @@ export default function RenderRecipePage({ kindOfRecipe, fetchCategories, render
     toggleCategory: [, setToggleCategory],
     data: [, setRecipes],
     headerTitle: [, setHeaderTitle],
+    displaySearchBar: [displaySearchBar],
     fetchingStatus: [, setIsFetching],
+    isSearching: [, setIsSearching],
     recipeType: [recipeType, setRecipeType],
-    inputValue: [{ didFetch }, setInputValue],
+    inputValue: [inputValue, setInputValue],
     filtering: [, setIsFiltering],
   } = useContext(RecipesAppContext);
 
+  const { text, radio, didFetch } = inputValue;
+  if (displaySearchBar === false && text !== '' && radio !== '') {
+    setInputValue({ text: '', radio: '', didFetch: false });
+    setIsSearching(false);
+    setRecipes([]);
+  }
   if (recipeType !== kindOfRecipe) setRecipeType(kindOfRecipe);
   if (didFetch === true) setInputValue((prevState) => ({ ...prevState, didFetch: false }));
 
@@ -37,7 +45,8 @@ export default function RenderRecipePage({ kindOfRecipe, fetchCategories, render
     <div>
       <nav>
         {categories
-        && renderCategories(categories, toggleCategory, setRecipes, setIsFetching, setIsFiltering)}
+        && renderCategories(categories, toggleCategory, setRecipes,
+          setIsFetching, setIsFiltering)}
       </nav>
       {(isLoading) && <div>Loading...</div>}
       <RecipesGenerator recipeType={kindOfRecipe} />

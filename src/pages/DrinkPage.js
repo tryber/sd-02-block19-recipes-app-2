@@ -41,7 +41,7 @@ const setToggleAndRecipes = (
 };
 
 const renderCategories = (
-  categories, toggleCategory, setRecipes, setIsFetching, disabled = false,
+  categories, toggleCategory, setRecipes, setIsFetching, setIsFiltering, disabled = false,
 ) => (
   <div className="categories-container">
     <button
@@ -49,7 +49,10 @@ const renderCategories = (
       type="button"
       data-testid="all-category-filter"
       disabled={(toggleCategory[0].category === 'All') ? disabled : toggleCategory[0].toggleCat}
-      onClick={() => setToggleAndRecipes(toggleCategory, setRecipes, 'All', setIsFetching)}
+      onClick={() => {
+        setToggleAndRecipes(toggleCategory, setRecipes, 'All', setIsFetching);
+        setIsFiltering((prevState) => (!prevState));
+      }}
     >
       All
     </button>
@@ -62,8 +65,10 @@ const renderCategories = (
         disabled={
           (toggleCategory[0].category === strCategory) ? disabled : toggleCategory[0].toggleCat
         }
-        onClick={() => (
-          setToggleAndRecipes(toggleCategory, setRecipes, strCategory, setIsFetching))}
+        onClick={() => {
+          setToggleAndRecipes(toggleCategory, setRecipes, 'strCategory', setIsFetching);
+          setIsFiltering((prevState) => (!prevState));
+        }}
       >
         {strCategory}
       </button>

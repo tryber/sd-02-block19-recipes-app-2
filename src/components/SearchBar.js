@@ -50,12 +50,13 @@ const renderInputText = (inputValue, setInputValue) => (
   />
 );
 
-const renderRadioButton = (radioValue, type, setInputValue) => (
+const renderRadioButton = (radioValue, type, setInputValue, inputValue) => (
   <label htmlFor={type}>
     <input
       data-testid={`${type}-search-radio`}
       type="radio"
       id={type}
+      defaultChecked={inputValue ? inputValue.radio === type : false}
       name="search"
       value={type}
       onClick={({ target: { value } }) => setInputValue((prevState) => ({
@@ -70,7 +71,7 @@ const renderRadioButton = (radioValue, type, setInputValue) => (
 
 const redirectMealRecipes = (mealRecipes, history, setRecipes) => {
   if (!mealRecipes || mealRecipes === null || mealRecipes === undefined) {
-    return alert('Não foi encontrado nenhum resultado de comida');
+    return alert('Não foi encontrado nenhum resultado de comida.');
   }
   if (mealRecipes && mealRecipes.length === 1) return history.push(`/receita/comidas/${mealRecipes[0].idMeal}`);
   if (history.location.pathname === '/comidas') return setRecipes(mealRecipes);
@@ -80,7 +81,7 @@ const redirectMealRecipes = (mealRecipes, history, setRecipes) => {
 
 const redirectDrinkRecipes = (drinkRecipes, history, setRecipes) => {
   if (!drinkRecipes || drinkRecipes === null || drinkRecipes === undefined) {
-    return alert('Não foi encontrado nenhum resultado de bebida');
+    return alert('Não foi encontrado nenhum resultado de bebida.');
   }
   if (drinkRecipes && drinkRecipes.length === 1) return history.push(`/receita/bebidas/${drinkRecipes[0].idDrink}`);
   if (history.location.pathname === '/bebidas') return setRecipes(drinkRecipes);
@@ -97,7 +98,7 @@ const RenderInputItems = ({ inputValue, setInputValue }) => (
       <div className="input-radio-container">
         {renderRadioButton('Ingrediente', 'ingredient', setInputValue)}
         {renderRadioButton('Nome', 'name', setInputValue)}
-        {renderRadioButton('Primeira Letra', 'first-letter', setInputValue)}
+        {renderRadioButton('Primeira Letra', 'first-letter', setInputValue, inputValue)}
       </div>
     </div>
   </div>
@@ -105,7 +106,7 @@ const RenderInputItems = ({ inputValue, setInputValue }) => (
 
 const SearchBar = ({ history }) => {
   const {
-    data: [recipes, setRecipes],
+    data: [, setRecipes],
     loading: [, setIsLoading],
     recipeType: [recipeType],
     isSearching: [, setIsSearching],
@@ -119,7 +120,6 @@ const SearchBar = ({ history }) => {
 
   if ((text === '' || radio === '') && !didFetch) setIsSearching(false);
 
-  console.log('didFetch ', inputValue.didFetch, 'recipes: ', recipes);
   useEffect(() => {
     const callApi = async () => {
       if (text.length > 1 && radio === 'first-letter') return alert('Sua busca deve conter somente 1 (um) caracter');
@@ -129,14 +129,15 @@ const SearchBar = ({ history }) => {
       return fetchRecipes(recipeType, text, radio)
         .then((recipe) => {
           setIsLoading(false);
-          if (recipe.meals) return redirectMealRecipes(recipe.meals, history, setRecipes);
+          if ('meals' in recipe) return redirectMealRecipes(recipe.meals, history, setRecipes);
           return redirectDrinkRecipes(recipe.drinks, history, setRecipes);
         })
         .catch(() => {
           setRecipes([]);
           setIsLoading(false);
-          return alert('Não foi encontrado nenhum resultado de bebida');
-        });
+          return alert('Não foi encontrado nenhum resultado de bebida.');
+        })
+        .finally(() => setInputValue(((prevState) => ({ ...prevState, didFetch: false }))));
     };
     if (text && radio && !didFetch && !isFiltering) callApi();
   }, [
