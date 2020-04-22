@@ -66,7 +66,7 @@ const renderCategories = (
           (toggleCategory[0].category === strCategory) ? disabled : toggleCategory[0].toggleCat
         }
         onClick={() => {
-          setToggleAndRecipes(toggleCategory, setRecipes, 'strCategory', setIsFetching);
+          setToggleAndRecipes(toggleCategory, setRecipes, strCategory, setIsFetching);
           setIsFiltering((prevState) => (!prevState));
         }}
       >
