@@ -1,5 +1,5 @@
 const RECIPE_MEAL_DETAILS_BY_ID = 'https://www.themealdb.com/api/json/v1/1/lookup.php?i=';
-const RECIPE_DRINK_DETAILS_BY_ID = 'https://www.themealdb.com/api/json/v1/1/search.php?f=';
+const RECIPE_DRINK_DETAILS_BY_ID = 'https://www.thecocktaildb.com/api/json/v1/1/lookup.php?i=';
 
 export const searchMealDetailsById = (mealId) => (
   fetch(`${RECIPE_MEAL_DETAILS_BY_ID}${mealId}`)

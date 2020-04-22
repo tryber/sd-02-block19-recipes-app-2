@@ -14,6 +14,7 @@ export default function RecipesAppProvider({ children }) {
   const [recipesByCategory, setRecipesByCategory] = useState([]);
   const [toggleCategory, setToggleCategory] = useState({ category: '', toggleCat: false });
 
+  console.log(recipes);
 
   const store = {
     headerTitle: [headerTitle, setHeaderTitle],

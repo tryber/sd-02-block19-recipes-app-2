@@ -8,13 +8,13 @@ import {
 } from '../services/drinkPageApis';
 import '../styles/DrinkPage.css';
 
-const fetchsCategories = async (setRecipesByCategory, category) => {
+const fetchsCategories = async (setRecipes, category) => {
   if (category === 'All') {
-    // setRecipesByCategory[recipes] ||
+    // setRecipes[recipes] ||
     const callFetch = async () => {
       await fetchDrinkByAllCategories()
         .then(({ drinks }) => {
-          setRecipesByCategory((prevState) => [...prevState, ...drinks]);
+          setRecipes((prevState) => [...prevState, ...drinks]);
         });
     };
     for (let i = 0; i < 12; i += 1) {
@@ -22,31 +22,31 @@ const fetchsCategories = async (setRecipesByCategory, category) => {
     }
   } else {
     await fetchDrinkByCategories(category)
-      .then(({ drinks }) => setRecipesByCategory(drinks));
+      .then(({ drinks }) => setRecipes(drinks));
   }
 };
 
 
 const setToggleAndRecipes = (
-  toggleCategoryContext, recipesByCategoryContext, category,
+  toggleCategoryContext, data, category,
 ) => {
   const [toggleCategory, setToggleCategory] = toggleCategoryContext;
-  const [, setRecipesByCategory] = recipesByCategoryContext;
-  if (!toggleCategory.toggleCat) fetchsCategories(setRecipesByCategory, category);
+  const [, setRecipes] = data;
+  if (!toggleCategory.toggleCat) fetchsCategories(setRecipes, category);
   setToggleCategory({
     category: (!toggleCategory.toggleCat) ? category : '',
     toggleCat: !toggleCategory.toggleCat,
   });
 };
 
-const renderCategories = (categories, toggleCategory, recipesByCategory, disabled = false) => (
+const renderCategories = (categories, toggleCategory, data, disabled = false) => (
   <div className="categories-container">
     <button
       className="category-button"
       type="button"
       data-testid="all-category-filter"
       disabled={(toggleCategory[0].category === 'All') ? disabled : toggleCategory[0].toggleCat}
-      onClick={() => setToggleAndRecipes(toggleCategory, recipesByCategory, 'All')}
+      onClick={() => setToggleAndRecipes(toggleCategory, data, 'All')}
     >
       All
     </button>
@@ -59,7 +59,7 @@ const renderCategories = (categories, toggleCategory, recipesByCategory, disable
         disabled={
           (toggleCategory[0].category === strCategory) ? disabled : toggleCategory[0].toggleCat
         }
-        onClick={() => (setToggleAndRecipes(toggleCategory, recipesByCategory, strCategory))}
+        onClick={() => (setToggleAndRecipes(toggleCategory, data, strCategory))}
       >
         {strCategory}
       </button>
@@ -84,7 +84,7 @@ const DrinkPage = () => {
   const {
     loading: [isLoading, setIsLoading],
     toggleCategory,
-    recipesByCategory,
+    data,
     headerTitle: [, setHeaderTitle],
     displaySearchBar: [displaySearchBar],
   } = useContext(RecipesAppContext);
@@ -98,7 +98,7 @@ const DrinkPage = () => {
     <div>
       {(isLoading)
         ? <div>Loading...</div>
-        : displaySearchBar || renderCategories(categories, toggleCategory, recipesByCategory)}
+        : displaySearchBar || renderCategories(categories, toggleCategory, data)}
     </div>
   );
 };
