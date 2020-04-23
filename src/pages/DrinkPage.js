@@ -38,7 +38,7 @@ const setToggleAndRecipes = (
     toggleCat: !toggleCategory.toggleCat,
   });
   setIsFetching(false);
-  //setRecipes([]);
+  // setRecipes([]);
 };
 
 const renderCategories = (

@@ -21,7 +21,7 @@ import SearchBar from './components/SearchBar';
 import { RecipesAppContext } from './context/RecipesAppContext';
 
 function App() {
-  const { displaySearchBar: [displaySearchBar], recipeType, } = useContext(RecipesAppContext);
+  const { displaySearchBar: [displaySearchBar], recipeType } = useContext(RecipesAppContext);
   return (
     <div className="App">
       <BrowserRouter>

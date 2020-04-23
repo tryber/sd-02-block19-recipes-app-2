@@ -4,11 +4,11 @@ import propTypes from 'prop-types';
 import YouTube from 'react-youtube';
 
 import Carousel from 'react-multi-carousel';
+import 'react-multi-carousel/lib/styles.css';
 import { searchMealDetailsById, searchDrinkDetailsById } from '../services/recipeDetailsApi';
 import { fetchMealByAllCategories } from '../services/mealPageApis';
 import { fetchDrinkByAllCategories } from '../services/drinkPageApis';
 import '../styles/RecipeMealDetails.css';
-import 'react-multi-carousel/lib/styles.css';
 import { RecipesAppContext } from '../context/RecipesAppContext';
 
 const responsive = {
