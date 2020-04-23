@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-  cleanup, fireEvent, wait, waitForElementToBeRemoved,
+  cleanup, fireEvent, wait,
 } from '@testing-library/react';
 
 import renderWithRouter from '../services/renderWithRouter';
@@ -52,7 +52,7 @@ describe('Recipe Meal Detail', () => {
       <RecipesAppProvider>
         <RecipeMealDetails match={id} />
       </RecipesAppProvider>,
-      { route: '/receita/comida/52855' },
+      { route: '/receitas/comida/52855' },
     );
 
     expect(queryByText(/Loading/i)).toBeInTheDocument();

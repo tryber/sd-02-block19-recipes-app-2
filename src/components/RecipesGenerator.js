@@ -11,7 +11,7 @@ const RecipeCard = ({ recipe, recipeType }) => {
   const trimmedUrlString = recipeType.toLocaleLowerCase().substring(0, recipeType.length - 1);
   return (
     <div className="recipe-content" key={`str${recipeTypeString}`}>
-      <Link to={`/receita/${trimmedUrlString}/${recipe[`id${recipeTypeString}`]}`}>
+      <Link to={`/receitas/${trimmedUrlString}/${recipe[`id${recipeTypeString}`]}`}>
         <span className="recipe-category">{strCategory}</span>
         <div>
           <img

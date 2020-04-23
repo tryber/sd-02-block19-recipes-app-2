@@ -1,7 +1,7 @@
 export const byDrinkName = {
   drinks: [
     {
-      idMeal: '52970',
+      idDrink: '52970',
       strMeal: 'Tunisian Orange Cake',
       strDrinkAlternate: null,
       strCategory: 'Dessert',
