@@ -81,12 +81,8 @@ const redirectMealRecipes = (mealRecipes, history, setRecipes) => {
 };
 
 const redirectDrinkRecipes = (drinkRecipes, history, setRecipes) => {
-<<<<<<< HEAD
   if (!drinkRecipes || drinkRecipes === null || drinkRecipes === undefined) {
     setRecipes([]);
-=======
-  if (!drinkRecipes || drinkRecipes.length === 0 || drinkRecipes === undefined) {
->>>>>>> master
     return alert('Não foi encontrado nenhum resultado de bebida.');
   }
   if (drinkRecipes && drinkRecipes.length === 1) return history.push(`/receitas/bebida/${drinkRecipes[0].idDrink}`);
