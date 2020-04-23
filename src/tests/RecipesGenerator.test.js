@@ -1,32 +1,29 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import {
   cleanup, wait, fireEvent,
 } from '@testing-library/react';
-import TestRenderer from 'react-test-renderer';
-import { renderHook } from '@testing-library/react-hooks';
 import renderWithRouter from '../services/renderWithRouter';
-import RecipeAppProvider, { RecipesAppContext } from '../context/RecipesAppContext';
-import RecipesGenerator from '../components/RecipesGenerator';
+import RecipesAppProvider, { RecipesAppContext } from '../context/RecipesAppContext';
 import App from '../App';
-// import { byDrinkName } from '../__mocks__/recipesDrinksMock';
+import SearchBar from '../components/SearchBar';
+import MealPage from '../pages/MealPage';
 import { byName } from '../__mocks__/recipesMock';
 
-
-let [headerTitle, setHeaderTitle] = ['Receitas', jest.fn()];
-let [displayHeader, setDisplayHeader] = [true, jest.fn()];
-let [displaySearchBar, setDisplaySearchBar] = [true, jest.fn()];
-let [displaySearchButton, setDisplaySearchButton] = [true, jest.fn()];
-let [displayFooter, setDisplayFooter] = [true, jest.fn()];
-let [isLoading, setIsLoading] = [false, jest.fn()];
-let [recipes, setRecipes] = [...byName.meals, jest.fn()];
-let [recipeType, setRecipeType] = ['Comidas', jest.fn()];
-let [inputValue, setInputValue] = [{ radio: '', text: '', didFetch: false }, jest.fn()];
-let [isFetching, setIsFetching] = [false, jest.fn()];
+const [headerTitle, setHeaderTitle] = ['Receitas', jest.fn()];
+const [displayHeader, setDisplayHeader] = [true, jest.fn()];
+const [displaySearchBar, setDisplaySearchBar] = [false, jest.fn()];
+const [displaySearchButton, setDisplaySearchButton] = [true, jest.fn()];
+const [displayFooter, setDisplayFooter] = [true, jest.fn()];
+const [isLoading, setIsLoading] = [true, jest.fn()];
+let [recipes, setRecipes] = [[], jest.fn()];
+const [recipeType, setRecipeType] = ['Comidas', jest.fn()];
+const [inputValue, setInputValue] = [{ radio: '', text: '', didFetch: false }, jest.fn()];
+const [isFetching, setIsFetching] = [false, jest.fn()];
 let [isSearching, setIsSearching] = [false, jest.fn()];
-let [toggleCategory, setToggleCategory] = [{ category: '', toggleCat: false }, jest.fn()];
-let [isFiltering, setIsFiltering] = [false, jest.fn()];
+const [toggleCategory, setToggleCategory] = [{ category: '', toggleCat: false }, jest.fn()];
+const [isFiltering, setIsFiltering] = [false, jest.fn()];
 
-let store = {
+const store = {
   headerTitle: [headerTitle, setHeaderTitle],
   displayHeader: [displayHeader, setDisplayHeader],
   displaySearchButton: [displaySearchButton, setDisplaySearchButton],
@@ -43,51 +40,126 @@ let store = {
   filtering: [isFiltering, setIsFiltering],
 };
 
-const fetchRandomRecipes = () => {
-  const mockSuccessResponse = {
-    success: 'sucess',
-  };
-  const mockJsonPromise = Promise.resolve(mockSuccessResponse);
-  const mockFetchPromise = Promise.resolve({
-    status: 200,
-    ok: true,
-    json: () => mockJsonPromise,
-  });
-  return mockFetchPromise;
-};
+beforeEach(() => jest.resetModules());
 
 afterEach(cleanup);
 
-describe('Complementary testing for RecipesGenerator', () => {
-  test('if inputsCategory is rendering', async () => {
-    await wait();
-    // jest.spyOn(global, 'fetch').mockImplementation(() => fetchRandomRecipes());
 
-    const { queryByTestId, getByTestId } = renderWithRouter(
-      <RecipeAppProvider>
-        <App />
-      </RecipeAppProvider>,
+describe('Complementary testing for RecipesGenerator', () => {
+  it('if state array is null, then returns empty array', async () => {
+    const recipe = byName;
+    const typeQueryString = 'meals';
+    const existingRecipes = null;
+
+    setRecipes = jest.fn(() => (
+      existingRecipes ? [...existingRecipes, ...recipe[`${typeQueryString}`]] : []
+    ));
+
+    renderWithRouter(
+      <RecipesAppContext.Provider value={{ ...store, data: [recipes, setRecipes] }}>
+        <MealPage />
+      </RecipesAppContext.Provider>,
     );
 
-    const { act } = TestRenderer;
 
-    const wrapper = ({ children }) => <RecipeAppProvider>{children}</RecipeAppProvider>;
-    const { result } = renderHook(() => useContext(RecipesAppContext), { wrapper });
-    console.log(result.current.data[0]);
+    await wait(() => expect(setRecipes).toHaveBeenCalled());
 
-    await act(async () => {
-      result.current.displaySearchBar[1]();
-      fireEvent.change(queryByTestId(/email-input/i), { target: { value: 'test@test.com' } });
-      fireEvent.change(queryByTestId(/password-input/i), { target: { value: 'ChickenBreast' } });
-      fireEvent.click(queryByTestId(/login-submit-btn/i));
-      await wait(() => getByTestId(/search-top-btn/i));
+    expect(setRecipes).toHaveBeenCalledWith([]);
+  });
 
-      fireEvent.click(queryByTestId(/search-top-btn/i));
+  it('if isSearching is false, setRecipes is called with empty array', async () => {
+    const spyUseEffect = jest.spyOn(React, 'useEffect');
 
-      fireEvent.change(queryByTestId(/search-input/i), { target: { value: 'fasdasfas' } });
-      fireEvent.click(queryByTestId(/ingredient-search-radio/i));
-      expect(queryByTestId(/search-input/i).value).toBe('fasdasfas');
-      expect(queryByTestId(/ingredient-search-radio/i).value).toBe('ingredient');
+    const recipe = byName;
+    const typeQueryString = 'meals';
+
+    setRecipes = jest.fn(() => {
+      const existingRecipes = null;
+      return (
+        existingRecipes ? [...existingRecipes, ...recipe[`${typeQueryString}`]] : []
+      );
     });
+
+    isSearching = false;
+
+    const { getByTestId } = renderWithRouter(
+      <RecipesAppContext.Provider
+        value={
+          { ...store, isSearching: [isSearching, setIsSearching], data: [recipes, setRecipes] }
+          }
+      >
+        <App />
+        <MealPage />
+        <SearchBar />
+      </RecipesAppContext.Provider>,
+    );
+    fireEvent.change(getByTestId('email-input'), 'mateus@test.com');
+    fireEvent.change(getByTestId('password-input'), '45316854');
+    fireEvent.click(getByTestId('login-submit-btn'));
+
+    expect(getByTestId('search-input')).toBeInTheDocument();
+
+    fireEvent.change(getByTestId('search-input'), 'beef');
+    fireEvent.change(getByTestId('search-input'), '');
+
+    await wait(() => expect(setIsSearching).toHaveBeenCalled());
+    await wait(() => expect(spyUseEffect).toHaveBeenCalled());
+    expect(setRecipes).toHaveBeenCalledWith([]);
   }, 20000);
+
+  it('if isSearching is TRUE, setRecipes is called with empty array', async () => {
+    const spyUseEffect = jest.spyOn(React, 'useEffect');
+
+    const recipe = byName;
+    const typeQueryString = 'meals';
+
+    setRecipes = jest.fn(() => {
+      const existingRecipes = null;
+      return (
+        existingRecipes ? [...existingRecipes, ...recipe[`${typeQueryString}`]] : []
+      );
+    });
+    isSearching = true;
+
+    const { getByTestId } = renderWithRouter(
+      <RecipesAppContext.Provider
+        value={
+          { ...store, isSearching: [isSearching, setIsSearching], data: [recipes, setRecipes] }
+        }
+      >
+        <MealPage />
+        <SearchBar />
+      </RecipesAppContext.Provider>,
+    );
+
+    expect(getByTestId('search-input')).toBeInTheDocument();
+
+    fireEvent.change(getByTestId('search-input'), 'beef');
+
+    await wait(() => expect(spyUseEffect).toHaveBeenCalled());
+    expect(setRecipes).not.toHaveBeenCalledWith([]);
+  }, 20000);
+
+  it('tests if recipes are being added up by fetch function', async () => {
+    const { getByTestId } = renderWithRouter(
+      <RecipesAppProvider>
+        <MealPage />
+      </RecipesAppProvider>,
+    );
+
+    await wait(() => getByTestId('0-card-category'));
+    expect(getByTestId('0-card-category')).toBeInTheDocument();
+    await wait(() => getByTestId('11-card-category'));
+    expect(getByTestId('1-card-category')).toBeInTheDocument();
+    expect(getByTestId('2-card-category')).toBeInTheDocument();
+    expect(getByTestId('3-card-category')).toBeInTheDocument();
+    expect(getByTestId('4-card-category')).toBeInTheDocument();
+    expect(getByTestId('5-card-category')).toBeInTheDocument();
+    expect(getByTestId('6-card-category')).toBeInTheDocument();
+    expect(getByTestId('7-card-category')).toBeInTheDocument();
+    expect(getByTestId('8-card-category')).toBeInTheDocument();
+    expect(getByTestId('9-card-category')).toBeInTheDocument();
+    expect(getByTestId('10-card-category')).toBeInTheDocument();
+    expect(getByTestId('11-card-category')).toBeInTheDocument();
+  });
 });

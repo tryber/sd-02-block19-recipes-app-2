@@ -109,7 +109,7 @@ describe('SearchBar tests', () => {
 
       await wait(() => expect(global.fetch).toHaveBeenLastCalledWith('https://www.themealdb.com/api/json/v1/1/search.php?s=Orange'));
       expect(global.fetch).toHaveBeenLastCalledWith('https://www.themealdb.com/api/json/v1/1/search.php?s=Orange');
-      expect(history.location.pathname).toBe('/receita/comida/52970');
+      expect(history.location.pathname).toBe('/receitas/comida/52970');
     });
 
     test('if search with "a" and radio first letter working and change route to /comidas', async () => {

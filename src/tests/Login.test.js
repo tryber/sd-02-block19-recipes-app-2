@@ -10,7 +10,7 @@ test('exibe todos os elementos da página', () => {
   const { getByText, getByTestId } = render(
     <RecipesAppProvider>
       <App />
-    </RecipesAppProvider>
+    </RecipesAppProvider>,
   );
 
   const pageTitle = getByText(/Login/i);
@@ -30,7 +30,7 @@ test('botão de entrar é desabilitado se email é inválido', () => {
   const { getByTestId } = render(
     <RecipesAppProvider>
       <App />
-    </RecipesAppProvider>
+    </RecipesAppProvider>,
   );
 
   const emailInput = getByTestId('email-input');
@@ -50,7 +50,7 @@ test('botão de entrar é desabilitado se senha é inválida', () => {
   const { getByTestId } = render(
     <RecipesAppProvider>
       <App />
-    </RecipesAppProvider>
+    </RecipesAppProvider>,
   );
 
   const emailInput = getByTestId('email-input');
@@ -70,7 +70,7 @@ test('botão de entrar é habilitado se email e senha são válidos', () => {
   const { getByTestId } = render(
     <RecipesAppProvider>
       <App />
-    </RecipesAppProvider>
+    </RecipesAppProvider>,
   );
 
   const emailInput = getByTestId('email-input');
@@ -90,7 +90,7 @@ test('botão de entrar funciona conforme o esperado', () => {
   const { getByTestId, queryByText } = renderWithRouter(
     <RecipesAppProvider>
       <App />
-    </RecipesAppProvider>
+    </RecipesAppProvider>,
   );
 
   const emailInput = getByTestId('email-input');
