@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext, useEffect } from 'react';
 import {
   listMealCategories,
   fetchMealByCategories,
@@ -6,6 +6,8 @@ import {
 } from '../services/mealPageApis';
 import '../styles/MealPage.css';
 import RenderRecipePage from '../components/RenderRecipePage';
+import { RecipesAppContext } from '../context/RecipesAppContext';
+
 
 const fetchsCategories = async (setRecipes, category) => {
   if (category === 'All') {
@@ -36,7 +38,7 @@ const setToggleAndRecipes = (
     toggleCat: !toggleCategory.toggleCat,
   });
   setIsFetching(false);
-  setRecipes([]);
+  // setRecipes([]);
 };
 
 const renderCategories = (
@@ -86,12 +88,21 @@ const fetchCategories = async (setIsLoading, setCategories) => {
     );
 };
 
-const MealPage = () => (
-  <RenderRecipePage
-    kindOfRecipe="Comidas"
-    fetchCategories={fetchCategories}
-    renderCategories={renderCategories}
-  />
-);
+const MealPage = () => {
+  const {
+    displayHeader: [, setDisplayHeader], displayFooter: [, setDisplayFooter],
+  } = useContext(RecipesAppContext);
+  useEffect(() => {
+    setDisplayHeader(true);
+    setDisplayFooter(true);
+  }, [setDisplayFooter, setDisplayHeader]);
+  return (
+    <RenderRecipePage
+      kindOfRecipe="Comidas"
+      fetchCategories={fetchCategories}
+      renderCategories={renderCategories}
+    />
+  );
+};
 
 export default MealPage;
