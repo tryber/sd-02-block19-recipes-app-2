@@ -1,0 +1,93 @@
+.image-details {
+  width: 100%;
+}
+
+.title-details {
+  margin: 0;
+  padding: 0 2%;
+}
+
+.category-details {
+  color: darkgray;
+  margin: 0;
+  padding: 0 2%;
+}
+
+.ingredients-content {
+  margin-top: 4%;
+  padding: 0 2%;
+}
+
+.ingredient-title {
+  font-size: 1.2em;
+  font-weight: 600;
+}
+
+.ingredients-box {
+  background: rgb(236, 236, 236);
+  border-radius: 4px;
+  margin-top: 2%;
+  padding: 2%;
+}
+
+.ingredients-container {
+  display: flex;
+}
+
+.instructions-content {
+  margin-top: 4%;
+  padding: 0 2%;
+}
+
+.instructions-title {
+  font-size: 1.2em;
+  font-weight: 600;
+}
+
+.instructions-details {
+  background: rgb(236, 236, 236);
+  border-radius: 4px;
+  margin-top: 2%;
+  padding: 2%;
+}
+
+.video-content {
+  margin-top: 4%;
+  padding: 0 2%;
+}
+
+.video-title {
+  font-size: 1.2em;
+  font-weight: 600;
+}
+
+.video-details {
+  background: rgb(236, 236, 236);
+  border-radius: 4px;
+  margin-top: 2%;
+  padding: 2%;
+}
+
+.video-youtube {
+  width: 100%;
+}
+
+.image-carousel {
+  padding: 4%;
+  width: 90%;
+}
+
+.start-button-container {
+  padding: 2%;
+}
+
+.start-button {
+  all: unset;
+  background-color: rgb(108, 227, 79);
+  cursor: pointer;
+  font-size: 1.5em;
+  font-weight: 700;
+  height: 50px;
+  text-align: center;
+  width: 100%;
+}

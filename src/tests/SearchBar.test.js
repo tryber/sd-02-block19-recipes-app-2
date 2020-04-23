@@ -11,11 +11,13 @@ import {
   byFirstLetter,
   byIngredients,
   mealNull,
-  // byDrinkName,
-  // byDrinkIngredients,
-  // byDrinkFirstLetter,
-  // drinksNull,
 } from '../__mocks__/recipesMock';
+import {
+  byDrinkName,
+  byDrinkIngredients,
+  byDrinkFirstLetter,
+  drinksNull,
+} from '../__mocks__/recipesDrinksMock';
 
 const callApi = ({ meals }) => {
   const mockSuccessResponse = {
@@ -30,18 +32,31 @@ const callApi = ({ meals }) => {
   return mockFetchPromise;
 };
 
-// const callDrinkApi = ({ drinks }) => {
-//   const mockSuccessResponse = {
-//     drinks,
-//   };
-//   const mockJsonPromise = Promise.resolve(mockSuccessResponse);
-//   const mockFetchPromise = Promise.resolve({
-//     status: 200,
-//     ok: true,
-//     json: () => mockJsonPromise,
-//   });
-//   return mockFetchPromise;
-// };
+const callDrinkApi = ({ drinks }) => {
+  const mockSuccessResponse = {
+    drinks,
+  };
+  const mockJsonPromise = Promise.resolve(mockSuccessResponse);
+  const mockFetchPromise = Promise.resolve({
+    status: 200,
+    ok: true,
+    json: () => mockJsonPromise,
+  });
+  return mockFetchPromise;
+};
+
+const callError = () => {
+  const mockSuccessResponse = {
+    error: 'deu erro',
+  };
+  const mockJsonPromise = Promise.resolve(mockSuccessResponse);
+  const mockFetchPromise = Promise.resolve({
+    status: 200,
+    ok: false,
+    json: () => mockJsonPromise,
+  });
+  return mockFetchPromise;
+};
 
 afterEach(cleanup);
 
@@ -49,7 +64,7 @@ describe('SearchBar tests', () => {
   test('if inputs fields exist', () => {
     const { queryByTestId } = renderWithRouter(
       <RecipesAppProvider>
-        <SearchBar />
+        <SearchBar recipeType="Comidas" />
       </RecipesAppProvider>,
     );
 
@@ -71,14 +86,14 @@ describe('SearchBar tests', () => {
   });
 
   describe('tests with meals', () => {
-    test('if search with Chicken Breast and radio ingrediente working and change route to /comidas', async () => {
-      await wait();
-
+    test('if search with Chicken Breast and radio ingredient working and change route to /comidas', async () => {
       const { queryByTestId, history } = renderWithRouter(
         <RecipesAppProvider>
-          <SearchBar />
+          <SearchBar recipeType="Comidas" />
         </RecipesAppProvider>,
       );
+
+      await wait();
 
       fireEvent.change(queryByTestId(/search-input/i), { target: { value: 'Chicken Breast' } });
       fireEvent.click(queryByTestId(/ingredient-search-radio/i));
@@ -88,17 +103,16 @@ describe('SearchBar tests', () => {
       jest.spyOn(global, 'fetch').mockImplementation(() => callApi(byIngredients));
 
       await wait(() => expect(global.fetch).toHaveBeenCalledWith('https://www.themealdb.com/api/json/v1/1/filter.php?i=chicken_breast'));
-      expect(global.fetch).toHaveBeenCalledWith('https://www.themealdb.com/api/json/v1/1/filter.php?i=chicken_breast');
       expect(history.location.pathname).toBe('/comidas');
     });
-    test('if search with Orange and radio name working and change route to /receita/comidas/:id-da-receita', async () => {
-      await wait();
-
+    test('if search with Orange and radio name working and change route to /receitas/comida/:id-da-receita', async () => {
       const { queryByTestId, history } = renderWithRouter(
         <RecipesAppProvider>
-          <SearchBar />
+          <SearchBar recipeType="Comidas" />
         </RecipesAppProvider>,
       );
+
+      await wait();
 
       fireEvent.change(queryByTestId(/search-input/i), { target: { value: 'Orange' } });
       fireEvent.click(queryByTestId(/name-search-radio/i));
@@ -113,13 +127,13 @@ describe('SearchBar tests', () => {
     });
 
     test('if search with "a" and radio first letter working and change route to /comidas', async () => {
-      await wait();
-
       const { queryByTestId, history } = renderWithRouter(
         <RecipesAppProvider>
-          <SearchBar />
+          <SearchBar recipeType="Comidas" />
         </RecipesAppProvider>,
       );
+
+      await wait();
 
       fireEvent.change(queryByTestId(/search-input/i), { target: { value: 'a' } });
       fireEvent.click(queryByTestId(/first-letter-search-radio/i));
@@ -133,49 +147,246 @@ describe('SearchBar tests', () => {
       expect(history.location.pathname).toBe('/comidas');
     });
 
-    test('if search with Cake and radio ingredients working and change route to /receita/comidas/:id-da-receita', async () => {
-      await wait();
-
+    test('if search with Cake and radio ingredients working and working and fire a alert event', async () => {
       const { queryByTestId } = renderWithRouter(
         <RecipesAppProvider>
-          <SearchBar />
+          <SearchBar recipeType="Comidas" />
         </RecipesAppProvider>,
       );
+
+      await wait();
 
       window.alert = jest.fn().mockImplementation(() => true);
 
       fireEvent.change(queryByTestId(/search-input/i), { target: { value: 'Cake' } });
-      fireEvent.click(queryByTestId(/name-search-radio/i));
+      fireEvent.click(queryByTestId(/ingredient-search-radio/i));
       expect(queryByTestId(/search-input/i).value).toBe('Cake');
       expect(queryByTestId(/ingredient-search-radio/i).value).toBe('ingredient');
 
       jest.spyOn(global, 'fetch').mockImplementation(() => callApi(mealNull));
 
-      await wait(() => expect(global.fetch).toHaveBeenLastCalledWith('https://www.themealdb.com/api/json/v1/1/search.php?s=Cake'));
+      await wait(() => expect(global.fetch).toHaveBeenLastCalledWith('https://www.themealdb.com/api/json/v1/1/filter.php?i=cake'));
       expect(window.alert).toHaveBeenCalled();
       expect(window.alert).toHaveBeenLastCalledWith('Não foi encontrado nenhum resultado de comida.');
     });
-  });
-  describe('tests with drinks', () => {
-    test('if search with Chicken Breast and radio ingrediente working and change route to /comidas', async () => {
-      await wait();
-
+    test('show error if fetch ingredient return error', async () => {
       const { queryByTestId } = renderWithRouter(
         <RecipesAppProvider>
-          <SearchBar />
+          <SearchBar recipeType="Comidas" />
         </RecipesAppProvider>,
       );
 
-      fireEvent.change(queryByTestId(/search-input/i), { target: { value: 'Chicken Breast' } });
+      await wait();
+
+      window.alert = jest.fn().mockImplementationOnce(() => true);
+
+      fireEvent.change(queryByTestId(/search-input/i), { target: { value: 'Cake' } });
       fireEvent.click(queryByTestId(/ingredient-search-radio/i));
-      expect(queryByTestId(/search-input/i).value).toBe('Chicken Breast');
+      expect(queryByTestId(/search-input/i).value).toBe('Cake');
       expect(queryByTestId(/ingredient-search-radio/i).value).toBe('ingredient');
 
-      // jest.spyOn(global, 'fetch').mockImplementation(() => callDrinkApi(byDrinkIngredients));
+      jest.restoreAllMocks();
+      jest.spyOn(global, 'fetch').mockImplementationOnce(() => callError());
+      await wait(() => expect(global.fetch).toHaveBeenCalled());
+      expect(window.alert).toHaveBeenCalled();
+      expect(window.alert).toHaveBeenLastCalledWith('Não foi encontrado nenhum resultado de comidas.');
+    });
+    test('show error if fetch first-letter return error', async () => {
+      const { queryByTestId } = renderWithRouter(
+        <RecipesAppProvider>
+          <SearchBar recipeType="Comidas" />
+        </RecipesAppProvider>,
+      );
 
-      // await wait(() => expect(global.fetch).toHaveBeenCalled());
-      // expect(global.fetch).toHaveBeenCalledWith('https://www.thecocktaildb.com/api/json/v1/1/filter.php?i=chicken_breast');
-      // expect(history.location.pathname).toBe('/bebidas');
+      await wait();
+
+      window.alert = jest.fn().mockImplementationOnce(() => true);
+
+      fireEvent.change(queryByTestId(/search-input/i), { target: { value: 'C' } });
+      fireEvent.click(queryByTestId(/first-letter-search-radio/i));
+      expect(queryByTestId(/search-input/i).value).toBe('C');
+      expect(queryByTestId(/first-letter-search-radio/i).value).toBe('first-letter');
+
+      jest.restoreAllMocks();
+      jest.spyOn(global, 'fetch').mockImplementationOnce(() => callError());
+      await wait(() => expect(global.fetch).toHaveBeenCalled());
+      expect(window.alert).toHaveBeenCalled();
+      expect(window.alert).toHaveBeenLastCalledWith('Não foi encontrado nenhum resultado de comidas.');
+    });
+    test('show error if fetch name return error', async () => {
+      const { queryByTestId } = renderWithRouter(
+        <RecipesAppProvider>
+          <SearchBar recipeType="Comidas" />
+        </RecipesAppProvider>,
+      );
+
+      await wait();
+
+      window.alert = jest.fn().mockImplementationOnce(() => true);
+
+      fireEvent.change(queryByTestId(/search-input/i), { target: { value: 'Cake' } });
+      fireEvent.click(queryByTestId(/name-search-radio/i));
+      expect(queryByTestId(/search-input/i).value).toBe('Cake');
+      expect(queryByTestId(/name-search-radio/i).value).toBe('name');
+
+      jest.restoreAllMocks();
+      jest.spyOn(global, 'fetch').mockImplementationOnce(() => callError());
+      await wait(() => expect(global.fetch).toHaveBeenCalled());
+      expect(window.alert).toHaveBeenCalled();
+      expect(window.alert).toHaveBeenLastCalledWith('Não foi encontrado nenhum resultado de comidas.');
+    });
+  });
+  describe('tests with drinks', () => {
+    test('if search with Vodka and radio ingrediente working and change route to /comidas', async () => {
+      const { queryByTestId, history } = renderWithRouter(
+        <RecipesAppProvider>
+          <SearchBar recipeType="Bebidas" />
+        </RecipesAppProvider>,
+      );
+
+      await wait();
+
+      fireEvent.change(queryByTestId(/search-input/i), { target: { value: 'Vodka' } });
+      fireEvent.click(queryByTestId(/ingredient-search-radio/i));
+      expect(queryByTestId(/search-input/i).value).toBe('Vodka');
+      expect(queryByTestId(/ingredient-search-radio/i).value).toBe('ingredient');
+
+      jest.restoreAllMocks();
+      jest.spyOn(global, 'fetch').mockImplementationOnce(() => callDrinkApi(byDrinkIngredients));
+
+      await wait(() => expect(global.fetch).toHaveBeenCalled());
+      expect(global.fetch).toHaveBeenCalledWith('https://www.thecocktaildb.com/api/json/v1/1/filter.php?i=vodka');
+      expect(history.location.pathname).toBe('/bebidas');
+    });
+    test('if search with Orange and radio name working and change route to /receitas/bebida/:id', async () => {
+      const { queryByTestId, history } = renderWithRouter(
+        <RecipesAppProvider>
+          <SearchBar recipeType="Bebidas" />
+        </RecipesAppProvider>,
+      );
+
+      await wait();
+
+      fireEvent.change(queryByTestId(/search-input/i), { target: { value: 'Orange' } });
+      fireEvent.click(queryByTestId(/name-search-radio/i));
+      expect(queryByTestId(/search-input/i).value).toBe('Orange');
+      expect(queryByTestId(/name-search-radio/i).value).toBe('name');
+
+      jest.restoreAllMocks();
+      jest.spyOn(global, 'fetch').mockImplementationOnce(() => callDrinkApi(byDrinkName));
+
+      await wait(() => expect(global.fetch).toHaveBeenLastCalledWith('https://www.thecocktaildb.com/api/json/v1/1/search.php?s=Orange'));
+
+      expect(history.location.pathname).toBe('/receitas/bebida/52970');
+    });
+    test('if search with "a" and radio first letter working and change route to /bebidas', async () => {
+      const { queryByTestId, history } = renderWithRouter(
+        <RecipesAppProvider>
+          <SearchBar recipeType="Bebidas" />
+        </RecipesAppProvider>,
+      );
+
+      await wait();
+
+      fireEvent.change(queryByTestId(/search-input/i), { target: { value: 'a' } });
+      fireEvent.click(queryByTestId(/first-letter-search-radio/i));
+      expect(queryByTestId(/search-input/i).value).toBe('a');
+      expect(queryByTestId(/first-letter-search-radio/i).value).toBe('first-letter');
+
+      jest.restoreAllMocks();
+      jest.spyOn(global, 'fetch').mockImplementationOnce(() => callDrinkApi(byDrinkFirstLetter));
+
+      await wait(() => expect(global.fetch).toHaveBeenLastCalledWith('https://www.thecocktaildb.com/api/json/v1/1/search.php?f=a'));
+      expect(history.location.pathname).toBe('/bebidas');
+    });
+    test('if search with Cake and radio ingredients working and fire a alert event', async () => {
+      const { queryByTestId } = renderWithRouter(
+        <RecipesAppProvider>
+          <SearchBar recipeType="Bebidas" />
+        </RecipesAppProvider>,
+      );
+
+      await wait();
+
+      window.alert = jest.fn().mockImplementation(() => true);
+
+      fireEvent.change(queryByTestId(/search-input/i), { target: { value: 'Cake' } });
+      fireEvent.click(queryByTestId(/ingredient-search-radio/i));
+      expect(queryByTestId(/search-input/i).value).toBe('Cake');
+      expect(queryByTestId(/ingredient-search-radio/i).value).toBe('ingredient');
+
+      jest.restoreAllMocks();
+      jest.spyOn(global, 'fetch').mockImplementationOnce(() => callDrinkApi(drinksNull));
+
+      await wait(() => expect(global.fetch).toHaveBeenLastCalledWith('https://www.thecocktaildb.com/api/json/v1/1/filter.php?i=cake'));
+      expect(window.alert).toHaveBeenCalled();
+      expect(window.alert).toHaveBeenLastCalledWith('Não foi encontrado nenhum resultado de bebida.');
+    });
+    test('show error if fetch ingredient return error', async () => {
+      const { queryByTestId } = renderWithRouter(
+        <RecipesAppProvider>
+          <SearchBar recipeType="Bebida" />
+        </RecipesAppProvider>,
+      );
+
+      await wait();
+
+      window.alert = jest.fn().mockImplementationOnce(() => true);
+
+      fireEvent.change(queryByTestId(/search-input/i), { target: { value: 'Cake' } });
+      fireEvent.click(queryByTestId(/ingredient-search-radio/i));
+      expect(queryByTestId(/search-input/i).value).toBe('Cake');
+      expect(queryByTestId(/ingredient-search-radio/i).value).toBe('ingredient');
+
+      jest.restoreAllMocks();
+      jest.spyOn(global, 'fetch').mockImplementationOnce(() => callError());
+      await wait(() => expect(global.fetch).toHaveBeenCalled());
+      expect(window.alert).toHaveBeenCalled();
+      expect(window.alert).toHaveBeenLastCalledWith('Não foi encontrado nenhum resultado de bebida.');
+    });
+    test('show error if fetch first-letter return error', async () => {
+      const { queryByTestId } = renderWithRouter(
+        <RecipesAppProvider>
+          <SearchBar recipeType="Bebida" />
+        </RecipesAppProvider>,
+      );
+
+      await wait();
+
+      window.alert = jest.fn().mockImplementationOnce(() => true);
+
+      fireEvent.change(queryByTestId(/search-input/i), { target: { value: 'C' } });
+      fireEvent.click(queryByTestId(/first-letter-search-radio/i));
+      expect(queryByTestId(/search-input/i).value).toBe('C');
+      expect(queryByTestId(/first-letter-search-radio/i).value).toBe('first-letter');
+
+      jest.restoreAllMocks();
+      jest.spyOn(global, 'fetch').mockImplementationOnce(() => callError());
+      await wait(() => expect(global.fetch).toHaveBeenCalled());
+      expect(window.alert).toHaveBeenCalled();
+      expect(window.alert).toHaveBeenLastCalledWith('Não foi encontrado nenhum resultado de bebida.');
+    });
+    test('show error if fetch name return error', async () => {
+      const { queryByTestId } = renderWithRouter(
+        <RecipesAppProvider>
+          <SearchBar recipeType="Bebida" />
+        </RecipesAppProvider>,
+      );
+
+      await wait();
+
+      window.alert = jest.fn().mockImplementationOnce(() => true);
+
+      fireEvent.change(queryByTestId(/search-input/i), { target: { value: 'Cake' } });
+      fireEvent.click(queryByTestId(/name-search-radio/i));
+      expect(queryByTestId(/search-input/i).value).toBe('Cake');
+      expect(queryByTestId(/name-search-radio/i).value).toBe('name');
+
+      jest.restoreAllMocks();
+      jest.spyOn(global, 'fetch').mockImplementationOnce(() => callError());
+      await wait(() => expect(global.fetch).toHaveBeenCalled());
+      expect(window.alert).toHaveBeenCalled();
+      expect(window.alert).toHaveBeenLastCalledWith('Não foi encontrado nenhum resultado de bebida.');
     });
   });
 });

@@ -81,8 +81,12 @@ const redirectMealRecipes = (mealRecipes, history, setRecipes) => {
 };
 
 const redirectDrinkRecipes = (drinkRecipes, history, setRecipes) => {
+<<<<<<< HEAD
   if (!drinkRecipes || drinkRecipes === null || drinkRecipes === undefined) {
     setRecipes([]);
+=======
+  if (!drinkRecipes || drinkRecipes.length === 0 || drinkRecipes === undefined) {
+>>>>>>> master
     return alert('Não foi encontrado nenhum resultado de bebida.');
   }
   if (drinkRecipes && drinkRecipes.length === 1) return history.push(`/receitas/bebida/${drinkRecipes[0].idDrink}`);
@@ -106,11 +110,10 @@ const RenderInputItems = ({ inputValue, setInputValue }) => (
   </div>
 );
 
-const SearchBar = ({ history }) => {
+const SearchBar = ({ history, recipeType }) => {
   const {
     data: [, setRecipes],
     loading: [, setIsLoading],
-    recipeType: [recipeType],
     isSearching: [, setIsSearching],
     inputValue: [inputValue, setInputValue],
     filtering: [isFiltering],
@@ -137,7 +140,7 @@ const SearchBar = ({ history }) => {
         () => {
           setRecipes([]);
           setIsLoading(false);
-          return alert('Não foi encontrado nenhum resultado de bebida.');
+          return alert(`Não foi encontrado nenhum resultado de ${recipeType.toLowerCase()}.`);
         })
         .then(() => setInputValue(((prevState) => ({ ...prevState, didFetch: false }))));
     };
@@ -161,5 +164,6 @@ RenderInputItems.propTypes = {
 };
 
 SearchBar.propTypes = {
+  recipeType: PropTypes.string.isRequired,
   history: PropTypes.instanceOf(Object).isRequired,
 };
