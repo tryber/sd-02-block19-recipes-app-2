@@ -5,7 +5,7 @@ import {
 
 import renderWithRouter from '../services/renderWithRouter';
 import RecipesAppProvider from '../context/RecipesAppContext';
-import RecipeMealDetails from '../pages/RecipeMealDetails';
+import RecipeDrinkDetails from '../pages/RecipeDrinkDetails';
 
 const id = { params: { id: 52855 } };
 
@@ -15,9 +15,9 @@ describe('Recipe Meal Detail', () => {
   test('if components rendering', async () => {
     const { findByText } = renderWithRouter(
       <RecipesAppProvider>
-        <RecipeMealDetails match={id} />
+        <RecipeDrinkDetails match={id} />
       </RecipesAppProvider>,
-      { route: '/receitas/comida/52855' },
+      { route: '/receitas/bebida/52855' },
     );
 
     await findByText(/Loading/i);

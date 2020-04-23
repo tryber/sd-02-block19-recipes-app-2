@@ -32,15 +32,13 @@ const responsive = {
 };
 
 const allIngredients = (meals) => {
-  let indexMeasure = 0;
-  return Object.entries(meals[0]).reduce((acc, cur) => {
-    if (cur[0].match(/strIngredient/i) && cur[1]) {
-      return [...acc, cur[1]];
-    }
-    if (cur[0].match(/strMeasure/i) && cur[1]) {
-      acc[indexMeasure] = [acc[indexMeasure], cur[1]];
-      indexMeasure += 1;
-      return [...acc];
+  const ingredients = Object.entries(meals[0])
+    .filter((el) => el[0].match(/strIngredient/i));
+  const measures = Object.entries(meals[0])
+    .filter((el) => el[0].match(/strMeasure/i));
+  return ingredients.reduce((acc, cur, index) => {
+    if (cur[1]) {
+      return [...acc, [cur[1], measures[index][1]]];
     }
     return [...acc];
   }, []);
@@ -117,10 +115,10 @@ const fetchRecomendedRecipes = async (setCarousel, typeFood) => {
   }
 };
 
-const createImageCarousel = (title, Category, Thumb, index) => (
+const createImageCarousel = (title, category, Thumb, index) => (
   <div data-testid={`${index}-recomendation-card`} key={title}>
     <img className="image-carousel" src={Thumb} alt="Imagem" />
-    <div>{Category}</div>
+    <div>{category}</div>
     <div>{title}</div>
   </div>
 );
@@ -129,8 +127,9 @@ const renderCarousel = (carousel, setCarousel, typeFood) => {
   const tagCarousel = (typeFood === 'Drink') ? 'Meal' : 'Drink';
   if (carousel.data.length < 6) {
     fetchRecomendedRecipes(setCarousel, typeFood);
+    return <div>Waiting...</div>;
   }
-  return (carousel.data.length === 6) && (
+  return (
     <Carousel responsive={responsive}>
       {carousel.data.map((element, index) => (
         createImageCarousel(
@@ -197,7 +196,6 @@ const fetchFoodById = async (id, setDetailsRecipe, setIsLoading, typeFood) => {
         .then(
           (({ meals }) => {
             setDetailsRecipe(meals);
-            setIsLoading(false);
           }),
           () => console.log('error'),
         );
@@ -207,7 +205,6 @@ const fetchFoodById = async (id, setDetailsRecipe, setIsLoading, typeFood) => {
         .then(
           (({ drinks }) => {
             setDetailsRecipe(drinks);
-            setIsLoading(false);
           }),
           () => console.log('error'),
         );
@@ -216,18 +213,17 @@ const fetchFoodById = async (id, setDetailsRecipe, setIsLoading, typeFood) => {
 
 const RecipeFoodDetails = ({ id, typeFood }) => {
   const [detailsRecipe, setDetailsRecipe] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [carousel, setCarousel] = useState({ isLoading: false, data: [] });
   const {
     displayHeader: [, setDisplayHeader], displayFooter: [, setDisplayFooter],
   } = useContext(RecipesAppContext);
   const history = useHistory();
-  // const typeFood = (headerTitle[0].match(/comidas/i)) ? 'Meal' : 'Drink';
   useEffect(() => {
     setDisplayHeader(false);
     setDisplayFooter(false);
-    setIsLoading(true);
-    fetchFoodById(id, setDetailsRecipe, setIsLoading, typeFood);
+    fetchFoodById(id, setDetailsRecipe, setIsLoading, typeFood)
+      .then(() => setIsLoading(false));
   }, [setIsLoading, setDetailsRecipe, id, setDisplayFooter, setDisplayHeader]);
   return (
     <div>

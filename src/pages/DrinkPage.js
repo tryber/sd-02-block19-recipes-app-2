@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext, useEffect } from 'react';
 
 import {
   listDrinkCategories,
@@ -7,6 +7,7 @@ import {
 } from '../services/drinkPageApis';
 import RenderRecipePage from '../components/RenderRecipePage';
 import '../styles/DrinkPage.css';
+import { RecipesAppContext } from '../context/RecipesAppContext';
 
 const fetchsCategories = async (setRecipes, category) => {
   if (category === 'All') {
@@ -37,7 +38,7 @@ const setToggleAndRecipes = (
     toggleCat: !toggleCategory.toggleCat,
   });
   setIsFetching(false);
-  setRecipes([]);
+  //setRecipes([]);
 };
 
 const renderCategories = (
@@ -87,12 +88,21 @@ const fetchCategories = async (setIsLoading, setCategories) => {
     );
 };
 
-const DrinkPage = () => (
-  <RenderRecipePage
-    kindOfRecipe="Bebidas"
-    fetchCategories={fetchCategories}
-    renderCategories={renderCategories}
-  />
-);
+const DrinkPage = () => {
+  const {
+    displayHeader: [, setDisplayHeader], displayFooter: [, setDisplayFooter],
+  } = useContext(RecipesAppContext);
+  useEffect(() => {
+    setDisplayHeader(true);
+    setDisplayFooter(true);
+  }, [setDisplayFooter, setDisplayHeader]);
+  return (
+    <RenderRecipePage
+      kindOfRecipe="Bebidas"
+      fetchCategories={fetchCategories}
+      renderCategories={renderCategories}
+    />
+  );
+};
 
 export default DrinkPage;

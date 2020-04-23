@@ -23,8 +23,6 @@ export default function RecipesAppProvider({ children }) {
     setDisplayFooter(!displayFooter);
   }
 
-  // console.log(recipeType);
-
   const store = {
     headerTitle: [headerTitle, setHeaderTitle],
     displayHeader: [displayHeader, setDisplayHeader],
