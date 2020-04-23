@@ -1,22 +1,22 @@
-import React from 'react';
-import { cleanup, fireEvent, wait } from '@testing-library/react';
+import React, { useContext } from 'react';
+import { render, cleanup, fireEvent, wait } from '@testing-library/react';
 import renderWithRouter from '../services/renderWithRouter';
-import { RecipesAppContext } from '../context/RecipesAppContext';
+import RecipesAppProvider, { RecipesAppContext } from '../context/RecipesAppContext';
 import App from '../App';
 
 let [headerTitle, setHeaderTitle] = ['Receitas', jest.fn()];
 let [displayHeader, setDisplayHeader] = [true, jest.fn()];
-const [displaySearchBar, setDisplaySearchBar] = [false, jest.fn()];
+let [displaySearchBar, setDisplaySearchBar] = [false, jest.fn()];
 let [displaySearchButton, setDisplaySearchButton] = [true, jest.fn()];
-const [displayFooter, setDisplayFooter] = [true, jest.fn()];
-const [isLoading, setIsLoading] = [true, jest.fn()];
-const [recipes, setRecipes] = [[], jest.fn()];
-const [recipeType, setRecipeType] = ['Comidas', jest.fn()];
-const [inputValue, setInputValue] = [{ radio: '', text: '', didFetch: false }, jest.fn()];
-const [isFetching, setIsFetching] = [false, jest.fn()];
-const [isSearching, setIsSearching] = [false, jest.fn()];
-const [toggleCategory, setToggleCategory] = [{ category: '', toggleCat: false }, jest.fn()];
-const [isFiltering, setIsFiltering] = [false, jest.fn()];
+let [displayFooter, setDisplayFooter] = [true, jest.fn()];
+let [isLoading, setIsLoading] = [true, jest.fn()];
+let [recipes, setRecipes] = [[], jest.fn()];
+let [recipeType, setRecipeType] = ['Comidas', jest.fn()];
+let [inputValue, setInputValue] = [{ radio: '', text: '', didFetch: false }, jest.fn()];
+let [isFetching, setIsFetching] = [false, jest.fn()];
+let [isSearching, setIsSearching] = [false, jest.fn()];
+let [toggleCategory, setToggleCategory] = [{ category: '', toggleCat: false }, jest.fn()];
+let [isFiltering, setIsFiltering] = [false, jest.fn()];
 
 let store = {
   headerTitle: [headerTitle, setHeaderTitle],

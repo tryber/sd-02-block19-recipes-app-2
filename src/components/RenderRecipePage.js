@@ -21,7 +21,7 @@ export default function RenderRecipePage({ kindOfRecipe, fetchCategories, render
 
   const { text, radio, didFetch } = inputValue;
   if (displaySearchBar === false && text !== '' && radio !== '') {
-    setInputValue((prevState) => ({ ...prevState, didFetch: false }));
+    setInputValue({ text: '', radio: '', didFetch: false });
     setIsSearching(false);
     setRecipes([]);
   }
