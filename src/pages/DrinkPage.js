@@ -1,16 +1,16 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React from 'react';
 
-import { RecipesAppContext } from '../context/RecipesAppContext';
 import {
   listDrinkCategories,
   fetchDrinkByCategories,
   fetchDrinkByAllCategories,
 } from '../services/drinkPageApis';
+import RenderRecipePage from '../components/RenderRecipePage';
 import '../styles/DrinkPage.css';
 
 const fetchsCategories = async (setRecipes, category) => {
   if (category === 'All') {
-    // setRecipes[recipes] ||
+    setRecipes([]);
     const callFetch = async () => {
       await fetchDrinkByAllCategories()
         .then(({ drinks }) => {
@@ -28,25 +28,31 @@ const fetchsCategories = async (setRecipes, category) => {
 
 
 const setToggleAndRecipes = (
-  toggleCategoryContext, data, category,
+  toggleCategoryContext, setRecipes, category, setIsFetching,
 ) => {
   const [toggleCategory, setToggleCategory] = toggleCategoryContext;
-  const [, setRecipes] = data;
   if (!toggleCategory.toggleCat) fetchsCategories(setRecipes, category);
   setToggleCategory({
     category: (!toggleCategory.toggleCat) ? category : '',
     toggleCat: !toggleCategory.toggleCat,
   });
+  setIsFetching(false);
+  setRecipes([]);
 };
 
-const renderCategories = (categories, toggleCategory, data, disabled = false) => (
+const renderCategories = (
+  categories, toggleCategory, setRecipes, setIsFetching, setIsFiltering, disabled = false,
+) => (
   <div className="categories-container">
     <button
       className="category-button"
       type="button"
       data-testid="all-category-filter"
       disabled={(toggleCategory[0].category === 'All') ? disabled : toggleCategory[0].toggleCat}
-      onClick={() => setToggleAndRecipes(toggleCategory, data, 'All')}
+      onClick={() => {
+        setToggleAndRecipes(toggleCategory, setRecipes, 'All', setIsFetching);
+        setIsFiltering((prevState) => (!prevState));
+      }}
     >
       All
     </button>
@@ -59,7 +65,10 @@ const renderCategories = (categories, toggleCategory, data, disabled = false) =>
         disabled={
           (toggleCategory[0].category === strCategory) ? disabled : toggleCategory[0].toggleCat
         }
-        onClick={() => (setToggleAndRecipes(toggleCategory, data, strCategory))}
+        onClick={() => {
+          setToggleAndRecipes(toggleCategory, setRecipes, strCategory, setIsFetching);
+          setIsFiltering((prevState) => (!prevState));
+        }}
       >
         {strCategory}
       </button>
@@ -73,34 +82,17 @@ const fetchCategories = async (setIsLoading, setCategories) => {
     .then(
       (({ drinks }) => {
         setCategories(drinks);
-        setIsLoading(false);
       }),
-      () => setIsLoading(false),
+      (err) => console.log(err),
     );
 };
 
-const DrinkPage = () => {
-  const [categories, setCategories] = useState([]);
-  const {
-    loading: [isLoading, setIsLoading],
-    toggleCategory,
-    data,
-    headerTitle: [, setHeaderTitle],
-    displaySearchBar: [displaySearchBar],
-  } = useContext(RecipesAppContext);
-  useEffect(() => {
-    const setToggleCategory = toggleCategory[1];
-    setToggleCategory({ category: '', toggleCat: false });
-    setHeaderTitle('Bebidas');
-    fetchCategories(setIsLoading, setCategories);
-  }, [setIsLoading, setHeaderTitle]);
-  return (
-    <div>
-      {(isLoading)
-        ? <div>Loading...</div>
-        : displaySearchBar || renderCategories(categories, toggleCategory, data)}
-    </div>
-  );
-};
+const DrinkPage = () => (
+  <RenderRecipePage
+    kindOfRecipe="Bebidas"
+    fetchCategories={fetchCategories}
+    renderCategories={renderCategories}
+  />
+);
 
 export default DrinkPage;

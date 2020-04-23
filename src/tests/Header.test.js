@@ -1,23 +1,50 @@
 import React, { useContext } from 'react';
-import { render, cleanup, fireEvent } from '@testing-library/react';
-import { renderHook } from '@testing-library/react-hooks';
+import { render, cleanup, fireEvent, wait } from '@testing-library/react';
+import renderWithRouter from '../services/renderWithRouter';
 import RecipesAppProvider, { RecipesAppContext } from '../context/RecipesAppContext';
 import App from '../App';
+
+let [headerTitle, setHeaderTitle] = ['Receitas', jest.fn()];
+let [displayHeader, setDisplayHeader] = [true, jest.fn()];
+let [displaySearchBar, setDisplaySearchBar] = [false, jest.fn()];
+let [displaySearchButton, setDisplaySearchButton] = [true, jest.fn()];
+let [displayFooter, setDisplayFooter] = [true, jest.fn()];
+let [isLoading, setIsLoading] = [true, jest.fn()];
+let [recipes, setRecipes] = [[], jest.fn()];
+let [recipeType, setRecipeType] = ['Comidas', jest.fn()];
+let [inputValue, setInputValue] = [{ radio: '', text: '', didFetch: false }, jest.fn()];
+let [isFetching, setIsFetching] = [false, jest.fn()];
+let [isSearching, setIsSearching] = [false, jest.fn()];
+let [toggleCategory, setToggleCategory] = [{ category: '', toggleCat: false }, jest.fn()];
+let [isFiltering, setIsFiltering] = [false, jest.fn()];
+
+let store = {
+  headerTitle: [headerTitle, setHeaderTitle],
+  displayHeader: [displayHeader, setDisplayHeader],
+  displaySearchButton: [displaySearchButton, setDisplaySearchButton],
+  displaySearchBar: [displaySearchBar, setDisplaySearchBar],
+  displayFooter: [displayFooter, setDisplayFooter],
+  loading: [isLoading, setIsLoading],
+  data: [recipes, setRecipes],
+  recipeType: [recipeType, setRecipeType],
+  inputValue: [inputValue, setInputValue],
+  fetchingStatus: [isFetching, setIsFetching],
+  isSearching: [isSearching, setIsSearching],
+  toggleCategory: [toggleCategory, setToggleCategory],
+  toggleHeaderAndFooter: jest.fn(),
+  filtering: [isFiltering, setIsFiltering],
+};
 
 
 afterEach(cleanup);
 
 describe('Tests for Header component', () => {
   it('Component is rendered if displayHeader is true and dont if its false', async () => {
-    const { getByTestId } = render(
-      <RecipesAppProvider>
+    const { getByTestId } = renderWithRouter(
+      <RecipesAppContext.Provider value={store}>
         <App />
-      </RecipesAppProvider>,
+      </RecipesAppContext.Provider>,
     );
-
-    const wrapper = ({ children }) => <RecipesAppProvider>{children}</RecipesAppProvider>;
-    const { result } = renderHook(() => useContext(RecipesAppContext), { wrapper });
-    expect(result.current.displayHeader[0]).toBeTruthy();
 
     expect(getByTestId('profile-top-btn')).toBeInTheDocument();
     expect(getByTestId('search-top-btn')).toBeInTheDocument();
@@ -25,21 +52,11 @@ describe('Tests for Header component', () => {
   });
 
   it('If displayHeader is false, it doesnt get displayed', () => {
-    const [headerTitle, setHeaderTitle] = ['Receitas', jest.fn()];
-    const [displayHeader, setDisplayHeader] = [false, jest.fn()];
-    const [displaySearchBar, setDisplaySearchBar] = [false, jest.fn()];
-    const [displaySearchButton, setDisplaySearchButton] = [false, jest.fn()];
-    const [displayFooter, setDisplayFooter] = [false, jest.fn()];
+    [displayHeader, setDisplayHeader] = [false, jest.fn()];
 
-    const store = {
-      headerTitle: [headerTitle, setHeaderTitle],
-      displayHeader: [displayHeader, setDisplayHeader],
-      displaySearchBar: [displaySearchBar, setDisplaySearchBar],
-      displaySearchButton: [displaySearchButton, setDisplaySearchButton],
-      displayFooter: [displayFooter, setDisplayFooter],
-    };
+    store = { ...store, displayHeader: [displayHeader, setDisplayHeader] };
 
-    const { queryByTestId } = render(
+    const { queryByTestId } = renderWithRouter(
       <RecipesAppContext.Provider value={store}>
         <App />
       </RecipesAppContext.Provider>,
@@ -51,10 +68,14 @@ describe('Tests for Header component', () => {
   });
 
   it('In clicking profile button, user is taken to profile page', () => {
-    const { getByTestId, getByText } = render(
-      <RecipesAppProvider>
+    [displayHeader, setDisplayHeader] = [true, jest.fn()];
+
+    store = { ...store, displayHeader: [displayHeader, setDisplayHeader] };
+
+    const { getByTestId, getByText } = renderWithRouter(
+      <RecipesAppContext.Provider value={store}>
         <App />
-      </RecipesAppProvider>,
+      </RecipesAppContext.Provider>,
     );
 
     const profileButton = getByTestId('profile-top-btn');
@@ -66,21 +87,14 @@ describe('Tests for Header component', () => {
   });
 
   it('displaySearchButton state is false, its not displayed', () => {
-    const [headerTitle, setHeaderTitle] = ['Receitas', jest.fn()];
-    const [displayHeader, setDisplayHeader] = [false, jest.fn()];
-    const [displaySearchBar, setDisplaySearchBar] = [false, jest.fn()];
-    const [displaySearchButton, setDisplaySearchButton] = [false, jest.fn()];
-    const [displayFooter, setDisplayFooter] = [false, jest.fn()];
+    [displaySearchButton, setDisplaySearchButton] = [false, jest.fn()];
 
-    const store = {
-      headerTitle: [headerTitle, setHeaderTitle],
-      displayHeader: [displayHeader, setDisplayHeader],
-      displaySearchBar: [displaySearchBar, setDisplaySearchBar],
+    store = {
+      ...store,
       displaySearchButton: [displaySearchButton, setDisplaySearchButton],
-      displayFooter: [displayFooter, setDisplayFooter],
     };
 
-    const { queryByTestId } = render(
+    const { queryByTestId } = renderWithRouter(
       <RecipesAppContext.Provider value={store}>
         <App />
       </RecipesAppContext.Provider>,
@@ -90,28 +104,39 @@ describe('Tests for Header component', () => {
     expect(searchButton).not.toBeInTheDocument();
   });
 
-  it('Header title displays headerTitle Context state content', () => {
-    const [headerTitle, setHeaderTitle] = ['Receitas', jest.fn()];
-    const [displayHeader, setDisplayHeader] = [true, jest.fn()];
-    const [displaySearchBar, setDisplaySearchBar] = [false, jest.fn()];
-    const [displaySearchButton, setDisplaySearchButton] = [false, jest.fn()];
-    const [displayFooter, setDisplayFooter] = [false, jest.fn()];
+  it('By clicking Search icon, SearchBar is displayed', async () => {
+    [displaySearchButton, setDisplaySearchButton] = [true, jest.fn()];
 
-    const store = {
-      headerTitle: [headerTitle, setHeaderTitle],
-      displayHeader: [displayHeader, setDisplayHeader],
-      displaySearchBar: [displaySearchBar, setDisplaySearchBar],
+    store = {
+      ...store,
       displaySearchButton: [displaySearchButton, setDisplaySearchButton],
-      displayFooter: [displayFooter, setDisplayFooter],
     };
 
-    const { queryByTestId } = render(
+    const { queryByTestId } = renderWithRouter(
+      <RecipesAppContext.Provider value={store}>
+        <App />
+      </RecipesAppContext.Provider>,
+    );
+
+    fireEvent.click(queryByTestId('search-top-btn'));
+    await wait();
+    expect(queryByTestId('search-input'));
+  });
+
+  it('Header title displays headerTitle Context state content', () => {
+    [headerTitle, setHeaderTitle] = ['Receitas teste', jest.fn()];
+    store = {
+      ...store,
+      headerTitle: [headerTitle, setHeaderTitle],
+    };
+
+    const { queryByTestId } = renderWithRouter(
       <RecipesAppContext.Provider value={store}>
         <App />
       </RecipesAppContext.Provider>,
     );
 
     const pageTitle = queryByTestId('page-title');
-    expect(pageTitle.innerHTML).toBe('Receitas');
+    expect(pageTitle.innerHTML).toBe('Receitas teste');
   });
 });

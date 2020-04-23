@@ -39,13 +39,16 @@ const renderPasswordInput = (setPasswordIsValid) => (
   />
 );
 
-const renderLoginSubmitBtn = (emailIsValid, passwordIsValid, email) => (
+const renderLoginSubmitBtn = (emailIsValid, passwordIsValid, email, toggleHeaderAndFooter) => (
   <Link to="/comidas" className="link">
     <button
       type="button"
       data-testid="login-submit-btn"
       disabled={!(emailIsValid && passwordIsValid)}
-      onClick={() => submitForm(email)}
+      onClick={() => {
+        submitForm(email);
+        toggleHeaderAndFooter();
+      }}
     >
       Entrar
     </button>
@@ -54,22 +57,19 @@ const renderLoginSubmitBtn = (emailIsValid, passwordIsValid, email) => (
 
 const Login = () => {
   const {
-    displayHeader: [, setDisplayHeader],
-    displayFooter: [, setDisplayFooter],
+    toggleHeaderAndFooter,
   } = useContext(RecipesAppContext);
+
   const [emailIsValid, setEmailIsValid] = useState(false);
   const [passwordIsValid, setPasswordIsValid] = useState(false);
   const [email, setEmail] = useState('');
-
-  setDisplayHeader(false);
-  setDisplayFooter(false);
 
   return (
     <div className="login-page">
       <h1>Login</h1>
       {renderEmailInput(setEmail, setEmailIsValid)}
       {renderPasswordInput(setPasswordIsValid)}
-      {renderLoginSubmitBtn(emailIsValid, passwordIsValid, email)}
+      {renderLoginSubmitBtn(emailIsValid, passwordIsValid, email, toggleHeaderAndFooter)}
     </div>
   );
 };

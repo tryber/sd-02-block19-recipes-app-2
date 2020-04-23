@@ -52,3 +52,12 @@ export const searchDrinksByMainIngredient = (drinkIngredient) => (
         .then((json) => (response.ok ? Promise.resolve(json) : Promise.reject(json)))
     ))
 );
+
+export const getRandomRecipe = (recipeType) => {
+  const typeSubstring = recipeType === 'Comidas' ? 'meal' : 'cocktail';
+  return fetch(`https://www.the${typeSubstring}db.com/api/json/v1/1/random.php`)
+    .then((response) => (
+      response.json()
+        .then((json) => (response.ok ? Promise.resolve(json) : Promise.reject(json)))
+    ));
+};

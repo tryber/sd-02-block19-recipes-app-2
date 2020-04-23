@@ -1,20 +1,19 @@
-import React, { useContext, useEffect, useState } from 'react';
-
-import { RecipesAppContext } from '../context/RecipesAppContext';
+import React from 'react';
 import {
   listMealCategories,
   fetchMealByCategories,
   fetchMealByAllCategories,
 } from '../services/mealPageApis';
 import '../styles/MealPage.css';
+import RenderRecipePage from '../components/RenderRecipePage';
 
-const fetchsCategories = async (setRecipesByCategory, category) => {
+const fetchsCategories = async (setRecipes, category) => {
   if (category === 'All') {
-    // setRecipesByCategory[recipes] ||
+    setRecipes([]);
     const callFetch = async () => {
       await fetchMealByAllCategories()
         .then(({ meals }) => {
-          setRecipesByCategory((prevState) => [...prevState, ...meals]);
+          setRecipes((prevState) => [...prevState, ...meals]);
         });
     };
     for (let i = 0; i < 12; i += 1) {
@@ -22,31 +21,37 @@ const fetchsCategories = async (setRecipesByCategory, category) => {
     }
   } else {
     await fetchMealByCategories(category)
-      .then(({ meals }) => setRecipesByCategory(meals));
+      .then(({ meals }) => setRecipes(meals));
   }
 };
 
 
 const setToggleAndRecipes = (
-  toggleCategoryContext, recipesByCategoryContext, category,
+  toggleCategoryContext, setRecipes, category, setIsFetching,
 ) => {
   const [toggleCategory, setToggleCategory] = toggleCategoryContext;
-  const [, setRecipesByCategory] = recipesByCategoryContext;
-  if (!toggleCategory.toggleCat) fetchsCategories(setRecipesByCategory, category);
+  if (!toggleCategory.toggleCat) fetchsCategories(setRecipes, category);
   setToggleCategory({
     category: (!toggleCategory.toggleCat) ? category : '',
     toggleCat: !toggleCategory.toggleCat,
   });
+  setIsFetching(false);
+  setRecipes([]);
 };
 
-const renderCategories = (categories, toggleCategory, recipesByCategory, disabled = false) => (
+const renderCategories = (
+  categories, toggleCategory, setRecipes, setIsFetching, setIsFiltering, disabled = false,
+) => (
   <div className="categories-container">
     <button
       className="category-button"
       type="button"
       data-testid="all-category-filter"
       disabled={(toggleCategory[0].category === 'All') ? disabled : toggleCategory[0].toggleCat}
-      onClick={() => setToggleAndRecipes(toggleCategory, recipesByCategory, 'All')}
+      onClick={() => {
+        setToggleAndRecipes(toggleCategory, setRecipes, 'All', setIsFetching);
+        setIsFiltering((prevState) => (!prevState));
+      }}
     >
       All
     </button>
@@ -59,7 +64,10 @@ const renderCategories = (categories, toggleCategory, recipesByCategory, disable
         disabled={
           (toggleCategory[0].category === strCategory) ? disabled : toggleCategory[0].toggleCat
         }
-        onClick={() => (setToggleAndRecipes(toggleCategory, recipesByCategory, strCategory))}
+        onClick={() => {
+          setToggleAndRecipes(toggleCategory, setRecipes, strCategory, setIsFetching);
+          setIsFiltering((prevState) => (!prevState));
+        }}
       >
         {strCategory}
       </button>
@@ -73,34 +81,17 @@ const fetchCategories = async (setIsLoading, setCategories) => {
     .then(
       (({ meals }) => {
         setCategories(meals);
-        setIsLoading(false);
       }),
-      () => setIsLoading(false),
+      (err) => console.log(err),
     );
 };
 
-const MealPage = () => {
-  const [categories, setCategories] = useState([]);
-  const {
-    loading: [isLoading, setIsLoading],
-    toggleCategory,
-    recipesByCategory,
-    headerTitle: [, setHeaderTitle],
-    displaySearchBar: [displaySearchBar],
-  } = useContext(RecipesAppContext);
-  useEffect(() => {
-    const setToggleCategory = toggleCategory[1];
-    setToggleCategory({ category: '', toggleCat: false });
-    setHeaderTitle('Comidas');
-    fetchCategories(setIsLoading, setCategories);
-  }, [setIsLoading, setHeaderTitle]);
-  return (
-    <div>
-      {(isLoading)
-        ? <div>Loading...</div>
-        : displaySearchBar || renderCategories(categories, toggleCategory, recipesByCategory)}
-    </div>
-  );
-};
+const MealPage = () => (
+  <RenderRecipePage
+    kindOfRecipe="Comidas"
+    fetchCategories={fetchCategories}
+    renderCategories={renderCategories}
+  />
+);
 
 export default MealPage;

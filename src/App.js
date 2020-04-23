@@ -25,7 +25,7 @@ function App() {
   return (
     <div className="App">
       <BrowserRouter>
-        {<Header />}
+        <Header />
         {displaySearchBar && <SearchBar />}
         <Switch>
           <Route exact path="/" component={Login} />
@@ -44,7 +44,7 @@ function App() {
           <Route exact path="/explorar/comidas/area" component={ExploreMealArea} />
           <Route component={NotFound} />
         </Switch>
-        {<Footer />}
+        <Footer />
       </BrowserRouter>
     </div>
 

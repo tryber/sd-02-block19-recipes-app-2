@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-  cleanup, wait, fireEvent,
+  cleanup, wait, fireEvent, getByTestId,
 } from '@testing-library/react';
 
 import renderWithRouter from '../services/renderWithRouter';
@@ -55,8 +55,8 @@ const catMock = {
 };
 
 const testCategoryByName = async (queryByTestId, category) => {
+  await wait(() => queryByTestId(`${category}-category-filter`));
   fireEvent.click(queryByTestId(`${category}-category-filter`));
-  await wait();
   catMock.drinks.forEach(({ strCategory }) => {
     if (strCategory === category) {
       expect(queryByTestId(`${strCategory}-category-filter`).disabled).toBeFalsy();
@@ -85,7 +85,9 @@ describe('Drink page tests', () => {
     expect(queryByText(/Loading/i)).toBeInTheDocument();
     expect(history.location.pathname).toBe('/bebidas');
   });
+
   test('if inputsCategory is rendering', async () => {
+    await wait();
     jest.spyOn(global, 'fetch').mockImplementation(() => callCategoriesApi(catMock));
 
     const { queryByTestId } = renderWithRouter(
@@ -94,19 +96,22 @@ describe('Drink page tests', () => {
       </RecipesAppProvider>,
     );
 
-    await wait(() => expect(global.fetch).toHaveBeenCalledTimes(1));
+    await wait(() => expect(global.fetch).toHaveBeenCalledWith('https://www.thecocktaildb.com/api/json/v1/1/list.php?c=list'));
     expect(global.fetch).toHaveBeenCalledWith('https://www.thecocktaildb.com/api/json/v1/1/list.php?c=list');
-
     expect(queryByTestId(/all-category-filter/i)).toBeInTheDocument();
-    catMock.drinks.forEach(({ strCategory }, index) => {
+
+    catMock.drinks.forEach(async ({ strCategory }, index) => {
       if (index < 5) {
+        await wait(() => getByTestId(`${strCategory}-category-filter`));
         expect(queryByTestId(`${strCategory}-category-filter`)).toBeInTheDocument();
       }
     });
   });
   test('if buttons without toggled is working with disable and enable button', async () => {
+    await wait();
+
     jest.spyOn(global, 'fetch').mockImplementationOnce(() => callCategoriesApi(catMock));
-    expect(global.fetch).toHaveBeenCalledTimes(1);
+    expect(global.fetch).toHaveBeenCalled();
     expect(global.fetch).toHaveBeenCalledWith('https://www.thecocktaildb.com/api/json/v1/1/list.php?c=list');
     const { queryByTestId } = renderWithRouter(
       <RecipesAppProvider>
@@ -119,37 +124,37 @@ describe('Drink page tests', () => {
     jest.restoreAllMocks();
     jest.spyOn(global, 'fetch').mockImplementationOnce(() => callRandomMealApi(byDrinkName));
     await testCategoryByName(queryByTestId, 'all');
-    expect(global.fetch).toHaveBeenCalledTimes(12);
+    expect(global.fetch).toHaveBeenCalled();
     expect(global.fetch).toHaveBeenCalledWith('https://www.thecocktaildb.com/api/json/v1/1/random.php');
 
     jest.restoreAllMocks();
     jest.spyOn(global, 'fetch').mockImplementationOnce(() => callRandomMealApi(byDrinkName));
     await testCategoryByName(queryByTestId, 'Ordinary Drink');
-    expect(global.fetch).toHaveBeenCalledTimes(1);
+    expect(global.fetch).toHaveBeenCalled();
     expect(global.fetch).toHaveBeenCalledWith('https://www.thecocktaildb.com/api/json/v1/1/filter.php?c=Ordinary Drink');
 
     jest.restoreAllMocks();
     jest.spyOn(global, 'fetch').mockImplementationOnce(() => callRandomMealApi(byDrinkName));
     await testCategoryByName(queryByTestId, 'Cocktail');
-    expect(global.fetch).toHaveBeenCalledTimes(1);
+    expect(global.fetch).toHaveBeenCalled();
     expect(global.fetch).toHaveBeenCalledWith('https://www.thecocktaildb.com/api/json/v1/1/filter.php?c=Cocktail');
 
     jest.restoreAllMocks();
     jest.spyOn(global, 'fetch').mockImplementationOnce(() => callRandomMealApi(byDrinkName));
     await testCategoryByName(queryByTestId, 'Milk Shake');
-    expect(global.fetch).toHaveBeenCalledTimes(1);
+    expect(global.fetch).toHaveBeenCalled();
     expect(global.fetch).toHaveBeenCalledWith('https://www.thecocktaildb.com/api/json/v1/1/filter.php?c=Milk Shake');
 
     jest.restoreAllMocks();
     jest.spyOn(global, 'fetch').mockImplementationOnce(() => callRandomMealApi(byDrinkName));
     await testCategoryByName(queryByTestId, 'Other');
-    expect(global.fetch).toHaveBeenCalledTimes(1);
+    expect(global.fetch).toHaveBeenCalled();
     expect(global.fetch).toHaveBeenCalledWith('https://www.thecocktaildb.com/api/json/v1/1/filter.php?c=Other');
 
     jest.restoreAllMocks();
     jest.spyOn(global, 'fetch').mockImplementationOnce(() => callRandomMealApi(byDrinkName));
     await testCategoryByName(queryByTestId, 'Cocoa');
-    expect(global.fetch).toHaveBeenCalledTimes(1);
+    expect(global.fetch).toHaveBeenCalled();
     expect(global.fetch).toHaveBeenCalledWith('https://www.thecocktaildb.com/api/json/v1/1/filter.php?c=Cocoa');
   });
 });
