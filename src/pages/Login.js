@@ -33,6 +33,7 @@ const renderEmailInput = (setEmail, setEmailIsValid) => (
 
 const renderPasswordInput = (setPasswordIsValid) => (
   <input
+    type="password"
     placeholder="Senha"
     data-testid="password-input"
     onChange={(event) => validatePassword(event, setPasswordIsValid)}
