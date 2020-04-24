@@ -2,6 +2,7 @@ import React, { useState, useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { RecipesAppContext } from '../context/RecipesAppContext';
 import '../styles/Login.css';
+import HorizontalCard from '../components/HorizontalCard'
 
 const validateEmail = ({ target }, setEmail, setEmailIsValid) => {
   const { value } = target;

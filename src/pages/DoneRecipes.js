@@ -1,7 +1,10 @@
 import React from 'react';
+import HorizontalCard from '../components/HorizontalCard'
 
 const DoneRecipes = () => (
-  <div>Done Recipes Page</div>
+  <div>
+    <h1>Done Recipes Page</h1>
+  </div>
 );
 
 export default DoneRecipes;
