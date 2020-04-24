@@ -3,7 +3,6 @@ import { RecipesAppContext } from '../context/RecipesAppContext';
 import '../styles/FilterBarFoodOrDrinks.css';
 
 const FilterBarFoodOrDrinks = () => {
-  const filters = ['All', 'Food', 'Drinks'];
   const { filterFoodOrDrinks: [, setFilterFoodOrDrinks] } = useContext(RecipesAppContext);
 
   useEffect(
@@ -20,7 +19,9 @@ const FilterBarFoodOrDrinks = () => {
 
   const renderButtons = () => (
     <div className="filter-bar">
-      {filters.map((item) => <button key={item} onClick={changeFilter}>{item}</button>)}
+      <button onClick={changeFilter} data-testid="filter-by-all-btn">All</button>
+      <button onClick={changeFilter} data-testid="filter-by-food-btn">Food</button>
+      <button onClick={changeFilter} data-testid="filter-by-drink-btn">Drinks</button>
     </div>
   );
 
