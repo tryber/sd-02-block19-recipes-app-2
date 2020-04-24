@@ -16,21 +16,23 @@ const HorizontalCard = ({ index, type, id, image, name, category, area, alcoholi
       <div className="lado-direito">
         <div className="parte-de-cima">
           <div>
-            <h3 data-testid={`${index}-horizontal-top-text`}>
+            <p data-testid={`${index}-horizontal-top-text`} className="top-text">
               {(type === 'comida') ? `${area} - ${category}` : alcoholicOrNot}
-            </h3>
-            <h2 data-testid={`${index}-horizontal-name`}>{name}</h2>
+            </p>
+            <p data-testid={`${index}-horizontal-name`} className="name">{name}</p>
           </div>
           {inDoneRecipes && <ShareButton index={index} id={id} type={type} />}
         </div>
         {inDoneRecipes ?
-          <div className="parte-de-baixo">
-            <h3 data-testid={`${index}-horizontal-done-date`}>{`Feita em: ${doneDate}`}</h3>
-            <div>
-              {(type === 'comida') && tags.map((tag) => <h2 key={tag}>{tag}</h2>)}
+          <div className="parte-de-baixo-in-done-recipes">
+            <p data-testid={`${index}-horizontal-done-date`} className="done-date">
+              {`Feita em: ${doneDate}`}
+            </p>
+            <div className="tags">
+              {(type === 'comida') && tags.map((tag) => <p key={tag}>{tag}</p>)}
             </div>
           </div> :
-          <div className="parte-de-baixo">
+          <div className="parte-de-baixo-in-favorite-recipes">
             <ShareButton index={index} id={id} type={type} />
             <FavoriteButton index={index} id={id} category={category} image={image} />
           </div>

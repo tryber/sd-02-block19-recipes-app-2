@@ -1,3 +1,112 @@
 .horizontal-card {
-  border: 2px solid black;
+  align-items: center;
+  border: 1px solid #f8eded;
+  border-radius: 6px;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: row;
+}
+
+p {
+ all: unset;
+ margin: 0.5em;
+}
+
+.lado-esquerdo {
+  display: flex;
+  width: 50%;
+}
+
+.lado-esquerdo img {
+  width: 100%;
+}
+
+.lado-direito {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 50%;
+}
+
+.parte-de-cima {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.parte-de-cima div {
+  display: flex;
+  flex-direction: column;
+}
+
+.parte-de-cima div p {
+  margin: 0.1em;
+}
+
+.parte-de-baixo-in-done-recipes {
+  display: flex;
+  flex-direction: column;
+}
+
+.tags {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}
+
+.tags p {
+  background: #ecdede;
+  border-radius: 30px;
+  font-family: Roboto;
+  font-size: 1.3em;
+  font-style: normal;
+  font-weight: normal;
+  letter-spacing: 0.01em;
+  line-height: 1.2em;
+  margin: 0;
+  padding: 5px 20px;
+}
+
+.parte-de-baixo-in-favorite-recipes {
+  display: flex;
+  flex-direction: row;
+}
+
+.top-text {
+  color: gray;
+  font-family: Roboto;
+  font-size: 1.1em;
+  font-style: normal;
+  font-weight: normal;
+  line-height: 1.2em;
+  padding: 0 8px;
+}
+
+.name {
+  font-family: Roboto;
+  font-size: 1.3em;
+  font-style: normal;
+  font-weight: normal;
+  letter-spacing: 0.01em;
+  line-height: 25px;
+  padding: 0 8px;
+}
+
+.done-date {
+  font-family: Roboto;
+  font-size: 1.1em;
+  font-style: normal;
+  font-weight: normal;
+  letter-spacing: 0.01em;
+  line-height: 1.2em;
+  margin: 10px 0;
+  padding: 0 8px;
+}
+
+.parte-de-baixo-in-favorite-recipes {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  margin-top: 30px;
 }
