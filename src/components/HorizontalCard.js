@@ -11,21 +11,21 @@ const HorizontalCard = ({ index, type, id, image, name, category, area, alcoholi
   return (
     <div className="horizontal-card">
       <div className="lado-esquerdo">
-        <img alt="" src={image} />
+        <img alt="" src={image} data-testid={`${index}-horizontal-image`} />
       </div>
       <div className="lado-direito">
         <div className="parte-de-cima">
           <div>
-            <h3>
+            <h3 data-testid={`${index}-horizontal-top-text`}>
               {(type === 'comida') ? `${area} - ${category}` : alcoholicOrNot}
             </h3>
-            <h2>{name}</h2>
+            <h2 data-testid={`${index}-horizontal-name`}>{name}</h2>
           </div>
           {inDoneRecipes && <ShareButton index={index} id={id} type={type} />}
         </div>
         {inDoneRecipes ?
           <div className="parte-de-baixo">
-            <h3>{`Feita em: ${doneDate}`}</h3>
+            <h3 data-testid={`${index}-horizontal-done-date`}>{`Feita em: ${doneDate}`}</h3>
             <div>
               {(type === 'comida') && tags.map((tag) => <h2 key={tag}>{tag}</h2>)}
             </div>
@@ -41,6 +41,7 @@ const HorizontalCard = ({ index, type, id, image, name, category, area, alcoholi
 };
 
 HorizontalCard.propTypes = {
+  index: PropTypes.number.isRequired,
   type: PropTypes.oneOf(['comida', 'bebida']).isRequired,
   id: PropTypes.string.isRequired,
   image: PropTypes.string.isRequired,
