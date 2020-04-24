@@ -1,0 +1,14 @@
+.filter-bar {
+  display: flex;
+  justify-content: space-around;
+  text-align: center;
+}
+
+button {
+  all: unset;
+  background: #c4c4c4;
+  border-radius: 7.5%;
+  font-size: 1.5em;
+  height: 2.5em;
+  width: 30%;
+}

@@ -1,5 +1,6 @@
 import React, { useContext, useEffect } from 'react';
 import { RecipesAppContext } from '../context/RecipesAppContext';
+import '../styles/FilterBarFoodOrDrinks.css';
 
 const FilterBarFoodOrDrinks = () => {
   const filters = ['All', 'Food', 'Drinks'];
