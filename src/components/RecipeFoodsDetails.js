@@ -1,5 +1,4 @@
 import React, { useEffect, useState, useContext } from 'react';
-import { useHistory } from 'react-router-dom';
 import propTypes from 'prop-types';
 import YouTube from 'react-youtube';
 
@@ -10,6 +9,7 @@ import { fetchMealByAllCategories } from '../services/mealPageApis';
 import { fetchDrinkByAllCategories } from '../services/drinkPageApis';
 import '../styles/RecipeMealDetails.css';
 import { RecipesAppContext } from '../context/RecipesAppContext';
+import CheckBox from './CheckBox';
 
 const responsive = {
   superLargeDesktop: {
@@ -44,23 +44,32 @@ const allIngredients = (meals) => {
   }, []);
 };
 
-const renderIngredients = (foods) => (
-  <div className="ingredients-content">
-    <div className="ingredient-title">Ingredients:</div>
-    <div className="ingredients-box">
-      {
-        allIngredients(foods).map((ingredients, index) => (
-          <div className="ingredients-container" key={ingredients[0]}>
-            <div data-testid={`${index}-ingredient-name`}>
-              {`- ${ingredients[0]} - `}
-            </div>
-            <div data-testid={`${index}-ingredient-measure`}>{ingredients[1]}</div>
-          </div>
-        ))
-      }
-    </div>
-  </div>
+const renderCheckBox = (foods, typeFood) => (
+  <CheckBox foods={foods} allIngredients={allIngredients} typeFood={typeFood} />
 );
+
+
+const renderIngredients = (foods) => {
+  return (
+    <div className="ingredients-content">
+      <div className="ingredient-title">Ingredients:</div>
+      <div className="ingredients-box">
+        {
+          allIngredients(foods).map((ingredients, index) => {
+            return (
+              <div className="ingredients-container" key={ingredients[0]}>
+                <div data-testid={`${index}-ingredient-name`}>
+                  {`- ${ingredients[0]} - `}
+                </div>
+                <div data-testid={`${index}-ingredient-measure`}>{ingredients[1]}</div>
+              </div>
+            );
+          })
+        }
+      </div>
+    </div>
+  );
+};
 
 const renderInstructions = (instructions) => (
   <div className="instructions-content">
@@ -140,29 +149,41 @@ const renderCarousel = (carousel, setCarousel, typeFood) => {
   );
 };
 
-const addIdLocalStorage = (id, history) => {
-  const arrayId = JSON.parse(localStorage.getItem('in-progress')) || [];
-  arrayId.push(id);
-  localStorage.setItem('in-progress', JSON.stringify(arrayId));
-  return history.push('/ddddd');
+const addIdLocalStorage = (id, inProgress, setRenderInProgress) => {
+  if (!inProgress) {
+    const arrayId = JSON.parse(localStorage.getItem('in-progress')) || [];
+    arrayId.push(id);
+    localStorage.setItem('in-progress', JSON.stringify(arrayId));
+  }
+  setRenderInProgress(true);
 };
 
-const renderStartRecipeButton = (inProgress, id, history) => (
-  <div className="start-button-container">
-    <button
-      className="start-button"
-      data-testid="start-recipe-btn"
-      type="button"
-      onClick={() => (
-        (inProgress) ? history.push('/asdasdasd') : addIdLocalStorage(id, history)
-      )}
-    >
-      {(inProgress) ? 'Continuar Receita' : 'Iniciar Receita'}
-    </button>
-  </div>
-);
+const buttonName = (inProgress) => ((inProgress) ? 'Continuar Receita' : 'Iniciar Receita');
 
-const renderAllDetails = (foods, carousel, setCarousel, id, typeFood, history) => {
+const renderStartRecipeButton = (
+  inProgress, id, renderInProgress, setRenderInProgress,
+) => (
+    <div className="start-button-container">
+      <button
+        className="start-button"
+        data-testid="start-recipe-btn"
+        type="button"
+        onClick={() => (
+          (inProgress)
+            ? setRenderInProgress(true)
+            : addIdLocalStorage(id, inProgress, setRenderInProgress)
+        )}
+      >
+        {(renderInProgress)
+          ? 'Finalizar Receita'
+          : buttonName(inProgress)}
+      </button>
+    </div>
+  );
+
+const renderAllDetails = (
+  foods, carousel, setCarousel, id, typeFood, renderInProgress, setRenderInProgress,
+) => {
   const inProgress = (JSON.parse(localStorage.getItem('in-progress')) || [])
     .some((inProgressId) => inProgressId === Number(id));
   const renderFood = foods[0];
@@ -180,11 +201,13 @@ const renderAllDetails = (foods, carousel, setCarousel, id, typeFood, history) =
           ? renderFood.strAlcoholic
           : renderFood.strCategory}
       </p>
-      {renderIngredients(foods)}
+      {(!renderInProgress) ? renderIngredients(foods) : renderCheckBox(foods, typeFood)}
       {renderInstructions(renderFood.strInstructions)}
-      {renderVideo(renderFood.strYoutube)}
-      {renderCarousel(carousel, setCarousel, typeFood)}
-      {renderStartRecipeButton(inProgress, Number(id), history)}
+      {(!renderInProgress) && renderVideo(renderFood.strYoutube)}
+      {(!renderInProgress) && renderCarousel(carousel, setCarousel, typeFood)}
+      {renderStartRecipeButton(
+        inProgress, Number(id), renderInProgress, setRenderInProgress,
+      )}
     </div>
   );
 };
@@ -215,10 +238,10 @@ const RecipeFoodDetails = ({ id, typeFood }) => {
   const [detailsRecipe, setDetailsRecipe] = useState('');
   const [isLoading, setIsLoading] = useState(true);
   const [carousel, setCarousel] = useState({ isLoading: false, data: [] });
+  const [renderInProgress, setRenderInProgress] = useState(false);
   const {
     displayHeader: [, setDisplayHeader], displayFooter: [, setDisplayFooter],
   } = useContext(RecipesAppContext);
-  const history = useHistory();
   useEffect(() => {
     setDisplayHeader(false);
     setDisplayFooter(false);
@@ -227,11 +250,15 @@ const RecipeFoodDetails = ({ id, typeFood }) => {
   }, [setIsLoading, setDetailsRecipe, id, setDisplayFooter, setDisplayHeader]);
   return (
     <div>
-      {(isLoading)
-        ? <div>Loading...</div>
-        : detailsRecipe && renderAllDetails(
-          detailsRecipe, carousel, setCarousel, id, typeFood, history,
-        )}
+      {(isLoading) ? <div>Loading...</div> : detailsRecipe && renderAllDetails(
+        detailsRecipe,
+        carousel,
+        setCarousel,
+        id,
+        typeFood,
+        renderInProgress,
+        setRenderInProgress,
+      )}
     </div>
   );
 };
