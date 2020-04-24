@@ -2,13 +2,13 @@ import React, { useContext, useEffect } from 'react';
 import { RecipesAppContext } from '../context/RecipesAppContext';
 
 const FilterBarFoodOrDrinks = () => {
-  const filters = [ 'All', 'Food', 'Drinks'];
+  const filters = ['All', 'Food', 'Drinks'];
   const { filterFoodOrDrinks: [, setFilterFoodOrDrinks] } = useContext(RecipesAppContext);
 
   useEffect(
     () => () => {
       setFilterFoodOrDrinks('All');
-    }, 
+    },
     [setFilterFoodOrDrinks],
   );
 
