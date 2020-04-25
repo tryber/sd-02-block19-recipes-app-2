@@ -15,6 +15,7 @@ function originSelectionDropdown(setFilterByOrigin, foodAreas, setIsFiltering) {
       }}
     >
       <option
+        data-testid="all-option"
         value="All"
       >
         All

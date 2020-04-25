@@ -1,8 +1,8 @@
 import React from 'react';
-import { cleanup, fireEvent } from '@testing-library/react';
+import { cleanup, fireEvent, wait } from '@testing-library/react';
 import renderWithRouter from '../services/renderWithRouter';
 import ExploreByOrigin from '../pages/ExploreByOrigin';
-import { RecipesAppContext } from '../context/RecipesAppContext';
+import RecipesAppProvider, { RecipesAppContext } from '../context/RecipesAppContext';
 import foodRecipesMock from '../__mocks__/foodRecipesMock';
 
 let [headerTitle, setHeaderTitle] = ['Receitas', jest.fn()];
@@ -41,33 +41,32 @@ afterEach(cleanup);
 describe('ExploreByOrigin page tests', () => {
   it('if recipeType is "Bebidas", then the page be displayed with message', () => {
     [recipeType, setRecipeType] = ['Bebidas', jest.fn()];
-    const { getByTestId, getByText } = renderWithRouter(
+    const { getByTestId, queryByTestId, getByText } = renderWithRouter(
       <RecipesAppContext.Provider value={{ ...store, recipeType: [recipeType, setRecipeType] }}>
         <ExploreByOrigin />
       </RecipesAppContext.Provider>,
     );
-    expect(getByTestId('explore-by-area-dropdown')).not.toBeInTheDocument();
+    expect(queryByTestId('explore-by-area-dropdown')).not.toBeInTheDocument();
     expect(getByText('Página não disponível para bebidas.')).toBeInTheDocument();
   });
 
-  it('if recipeType is "Bebidas", then the page be displayed with message', () => {
-    [recipeType, setRecipeType] = ['Comidas', jest.fn()];
-    [recipes, setRecipes] = [...foodRecipesMock.meals, jest.fn()];
+  it('if recipeType is "Bebidas", then the page be displayed with message', async () => {
     const { getByTestId } = renderWithRouter(
-      <RecipesAppContext.Provider value={
-        { ...store, data: [recipes, setRecipes], recipeType: [recipeType, setRecipeType] }
-      }
-      >
+      <RecipesAppProvider>
         <ExploreByOrigin />
-      </RecipesAppContext.Provider>,
+      </RecipesAppProvider>,
     );
 
+    await wait(() => getByTestId('American-option'));
+    await wait(() => getByTestId('11-card-name'));
+
     expect(getByTestId('explore-by-area-dropdown')).toBeInTheDocument();
-    recipes.forEach(({ strArea }, index) => {
+    foodRecipesMock.meals.forEach(({ strArea }, index) => {
+      expect(getByTestId('all-option')).toBeInTheDocument();
       expect(getByTestId(`${strArea}-option`)).toBeInTheDocument();
       expect(getByTestId(`${index}-card-name`)).toBeInTheDocument();
       expect(getByTestId(`${index}-card-img`)).toBeInTheDocument();
       expect(getByTestId(`${index}-card-category`)).toBeInTheDocument();
     });
-  });
+  }, 15000);
 });
