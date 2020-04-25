@@ -11,7 +11,7 @@ import ExploreMeal from './pages/ExploreMeal';
 import ExploreDrink from './pages/ExploreDrink';
 import ExploreMealIngredients from './pages/ExploreMealIngredients';
 import ExploreDrinksIngrendients from './pages/ExploreDrinksIngrendients';
-import ExploreMealArea from './pages/ExploreMealArea';
+import ExploreByOrigin from './pages/ExploreByOrigin';
 import Explore from './pages/Explore';
 import NotFound from './pages/NotFound';
 import Profile from './pages/Profile';
@@ -29,19 +29,19 @@ function App() {
         {displaySearchBar && <SearchBar recipeType={recipeType[0]} />}
         <Switch>
           <Route exact path="/" component={Login} />
+          <Route path="/receitas/comida/:id" component={RecipeMealDetails} />
+          <Route path="/receitas/bebida/:id" component={RecipeDrinkDetails} />
+          <Route path="/explorar/comidas/ingredients" component={ExploreMealIngredients} />
+          <Route path="/explorar/bebidas/ingredients" component={ExploreDrinksIngrendients} />
+          <Route path="/explorar/comidas/area" component={ExploreByOrigin} />
+          <Route path="/explorar/comidas" component={ExploreMeal} />
+          <Route path="/explorar/bebidas" component={ExploreDrink} />
           <Route path="/comidas" component={MealPage} />
           <Route path="/bebidas" component={DrinkPage} />
           <Route path="/perfil" component={Profile} />
           <Route path="/explorar" component={Explore} />
-          <Route path="/receitas/comida/:id" component={RecipeMealDetails} />
-          <Route path="/receitas/bebida/:id" component={RecipeDrinkDetails} />
           <Route path="/receitas-feitas" component={DoneRecipes} />
           <Route path="/receitas-favoritas" component={FavoriteRecipes} />
-          <Route path="/explorar/comidas" component={ExploreMeal} />
-          <Route path="/explorar/bebidas" component={ExploreDrink} />
-          <Route path="/explorar/comidas/ingredients" component={ExploreMealIngredients} />
-          <Route path="/explorar/bebidas/ingredients" component={ExploreDrinksIngrendients} />
-          <Route path="/explorar/comidas/area" component={ExploreMealArea} />
           <Route component={NotFound} />
         </Switch>
         <Footer />
