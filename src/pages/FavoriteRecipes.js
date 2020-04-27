@@ -1,5 +1,5 @@
 import React from 'react';
-import HorizontalCard from '../components/HorizontalCard'
+import HorizontalCard from '../components/HorizontalCard';
 import imagemTeste from '../images/imagemTeste.svg';
 
 const FavoriteRecipes = () => (
