@@ -71,7 +71,7 @@ FavoriteButton.propTypes = {
   category: propTypes.string.isRequired,
   image: propTypes.string.isRequired,
   name: propTypes.string.isRequired,
-  type: PropTypes.oneOf(['comida', 'bebida']).isRequired,
+  type: propTypes.oneOf(['comida', 'bebida']).isRequired,
   index: propTypes.number,
   area: propTypes.string,
   alcoholicOrNot: propTypes.string,
