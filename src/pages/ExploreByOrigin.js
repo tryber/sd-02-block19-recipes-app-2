@@ -1,4 +1,5 @@
 import React, { useContext, useState, useEffect } from 'react';
+import PropTypes, { instanceOf } from 'prop-types';
 import RecipesGenerator from '../components/RecipesGenerator';
 import { RecipesAppContext } from '../context/RecipesAppContext';
 import useFilterByOrigin from '../hooks/useFilterByOrigin';
@@ -35,9 +36,9 @@ function originSelectionDropdown(setFilterByOrigin, foodAreas, setIsFiltering, s
   );
 }
 
-function renderComponentsOfExplorebyOriginPage(
+function RenderComponentsOfExplorebyOriginPage({
   recipeType, setFilterByOrigin, foodAreas, setIsFiltering, setIsLoading, isLoading,
-) {
+}) {
   return (
     recipeType === 'Bebidas' ? (
       <div>
@@ -88,7 +89,23 @@ export default function ExploreByOrigin() {
     return (() => setRecipes([]));
   }, [filteredRecipes, filterByOrigin, setIsFiltering, setRecipes]);
 
-  return renderComponentsOfExplorebyOriginPage(
-    recipeType, setFilterByOrigin, foodAreas, setIsFiltering, setIsLoading, isLoading,
+  return (
+    <RenderComponentsOfExplorebyOriginPage
+      recipeType={recipeType}
+      setFilterByOrigin={setFilterByOrigin}
+      foodAreas={foodAreas}
+      setIsFiltering={setIsFiltering}
+      setIsLoading={setIsLoading}
+      isLoading={isLoading}
+    />
   );
 }
+
+RenderComponentsOfExplorebyOriginPage.propTypes = {
+  recipeType: PropTypes.string.isRequired,
+  setFilterByOrigin: PropTypes.func.isRequired,
+  foodAreas: PropTypes.arrayOf(instanceOf(String)).isRequired,
+  setIsFiltering: PropTypes.func.isRequired,
+  setIsLoading: PropTypes.func.isRequired,
+  isLoading: PropTypes.bool.isRequired,
+};
