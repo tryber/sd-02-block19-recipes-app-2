@@ -29,19 +29,19 @@ function App() {
         {displaySearchBar && <SearchBar recipeType={recipeType[0]} />}
         <Switch>
           <Route exact path="/" component={Login} />
-          <Route path="/comidas" component={MealPage} />
-          <Route path="/bebidas" component={DrinkPage} />
-          <Route path="/perfil" component={Profile} />
-          <Route path="/explorar" component={Explore} />
-          <Route path="/receitas/comida/:id" component={RecipeMealDetails} />
-          <Route path="/receitas/bebida/:id" component={RecipeDrinkDetails} />
-          <Route path="/receitas-feitas" component={DoneRecipes} />
-          <Route path="/receitas-favoritas" component={FavoriteRecipes} />
-          <Route path="/explorar/comidas" component={ExploreMeal} />
-          <Route path="/explorar/bebidas" component={ExploreDrink} />
-          <Route path="/explorar/comidas/ingredients" component={ExploreMealIngredients} />
-          <Route path="/explorar/bebidas/ingredients" component={ExploreDrinksIngrendients} />
-          <Route path="/explorar/comidas/area" component={ExploreMealArea} />
+          <Route exact path="/comidas" component={MealPage} />
+          <Route exact path="/bebidas" component={DrinkPage} />
+          <Route exact path="/perfil" component={Profile} />
+          <Route exact path="/explorar" component={Explore} />
+          <Route exact path="/receitas/comida/:id" component={RecipeMealDetails} />
+          <Route exact path="/receitas/bebida/:id" component={RecipeDrinkDetails} />
+          <Route exact path="/receitas-feitas" component={DoneRecipes} />
+          <Route exact path="/receitas-favoritas" component={FavoriteRecipes} />
+          <Route exact path="/explorar/comidas" component={ExploreMeal} />
+          <Route exact path="/explorar/bebidas" component={ExploreDrink} />
+          <Route exact path="/explorar/comidas/ingredients" component={ExploreMealIngredients} />
+          <Route exact path="/explorar/bebidas/ingredients" component={ExploreDrinksIngrendients} />
+          <Route exact path="/explorar/comidas/area" component={ExploreMealArea} />
           <Route component={NotFound} />
         </Switch>
         <Footer />
