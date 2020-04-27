@@ -3,6 +3,7 @@ import RecipesGenerator from '../components/RecipesGenerator';
 import { RecipesAppContext } from '../context/RecipesAppContext';
 import useFilterByOrigin from '../hooks/useFilterByOrigin';
 import { fetchFoodAreas } from '../services/searchBarApi';
+import '../styles/ExploreByOrigin.css';
 
 function originSelectionDropdown(setFilterByOrigin, foodAreas, setIsFiltering, setIsLoading) {
   return (
@@ -39,7 +40,7 @@ export default function ExploreByOrigin() {
     data: [recipes, setRecipes], recipeType: [recipeType], filtering: [, setIsFiltering],
     loading: [isLoading, setIsLoading], displayHeader: [, setDisplayHeader],
     displayFooter: [, setDisplayFooter], displaySearchButton: [, setDisplaySearchButton],
-    headerTitle: [setHeaderTitle],
+    headerTitle: [, setHeaderTitle],
   } = useContext(RecipesAppContext);
   const [foodAreas, setFoodAreas] = useState([]);
   const [filterByOrigin, setFilterByOrigin] = useState('All');
@@ -52,9 +53,9 @@ export default function ExploreByOrigin() {
         .then((meals) => setFoodAreas(meals.map(({ strArea }) => strArea)));
     }
     setHeaderTitle('Explorar Origem');
-    // setDisplayHeader(true);
-    // setDisplayFooter(true);
-    // setDisplaySearchButton(true);
+    setDisplayHeader(true);
+    setDisplayFooter(true);
+    setDisplaySearchButton(true);
     fetchAreas();
   }, []);
 
@@ -75,8 +76,8 @@ export default function ExploreByOrigin() {
       </div>
     )
       : (
-        <div>
-          <div>
+        <div className="explore-by-origin-container">
+          <div className="selector-container">
             {originSelectionDropdown(setFilterByOrigin, foodAreas, setIsFiltering, setIsLoading)}
           </div>
           {isLoading && <p>Loading...</p>}

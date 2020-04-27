@@ -7,7 +7,7 @@ export default function useFilterByOrigin(recipes, originFilter, setIsLoading) {
     filtering: [isFiltering],
   } = useContext(RecipesAppContext);
   const [filteredRecipes, setFilteredRecipes] = useState([]);
-  console.log(originFilter);
+
   useEffect(() => {
     async function fetchFoodPerArea() {
       const recipesPerOriginFilter = await searchFoodByArea(originFilter)
@@ -15,11 +15,8 @@ export default function useFilterByOrigin(recipes, originFilter, setIsLoading) {
       setFilteredRecipes(recipesPerOriginFilter);
       setIsLoading(false);
     }
-    console.log('is Filtering? ', isFiltering);
     if (originFilter !== 'All' && !isFiltering) fetchFoodPerArea();
   }, [originFilter, recipes, isFiltering]);
-
-  console.log('receitas filtradas: ', filteredRecipes);
 
   return filteredRecipes;
 }
