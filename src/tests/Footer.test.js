@@ -81,7 +81,7 @@ describe('Tests for Footer component', () => {
 
     fireEvent.click(exploreButton);
 
-    expect(getByText(/explore/gi)).toBeInTheDocument();
+    expect(getByTestId('explore-food')).toBeInTheDocument();
   });
 
   it('In clicking Cocktails button, user is taken to Cocktail page', () => {
