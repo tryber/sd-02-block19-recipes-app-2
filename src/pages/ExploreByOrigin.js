@@ -36,10 +36,10 @@ function originSelectionDropdown(setFilterByOrigin, foodAreas, setIsFiltering, s
 
 export default function ExploreByOrigin() {
   const {
-    data: [recipes, setRecipes],
-    recipeType: [recipeType],
-    filtering: [, setIsFiltering],
-    loading: [isLoading, setIsLoading],
+    data: [recipes, setRecipes], recipeType: [recipeType], filtering: [, setIsFiltering],
+    loading: [isLoading, setIsLoading], displayHeader: [, setDisplayHeader],
+    displayFooter: [, setDisplayFooter], displaySearchButton: [, setDisplaySearchButton],
+    headerTitle: [setHeaderTitle],
   } = useContext(RecipesAppContext);
   const [foodAreas, setFoodAreas] = useState([]);
   const [filterByOrigin, setFilterByOrigin] = useState('All');
@@ -51,6 +51,10 @@ export default function ExploreByOrigin() {
         .then(({ meals }) => meals)
         .then((meals) => setFoodAreas(meals.map(({ strArea }) => strArea)));
     }
+    setHeaderTitle('Explorar Origem');
+    // setDisplayHeader(true);
+    // setDisplayFooter(true);
+    // setDisplaySearchButton(true);
     fetchAreas();
   }, []);
 
