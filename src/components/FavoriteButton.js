@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useState, useContext } from 'react';
 import propTypes from 'prop-types';
 import { RecipesAppContext } from '../context/RecipesAppContext';
 import WhiteHeartIcon from '../images/whiteHeartIcon.svg';
@@ -71,6 +71,7 @@ FavoriteButton.propTypes = {
   category: propTypes.string.isRequired,
   image: propTypes.string.isRequired,
   name: propTypes.string.isRequired,
+  type: PropTypes.oneOf(['comida', 'bebida']).isRequired,
   index: propTypes.number,
   area: propTypes.string,
   alcoholicOrNot: propTypes.string,

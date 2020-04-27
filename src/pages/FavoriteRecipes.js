@@ -49,25 +49,17 @@ const FavoriteRecipes = () => {
         index,
       ) => (
         <HorizontalCard
-          index={index} type={type} id={id}
-          image={image}
-          name={name} category={category} area={area} alcoholicOrNot={alcoholicOrNot}
-          doneDate={doneDate} tags={tags}
+          index={index} type={type} id={id} image={image} name={name} category={category}
+          area={area} alcoholicOrNot={alcoholicOrNot} doneDate={doneDate} tags={tags}
         />
       ))}
-      {/* <HorizontalCard
-          index={7} type={'comida'} id={'oooiiii'}
-          image={imagemTeste}
+      {/* <HorizontalCard index={7} type={'comida'} id={'oooiiii'} image={imagemTeste}
           name={'ooooiii'} category={'ooiiii'} area={'aaaiiii'} alcoholicOrNot={'eeiiii'}
-          doneDate={null} tags={['cachaça', 'bebida']}
-        />
-        <HorizontalCard
-          index={3} type={'bebida'} id={'nada'}
-          image={imagemTeste}
-          name={'nada'} category={'nada'} area={'nenhum lugar'} alcoholicOrNot={'beber é bom'}
-          doneDate={undefined} tags={null}
-        /> */
-      }
+          doneDate={null} tags={['cachaça', 'bebida']} />
+        <HorizontalCard index={3} type={'bebida'} id={'nada'} image={imagemTeste} name={'nada'}
+          category={'nada'} area={'nenhum lugar'} alcoholicOrNot={'beber é bom'}
+          doneDate={undefined} tags={null} />
+      */}
     </div>
   );
 };
