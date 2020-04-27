@@ -1,5 +1,5 @@
 import React from 'react';
-import { cleanup, wait } from '@testing-library/react';
+import { cleanup, fireEvent, wait, getByTestId } from '@testing-library/react';
 import renderWithRouter from '../services/renderWithRouter';
 import ExploreByOrigin from '../pages/ExploreByOrigin';
 import RecipesAppProvider, { RecipesAppContext } from '../context/RecipesAppContext';
@@ -69,4 +69,33 @@ describe('ExploreByOrigin page tests', () => {
       expect(getByTestId(`${index}-card-category`)).toBeInTheDocument();
     });
   }, 15000);
+
+  it('tests if functions work properly after region is selected', async () => {
+    const { getByTestId } = renderWithRouter(
+      <RecipesAppProvider>
+        <ExploreByOrigin />
+      </RecipesAppProvider>,
+    );
+
+    await wait(() => getByTestId('explore-by-area-dropdown'));
+    await wait(() => getByTestId('American-option'));
+    const areaDropdown = getByTestId('explore-by-area-dropdown');
+    const americanOption = getByTestId('American-option');
+
+    expect(areaDropdown).toBeInTheDocument();
+    expect(americanOption).toBeInTheDocument();
+    const fetchMock = jest.spyOn(global, 'fetch');
+
+    fireEvent.change(areaDropdown, { target: { value: 'American' } });
+    await wait();
+
+    expect(fetchMock).toHaveBeenLastCalledWith('https://www.themealdb.com/api/json/v1/1/filter.php?a=American');
+    expect(setIsFiltering).toHaveBeenLastCalledWith(false);
+
+    await wait(() => getByTestId('11-card-name'));
+    const firstReceiptCard = getByTestId('11-card-name');
+    console.log(firstReceiptCard);
+
+    expect(firstReceiptCard).toBeInTheDocument();
+  });
 });
