@@ -35,40 +35,9 @@ function originSelectionDropdown(setFilterByOrigin, foodAreas, setIsFiltering, s
   );
 }
 
-export default function ExploreByOrigin() {
-  const {
-    data: [recipes, setRecipes], recipeType: [recipeType], filtering: [, setIsFiltering],
-    loading: [isLoading, setIsLoading], displayHeader: [, setDisplayHeader],
-    displayFooter: [, setDisplayFooter], displaySearchButton: [, setDisplaySearchButton],
-    headerTitle: [, setHeaderTitle],
-  } = useContext(RecipesAppContext);
-  const [foodAreas, setFoodAreas] = useState([]);
-  const [filterByOrigin, setFilterByOrigin] = useState('All');
-  const filteredRecipes = useFilterByOrigin(recipes, filterByOrigin, setIsLoading);
-
-  useEffect(() => {
-    async function fetchAreas() {
-      fetchFoodAreas()
-        .then(({ meals }) => meals)
-        .then((meals) => setFoodAreas(meals.map(({ strArea }) => strArea)));
-    }
-    setHeaderTitle('Explorar Origem');
-    setDisplayHeader(true);
-    setDisplayFooter(true);
-    setDisplaySearchButton(true);
-    fetchAreas();
-  }, []);
-
-  useEffect(() => {
-    if (filterByOrigin === 'All') {
-      setIsFiltering(false);
-    } else {
-      setRecipes(filteredRecipes);
-      setIsFiltering(true);
-    }
-    return (() => setRecipes([]));
-  }, [filteredRecipes, filterByOrigin, setIsFiltering, setRecipes]);
-
+function renderComponentsOfExplorebyOriginPage(
+  recipeType, setFilterByOrigin, foodAreas, setIsFiltering, setIsLoading, isLoading,
+) {
   return (
     recipeType === 'Bebidas' ? (
       <div>
@@ -86,5 +55,40 @@ export default function ExploreByOrigin() {
           </div>
         </div>
       )
+  );
+}
+
+
+export default function ExploreByOrigin() {
+  const {
+    data: [recipes, setRecipes], recipeType: [recipeType], filtering: [, setIsFiltering],
+    loading: [isLoading, setIsLoading], headerTitle: [, setHeaderTitle],
+  } = useContext(RecipesAppContext);
+  const [foodAreas, setFoodAreas] = useState([]);
+  const [filterByOrigin, setFilterByOrigin] = useState('All');
+  const filteredRecipes = useFilterByOrigin(recipes, filterByOrigin, setIsLoading);
+
+  useEffect(() => {
+    async function fetchAreas() {
+      fetchFoodAreas()
+        .then(({ meals }) => meals)
+        .then((meals) => setFoodAreas(meals.map(({ strArea }) => strArea)));
+    }
+    setHeaderTitle('Explorar Origem');
+    fetchAreas();
+  }, []);
+
+  useEffect(() => {
+    if (filterByOrigin === 'All') {
+      setIsFiltering(false);
+    } else {
+      setRecipes(filteredRecipes);
+      setIsFiltering(true);
+    }
+    return (() => setRecipes([]));
+  }, [filteredRecipes, filterByOrigin, setIsFiltering, setRecipes]);
+
+  return renderComponentsOfExplorebyOriginPage(
+    recipeType, setFilterByOrigin, foodAreas, setIsFiltering, setIsLoading, isLoading,
   );
 }
