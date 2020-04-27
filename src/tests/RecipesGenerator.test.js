@@ -85,20 +85,4 @@ describe('Complementary testing for RecipesGenerator', () => {
       expect(queryByTestId(/ingredient-search-radio/i).value).toBe('ingredient');
     });
   }, 20000);
-
-  it('tests if when fetch goes wrong, automatically clears recipes list', async () => {
-    const { queryByTestId, getByTestId, getByText } = renderWithRouter(
-      <RecipeAppProvider>
-        <RecipesGenerator />
-      </RecipeAppProvider>,
-    );
-
-    await act(async () => {
-      const fetchMock = jest.spyOn(global, 'fetch');
-
-      // expect(setRecipes).toHaveBeenLastCalledWith([]);
-      // expect(global.fetch).toHaveBeenCalledWith('https://www.thetestdb.com/api/json/v1/1/random.php');
-      await expect(fetchMock).rejects.toThrowError('Erro desconhecido.');
-    });
-  }, 15000);
 });
