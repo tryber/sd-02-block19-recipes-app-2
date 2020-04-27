@@ -8,7 +8,6 @@ import renderWithRouter from '../services/renderWithRouter';
 import RecipeAppProvider, { RecipesAppContext } from '../context/RecipesAppContext';
 import RecipesGenerator from '../components/RecipesGenerator';
 import App from '../App';
-// import { byDrinkName } from '../__mocks__/recipesDrinksMock';
 import { byName } from '../__mocks__/recipesMock';
 
 
@@ -43,14 +42,12 @@ let store = {
   filtering: [isFiltering, setIsFiltering],
 };
 
-const fetchRandomRecipes = () => {
-  const mockSuccessResponse = {
-    success: 'sucess',
-  };
+const callError = () => {
+  const mockSuccessResponse = {};
   const mockJsonPromise = Promise.resolve(mockSuccessResponse);
   const mockFetchPromise = Promise.resolve({
     status: 200,
-    ok: true,
+    ok: false,
     json: () => mockJsonPromise,
   });
   return mockFetchPromise;
@@ -61,7 +58,6 @@ afterEach(cleanup);
 describe('Complementary testing for RecipesGenerator', () => {
   test('if inputsCategory is rendering', async () => {
     await wait();
-    // jest.spyOn(global, 'fetch').mockImplementation(() => fetchRandomRecipes());
 
     const { queryByTestId, getByTestId } = renderWithRouter(
       <RecipeAppProvider>
@@ -73,7 +69,6 @@ describe('Complementary testing for RecipesGenerator', () => {
 
     const wrapper = ({ children }) => <RecipeAppProvider>{children}</RecipeAppProvider>;
     const { result } = renderHook(() => useContext(RecipesAppContext), { wrapper });
-    console.log(result.current.data[0]);
 
     await act(async () => {
       result.current.displaySearchBar[1]();
@@ -90,4 +85,20 @@ describe('Complementary testing for RecipesGenerator', () => {
       expect(queryByTestId(/ingredient-search-radio/i).value).toBe('ingredient');
     });
   }, 20000);
+
+  it('tests if when fetch goes wrong, automatically clears recipes list', async () => {
+    const { queryByTestId, getByTestId, getByText } = renderWithRouter(
+      <RecipeAppProvider>
+        <RecipesGenerator />
+      </RecipeAppProvider>,
+    );
+
+    await act(async () => {
+      const fetchMock = jest.spyOn(global, 'fetch');
+
+      // expect(setRecipes).toHaveBeenLastCalledWith([]);
+      // expect(global.fetch).toHaveBeenCalledWith('https://www.thetestdb.com/api/json/v1/1/random.php');
+      await expect(fetchMock).rejects.toThrowError('Erro desconhecido.');
+    });
+  }, 15000);
 });

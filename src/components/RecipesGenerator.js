@@ -65,6 +65,7 @@ export default function RecipesGenerator({ recipeType }) {
           ),
           () => {
             setRecipes([]);
+            throw new Error('Erro desconhecido.');
           },
         )
         .then(() => setIsLoading(false));
