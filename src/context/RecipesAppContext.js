@@ -18,7 +18,8 @@ export default function RecipesAppProvider({ children }) {
   const [toggleCategory, setToggleCategory] = useState({ category: '', toggleCat: false });
   const [isFiltering, setIsFiltering] = useState(false);
   const [filterFoodOrDrinks, setFilterFoodOrDrinks] = useState('All');
-  const [favoriteRecipes, setFavoriteRecipes] = useState([]);
+  const initialFavoriteRecipes = JSON.parse(localStorage.getItem('favorite-recipes')) || [];
+  const [favoriteRecipes, setFavoriteRecipes] = useState(initialFavoriteRecipes);
 
   function toggleHeaderAndFooter() {
     setDisplayHeader(!displayHeader);

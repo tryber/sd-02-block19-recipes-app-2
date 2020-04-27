@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import { RecipesAppContext } from '../context/RecipesAppContext';
 import FilterBarFoodOrDrinks from '../components/FilterBarFoodOrDrinks';
 import HorizontalCard from '../components/HorizontalCard';
-import imagemTeste from '../images/imagemTeste.svg'
+// import imagemTeste from '../images/imagemTeste.svg'
 
 const setPageElements = (
   setHeaderTitle,
@@ -50,10 +50,10 @@ const DoneRecipes = () => {
         index,
       ) => (
         <HorizontalCard
-          index={1} type="comida" id="453"
-          image={imagemTeste}
-          name="Chelsea Buns" category="Dessert" area="British" alcoholicOrNot="Alcoholic Drink"
-          doneDate="01/12/2019" tags={['bun', 'baking']}
+          index={index} type={type} id={id}
+          image={image}
+          name={name} category={category} area={area} alcoholicOrNot={alcoholicOrNot}
+          doneDate={doneDate} tags={tags}
         />
       ))}
     </div>

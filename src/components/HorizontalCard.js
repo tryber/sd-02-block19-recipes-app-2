@@ -42,8 +42,8 @@ const HorizontalCard = ({ index, type, id, image, name, category, area, alcoholi
           <div className="parte-de-baixo-in-favorite-recipes">
             <ShareButton index={index} id={id} type={type} />
             <FavoriteButton
-              index={index} id={id} category={category} image={image}
-              area={area} alcoholicOrNot={alcoholicOrNot} name={name}
+              index={index} id={id} category={category} image={image} area={area}
+              alcoholicOrNot={alcoholicOrNot} name={name} type={type}
             />
           </div>
         }
