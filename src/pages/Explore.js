@@ -6,6 +6,7 @@ import { RecipesAppContext } from '../context/RecipesAppContext';
 const renderExploreButtons = (type, testid) => (
   <Link to={`/explorar/${type.toLowerCase()}`}>
     <button
+      className="button-explore"
       type="button"
       data-testid={`explore-${testid}`}
     >
