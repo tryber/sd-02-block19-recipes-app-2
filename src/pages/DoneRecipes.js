@@ -7,7 +7,7 @@ const setPageElements = (
   setHeaderTitle,
   setDisplayHeader,
   setDisplaySearchButton,
-  setDisplayFooter
+  setDisplayFooter,
 ) => {
   setHeaderTitle('Receitas Feitas');
   setDisplayHeader(true);
@@ -44,7 +44,10 @@ const DoneRecipes = () => {
   return (
     <div>
       {/* <FilterBarFoodOrDrinks /> */}
-      {doneRecipes.map(({ type, id, image, name, category, area, alcoholicOrNot, doneDate, tags }, index) => (
+      {doneRecipes.map((
+        {type, id, image, name, category, area, alcoholicOrNot, doneDate, tags },
+        index,
+      ) => (
         {/* <HorizontalCard
           index={1} type="comida" id="453"
           image={imagemTeste}

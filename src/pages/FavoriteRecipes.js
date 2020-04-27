@@ -7,7 +7,7 @@ const setPageElements = (
   setHeaderTitle,
   setDisplayHeader,
   setDisplaySearchButton,
-  setDisplayFooter
+  setDisplayFooter,
 ) => {
   setHeaderTitle('Receitas Favoritas');
   setDisplayHeader(true);
@@ -44,7 +44,10 @@ const FavoriteRecipes = () => {
   return (
     <div>
       {/* <FilterBarFoodOrDrinks /> */}
-      {favoriteRecipes.map(({ type, id, image, name, category, area, alcoholicOrNot, doneDate, tags }, index) => (
+      {favoriteRecipes.map((
+        { type, id, image, name, category, area, alcoholicOrNot, doneDate, tags },
+        index,
+      ) => (
         {/* <HorizontalCard
           index={1} type="comida" id="453"
           image={imagemTeste}
