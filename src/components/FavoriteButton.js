@@ -9,7 +9,6 @@ const changeState = (
   isFavorite, setIsFavorite, favoriteRecipes, setFavoriteRecipes,
   id, category, image, area, name, alcoholicOrNot, type,
 ) => {
-
   const inFavoriteRecipes = document.URL.includes('receitas-favoritas');
   const newState = inFavoriteRecipes ? true : !isFavorite;
 
