@@ -9,7 +9,6 @@ const changeState = (
   isFavorite, setIsFavorite, favoriteRecipes, setFavoriteRecipes,
   id, category, image, area, name, alcoholicOrNot, type,
 ) => {
-  // let favoriteRecipes = JSON.parse(localStorage.getItem('favorite-recipes')) || [];
 
   const inFavoriteRecipes = document.URL.includes('receitas-favoritas');
   const newState = inFavoriteRecipes ? true : !isFavorite;
@@ -18,8 +17,7 @@ const changeState = (
     isFavorite ?
     favoriteRecipes.filter((item) => item.id !== id) :
     [...favoriteRecipes, { id, category, image, area, name, alcoholicOrNot, type }]
-    );
-  // const newState = newFavoriteRecipes.some((item) => item.id === id);
+  );
 
   setIsFavorite(newState);
   setFavoriteRecipes(newFavoriteRecipes);
@@ -32,18 +30,8 @@ const FavoriteButton = ({
 }) => {
   const { favoriteRecipes: [favoriteRecipes, setFavoriteRecipes] } = useContext(RecipesAppContext);
 
-  // const initialFavoriteRecipes = JSON.parse(localStorage.getItem('favorite-recipes')) || [];
-
-  // const initialState = initialFavoriteRecipes.some((item) => item.id === id);
   const initialState = favoriteRecipes.some((item) => item.id === id);
   const [isFavorite, setIsFavorite] = useState(initialState);
-
-  // useEffect(
-  //   () => {
-  //     setFavoriteRecipes(initialFavoriteRecipes);
-  //   },
-  //   [],
-  // );
 
   return (
     <div className="favorite-button">
