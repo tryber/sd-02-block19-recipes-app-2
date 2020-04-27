@@ -84,7 +84,14 @@ p {
   padding: 0 8px;
 }
 
+a {
+  all: unset;
+  cursor: pointer;
+  width: 100%;
+}
+
 .name {
+  all: unset;
   font-size: 1.2em;
   font-style: normal;
   font-weight: 400;

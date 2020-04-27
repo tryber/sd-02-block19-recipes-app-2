@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import ShareButton from './ShareButton';
 import FavoriteButton from './FavoriteButton';
 import '../styles/HorizontalCard.css';
+import { Link } from 'react-router-dom';
 
 const HorizontalCard = ({ index, type, id, image, name, category, area, alcoholicOrNot,
   doneDate, tags }) => {
@@ -11,7 +12,9 @@ const HorizontalCard = ({ index, type, id, image, name, category, area, alcoholi
   return (
     <div className="horizontal-card">
       <div className="lado-esquerdo">
-        <img alt="" src={image} data-testid={`${index}-horizontal-image`} />
+        <Link to={`/receitas/${type}/${id}`}>
+          <img alt="" src={image} data-testid={`${index}-horizontal-image`} />
+        </Link>
       </div>
       <div className="lado-direito">
         <div className="parte-de-cima">
@@ -19,7 +22,11 @@ const HorizontalCard = ({ index, type, id, image, name, category, area, alcoholi
             <p data-testid={`${index}-horizontal-top-text`} className="top-text">
               {(type === 'comida') ? `${area} - ${category}` : alcoholicOrNot}
             </p>
-            <p data-testid={`${index}-horizontal-name`} className="name">{name}</p>
+            <p data-testid={`${index}-horizontal-name`} className="name">
+              <Link to={`/receitas/${type}/${id}`}>
+                {name}
+              </Link>
+            </p>
           </div>
           {inDoneRecipes && <ShareButton index={index} id={id} type={type} />}
         </div>
