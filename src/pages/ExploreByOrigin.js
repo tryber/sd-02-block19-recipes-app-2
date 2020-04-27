@@ -64,7 +64,6 @@ export default function ExploreByOrigin() {
   const [foodAreas, setFoodAreas] = useState([]);
   const [filterByOrigin, setFilterByOrigin] = useState('All');
   const filteredRecipes = useFilterByOrigin(recipes, filterByOrigin, setIsLoading);
-
   useEffect(() => {
     const fetchAreas = async () => (fetchFoodAreas().then(({ meals }) => meals)
       .then((meals) => setFoodAreas(meals.map(({ strArea }) => strArea)))
@@ -72,7 +71,6 @@ export default function ExploreByOrigin() {
     setHeaderTitle('Explorar Origem');
     fetchAreas();
   }, [setHeaderTitle]);
-
   useEffect(() => {
     if (filterByOrigin === 'All') setIsFiltering(false);
     else {
@@ -81,7 +79,6 @@ export default function ExploreByOrigin() {
     }
     return (() => setRecipes([]));
   }, [filteredRecipes, filterByOrigin, setIsFiltering, setRecipes]);
-
   return (
     <div>
       {renderComponentsOfExplorebyOriginPage(
