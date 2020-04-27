@@ -6,6 +6,8 @@ import { fetchDrinkByAllCategories } from '../services/drinkPageApis';
 import { fetchMealByAllCategories } from '../services/mealPageApis';
 import { RecipesAppContext } from '../context/RecipesAppContext';
 
+import '../styles/ExploreFoods.css';
+
 const fetchByRandomMeal = async (type, setIsLoadingLocal, setIdFood) => {
   if (type === 'Comidas') {
     return fetchMealByAllCategories()
@@ -28,16 +30,21 @@ const fetchByRandomMeal = async (type, setIsLoadingLocal, setIdFood) => {
 };
 
 const renderByIngredients = (type) => (
-  <Link to={`/explorar/${type.toLowerCase()}/ingredients`}>
-    <button type="button" data-testid="explore-by-ingredient">
+  <Link className="link-origin" to={`/explorar/${type.toLowerCase()}/ingredients`}>
+    <button
+      className="link-button"
+      type="button"
+      data-testid="explore-by-ingredient"
+    >
       Por Ingredientes
     </button>
   </Link>
 );
 
 const renderByOrigin = (type) => (
-  <Link to={`/explorar/${type.toLowerCase()}/area`}>
+  <Link className="link-origin" to={`/explorar/${type.toLowerCase()}/area`}>
     <button
+      className="link-button"
       type="button"
       data-testid="explore-by-area"
       disabled={(type === 'Bebidas')}
@@ -49,6 +56,7 @@ const renderByOrigin = (type) => (
 
 const renderBySuprise = (type, setIsLoadingLocal, setIdFood) => (
   <button
+    className="button-explore"
     type="button"
     data-testid="explore-surprise"
     onClick={() => fetchByRandomMeal(type, setIsLoadingLocal, setIdFood)}
@@ -78,7 +86,7 @@ const ExploreFoods = ({ type }) => {
   }
 
   return (
-    <div>
+    <div className="explore-buttons-container">
       {renderByIngredients(type)}
       {renderByOrigin(type)}
       {renderBySuprise(type, setIsLoadingLocal, setIdFood)}
