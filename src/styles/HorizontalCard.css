@@ -1,0 +1,111 @@
+.horizontal-card {
+  align-items: center;
+  border: 1px solid #f8eded;
+  border-radius: 6px;
+  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+}
+
+p {
+  all: unset;
+  margin: 0.5em;
+}
+
+.lado-esquerdo {
+  display: flex;
+  width: 50%;
+}
+
+.lado-esquerdo img {
+  width: 100%;
+}
+
+.lado-direito {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 50%;
+}
+
+.parte-de-cima {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.parte-de-cima div {
+  display: flex;
+  flex-direction: column;
+}
+
+.tags p {
+  background: #ecdede;
+  border-radius: 30px;
+  font-size: 1.2em;
+  font-style: normal;
+  font-weight: 400;
+  letter-spacing: 0.01em;
+  line-height: 1.1em;
+  margin: 0;
+  padding: 5px 20px;
+}
+
+.parte-de-cima div p {
+  margin: 0.1em;
+}
+
+.parte-de-baixo-in-done-recipes {
+  display: flex;
+  flex-direction: column;
+}
+
+.tags {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}
+
+.parte-de-baixo-in-favorite-recipes {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  margin-top: 30px;
+}
+
+.top-text {
+  color: gray;
+  font-size: 1em;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 1.1em;
+  padding: 0 8px;
+}
+
+a {
+  all: unset;
+  cursor: pointer;
+  width: 100%;
+}
+
+.name {
+  all: unset;
+  font-size: 1.2em;
+  font-style: normal;
+  font-weight: 400;
+  letter-spacing: 0.01em;
+  line-height: 25px;
+  padding: 0 8px;
+}
+
+.done-date {
+  font-size: 1em;
+  font-style: normal;
+  font-weight: 400;
+  letter-spacing: 0.01em;
+  line-height: 1.1em;
+  margin: 10px 0;
+  padding: 0 8px;
+}
