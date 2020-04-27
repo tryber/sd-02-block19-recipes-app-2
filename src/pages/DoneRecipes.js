@@ -45,7 +45,7 @@ const DoneRecipes = () => {
     <div>
       {/* <FilterBarFoodOrDrinks /> */}
       {doneRecipes.map((
-        {type, id, image, name, category, area, alcoholicOrNot, doneDate, tags },
+        { type, id, image, name, category, area, alcoholicOrNot, doneDate, tags },
         index,
       ) => (
         {/* <HorizontalCard
