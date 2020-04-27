@@ -4,14 +4,15 @@ import { RecipesAppContext } from '../context/RecipesAppContext';
 import useFilterByOrigin from '../hooks/useFilterByOrigin';
 import { fetchFoodAreas } from '../services/searchBarApi';
 
-function originSelectionDropdown(setFilterByOrigin, foodAreas, setIsFiltering) {
+function originSelectionDropdown(setFilterByOrigin, foodAreas, setIsFiltering, setIsLoading) {
   return (
     <select
       data-testid="explore-by-area-dropdown"
       className="origin-selector-dropdown"
-      onClick={(e) => {
+      onChange={(e) => {
         setFilterByOrigin(e.target.value);
         setIsFiltering(false);
+        setIsLoading(true);
       }}
     >
       <option
@@ -38,10 +39,11 @@ export default function ExploreByOrigin() {
     data: [recipes, setRecipes],
     recipeType: [recipeType],
     filtering: [, setIsFiltering],
+    loading: [isLoading, setIsLoading],
   } = useContext(RecipesAppContext);
   const [foodAreas, setFoodAreas] = useState([]);
   const [filterByOrigin, setFilterByOrigin] = useState('All');
-  const filteredRecipes = useFilterByOrigin(recipes, filterByOrigin);
+  const filteredRecipes = useFilterByOrigin(recipes, filterByOrigin, setIsLoading);
 
   useEffect(() => {
     async function fetchAreas() {
@@ -71,8 +73,9 @@ export default function ExploreByOrigin() {
       : (
         <div>
           <div>
-            {originSelectionDropdown(setFilterByOrigin, foodAreas, setIsFiltering)}
+            {originSelectionDropdown(setFilterByOrigin, foodAreas, setIsFiltering, setIsLoading)}
           </div>
+          {isLoading && <p>Loading...</p>}
           <div>
             <RecipesGenerator recipeType={recipeType} />
           </div>
