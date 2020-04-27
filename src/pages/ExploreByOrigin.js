@@ -64,6 +64,7 @@ export default function ExploreByOrigin() {
   const [foodAreas, setFoodAreas] = useState([]);
   const [filterByOrigin, setFilterByOrigin] = useState('All');
   const filteredRecipes = useFilterByOrigin(recipes, filterByOrigin, setIsLoading);
+
   useEffect(() => {
     const fetchAreas = async () => (fetchFoodAreas().then(({ meals }) => meals)
       .then((meals) => setFoodAreas(meals.map(({ strArea }) => strArea)))
@@ -71,23 +72,21 @@ export default function ExploreByOrigin() {
     setHeaderTitle('Explorar Origem');
     fetchAreas();
   }, [setHeaderTitle]);
+
   useEffect(() => {
-    if (filterByOrigin === 'All') setIsFiltering(false);
-    else {
-      setRecipes(filteredRecipes);
-      setIsFiltering(true);
-    }
+    if (filterByOrigin === 'All') return setIsFiltering(false);
+    setRecipes(filteredRecipes);
+    setIsFiltering(true);
     return (() => setRecipes([]));
   }, [filteredRecipes, filterByOrigin, setIsFiltering, setRecipes]);
+
   return (
     <div>
       {renderComponentsOfExplorebyOriginPage(
         recipeType, setFilterByOrigin, foodAreas, setIsFiltering, setIsLoading,
       )}
       {isLoading && <p>Loading...</p>}
-      <div>
-        <RecipesGenerator recipeType={recipeType} />
-      </div>
+      <RecipesGenerator recipeType={recipeType} />
     </div>
   );
 }
