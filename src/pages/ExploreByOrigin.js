@@ -77,7 +77,7 @@ export default function ExploreByOrigin() {
     }
     setHeaderTitle('Explorar Origem');
     fetchAreas();
-  }, []);
+  }, [setHeaderTitle]);
 
   useEffect(() => {
     if (filterByOrigin === 'All') {

@@ -16,7 +16,7 @@ export default function useFilterByOrigin(recipes, originFilter, setIsLoading) {
       setIsLoading(false);
     }
     if (originFilter !== 'All' && !isFiltering) fetchFoodPerArea();
-  }, [originFilter, recipes, isFiltering]);
+  }, [originFilter, recipes, isFiltering, setIsLoading]);
 
   return filteredRecipes;
 }
