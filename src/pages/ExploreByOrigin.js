@@ -4,6 +4,7 @@ import RecipesGenerator from '../components/RecipesGenerator';
 import { RecipesAppContext } from '../context/RecipesAppContext';
 import useFilterByOrigin from '../hooks/useFilterByOrigin';
 import { fetchFoodAreas } from '../services/searchBarApi';
+
 import '../styles/ExploreByOrigin.css';
 
 function originSelectionDropdown(setFilterByOrigin, foodAreas, setIsFiltering, setIsLoading) {
@@ -13,8 +14,8 @@ function originSelectionDropdown(setFilterByOrigin, foodAreas, setIsFiltering, s
       className="origin-selector-dropdown"
       onChange={(e) => {
         setFilterByOrigin(e.target.value);
-        setIsFiltering(false);
         setIsLoading(true);
+        setIsFiltering(false);
       }}
     >
       <option
