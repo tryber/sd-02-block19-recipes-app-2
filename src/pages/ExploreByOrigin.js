@@ -1,5 +1,4 @@
 import React, { useContext, useState, useEffect } from 'react';
-import PropTypes, { instanceOf } from 'prop-types';
 import RecipesGenerator from '../components/RecipesGenerator';
 import { RecipesAppContext } from '../context/RecipesAppContext';
 import useFilterByOrigin from '../hooks/useFilterByOrigin';
@@ -37,9 +36,9 @@ function originSelectionDropdown(setFilterByOrigin, foodAreas, setIsFiltering, s
   );
 }
 
-function RenderComponentsOfExplorebyOriginPage({
-  recipeType, setFilterByOrigin, foodAreas, setIsFiltering, setIsLoading, isLoading,
-}) {
+function renderComponentsOfExplorebyOriginPage(
+  recipeType, setFilterByOrigin, foodAreas, setIsFiltering, setIsLoading,
+) {
   return (
     recipeType === 'Bebidas' ? (
       <div>
@@ -50,10 +49,6 @@ function RenderComponentsOfExplorebyOriginPage({
         <div className="explore-by-origin-container">
           <div className="selector-container">
             {originSelectionDropdown(setFilterByOrigin, foodAreas, setIsFiltering, setIsLoading)}
-          </div>
-          {isLoading && <p>Loading...</p>}
-          <div>
-            <RecipesGenerator recipeType={recipeType} />
           </div>
         </div>
       )
@@ -71,19 +66,16 @@ export default function ExploreByOrigin() {
   const filteredRecipes = useFilterByOrigin(recipes, filterByOrigin, setIsLoading);
 
   useEffect(() => {
-    async function fetchAreas() {
-      fetchFoodAreas()
-        .then(({ meals }) => meals)
-        .then((meals) => setFoodAreas(meals.map(({ strArea }) => strArea)));
-    }
+    const fetchAreas = async () => (fetchFoodAreas().then(({ meals }) => meals)
+      .then((meals) => setFoodAreas(meals.map(({ strArea }) => strArea)))
+    );
     setHeaderTitle('Explorar Origem');
     fetchAreas();
   }, [setHeaderTitle]);
 
   useEffect(() => {
-    if (filterByOrigin === 'All') {
-      setIsFiltering(false);
-    } else {
+    if (filterByOrigin === 'All') setIsFiltering(false);
+    else {
       setRecipes(filteredRecipes);
       setIsFiltering(true);
     }
@@ -91,22 +83,14 @@ export default function ExploreByOrigin() {
   }, [filteredRecipes, filterByOrigin, setIsFiltering, setRecipes]);
 
   return (
-    <RenderComponentsOfExplorebyOriginPage
-      recipeType={recipeType}
-      setFilterByOrigin={setFilterByOrigin}
-      foodAreas={foodAreas}
-      setIsFiltering={setIsFiltering}
-      setIsLoading={setIsLoading}
-      isLoading={isLoading}
-    />
+    <div>
+      {renderComponentsOfExplorebyOriginPage(
+        recipeType, setFilterByOrigin, foodAreas, setIsFiltering, setIsLoading,
+      )}
+      {isLoading && <p>Loading...</p>}
+      <div>
+        <RecipesGenerator recipeType={recipeType} />
+      </div>
+    </div>
   );
 }
-
-RenderComponentsOfExplorebyOriginPage.propTypes = {
-  recipeType: PropTypes.string.isRequired,
-  setFilterByOrigin: PropTypes.func.isRequired,
-  foodAreas: PropTypes.arrayOf(instanceOf(String)).isRequired,
-  setIsFiltering: PropTypes.func.isRequired,
-  setIsLoading: PropTypes.func.isRequired,
-  isLoading: PropTypes.bool.isRequired,
-};

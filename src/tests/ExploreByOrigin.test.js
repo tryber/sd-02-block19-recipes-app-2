@@ -1,25 +1,25 @@
 import React from 'react';
-import { cleanup, fireEvent, wait, getByTestId } from '@testing-library/react';
+import { cleanup, fireEvent, wait } from '@testing-library/react';
 import renderWithRouter from '../services/renderWithRouter';
 import ExploreByOrigin from '../pages/ExploreByOrigin';
 import RecipesAppProvider, { RecipesAppContext } from '../context/RecipesAppContext';
 import foodRecipesMock from '../__mocks__/foodRecipesMock';
 
-let [headerTitle, setHeaderTitle] = ['Receitas', jest.fn()];
-let [displayHeader, setDisplayHeader] = [false, jest.fn()];
-let [displaySearchBar, setDisplaySearchBar] = [false, jest.fn()];
-let [displaySearchButton, setDisplaySearchButton] = [false, jest.fn()];
-let [displayFooter, setDisplayFooter] = [true, jest.fn()];
-let [isLoading, setIsLoading] = [true, jest.fn()];
-let [recipes, setRecipes] = [[], jest.fn()];
+const [headerTitle, setHeaderTitle] = ['Receitas', jest.fn()];
+const [displayHeader, setDisplayHeader] = [false, jest.fn()];
+const [displaySearchBar, setDisplaySearchBar] = [false, jest.fn()];
+const [displaySearchButton, setDisplaySearchButton] = [false, jest.fn()];
+const [displayFooter, setDisplayFooter] = [true, jest.fn()];
+const [isLoading, setIsLoading] = [true, jest.fn()];
+const [recipes, setRecipes] = [[], jest.fn()];
 let [recipeType, setRecipeType] = ['Comidas', jest.fn()];
-let [inputValue, setInputValue] = [{ radio: '', text: '', didFetch: false }, jest.fn()];
-let [isFetching, setIsFetching] = [false, jest.fn()];
-let [isSearching, setIsSearching] = [false, jest.fn()];
-let [toggleCategory, setToggleCategory] = [{ category: '', toggleCat: false }, jest.fn()];
-let [isFiltering, setIsFiltering] = [false, jest.fn()];
+const [inputValue, setInputValue] = [{ radio: '', text: '', didFetch: false }, jest.fn()];
+const [isFetching, setIsFetching] = [false, jest.fn()];
+const [isSearching, setIsSearching] = [false, jest.fn()];
+const [toggleCategory, setToggleCategory] = [{ category: '', toggleCat: false }, jest.fn()];
+const [isFiltering, setIsFiltering] = [false, jest.fn()];
 
-let store = {
+const store = {
   headerTitle: [headerTitle, setHeaderTitle],
   displayHeader: [displayHeader, setDisplayHeader],
   displaySearchButton: [displaySearchButton, setDisplaySearchButton],
@@ -41,7 +41,7 @@ afterEach(cleanup);
 describe('ExploreByOrigin page tests', () => {
   it('if recipeType is "Bebidas", then the page be displayed with message', () => {
     [recipeType, setRecipeType] = ['Bebidas', jest.fn()];
-    const { getByTestId, queryByTestId, getByText } = renderWithRouter(
+    const { queryByTestId, getByText } = renderWithRouter(
       <RecipesAppContext.Provider value={{ ...store, recipeType: [recipeType, setRecipeType] }}>
         <ExploreByOrigin />
       </RecipesAppContext.Provider>,
