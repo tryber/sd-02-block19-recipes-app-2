@@ -45,14 +45,19 @@ const FavoriteButton = ({
 };
 
 FavoriteButton.propTypes = {
-  index: propTypes.number,
   id: propTypes.string.isRequired,
   category: propTypes.string.isRequired,
   image: propTypes.string.isRequired,
+  name: propTypes.string.isRequired,
+  index: propTypes.number,
+  area: propTypes.string,
+  alcoholicOrNot: propTypes.string,
 };
 
 FavoriteButton.defaultProps = {
   index: null,
+  area: null,
+  alcoholicOrNot: null,
 };
 
 export default FavoriteButton;
