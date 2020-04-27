@@ -1,7 +1,8 @@
 import React, { useContext } from 'react';
 import { RecipesAppContext } from '../context/RecipesAppContext';
-// import FilterBarFoodOrDrinks from '../components/FilterBarFoodOrDrinks';
-// import HorizontalCard from '../components/HorizontalCard';
+import FilterBarFoodOrDrinks from '../components/FilterBarFoodOrDrinks';
+import HorizontalCard from '../components/HorizontalCard';
+import imagemTeste from '../images/imagemTeste.svg'
 
 const setPageElements = (
   setHeaderTitle,
@@ -16,7 +17,7 @@ const setPageElements = (
 };
 
 const getFavoriteRecipes = (filterFoodOrDrinks) => {
-  const favoriteRecipes = JSON.parse(localStorage.getItem('favoriteRecipes')) || [];
+  const favoriteRecipes = JSON.parse(localStorage.getItem('favorite-recipes')) || [];
 
   switch (filterFoodOrDrinks) {
     case 'Food':
@@ -43,17 +44,17 @@ const FavoriteRecipes = () => {
 
   return (
     <div>
-      {/* <FilterBarFoodOrDrinks /> */}
+      <FilterBarFoodOrDrinks />
       {favoriteRecipes.map((
         { type, id, image, name, category, area, alcoholicOrNot, doneDate, tags },
         index,
       ) => (
-        {/* <HorizontalCard
-          index={1} type="comida" id="453"
-          image={imagemTeste}
-          name="Chelsea Buns" category="Dessert" area="British" alcoholicOrNot="Alcoholic Drink"
-          doneDate="01/12/2019" tags={['bun', 'baking']}
-        /> */}
+        <HorizontalCard
+          index={index} type={type} id={id}
+          image={image}
+          name={name} category={category} area={area} alcoholicOrNot={alcoholicOrNot}
+          doneDate={doneDate} tags={tags}
+        />
       ))}
     </div>
   );

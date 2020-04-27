@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import propTypes from 'prop-types';
+import { RecipesAppContext } from '../context/RecipesAppContext';
 import WhiteHeartIcon from '../images/whiteHeartIcon.svg';
 import BlackHeartIcon from '../images/blackHeartIcon.svg';
 import '../styles/FavoriteButton.css';
@@ -7,7 +8,7 @@ import '../styles/FavoriteButton.css';
 const changeState = (
   isFavorite, setIsFavorite, id, category, image, area, name, alcoholicOrNot,
 ) => {
-  let favoriteRecipes = JSON.parse(localStorage.getItem('favoriteRecipes')) || [];
+  let favoriteRecipes = JSON.parse(localStorage.getItem('favorite-recipes')) || [];
 
   setIsFavorite(!isFavorite);
 
@@ -15,15 +16,16 @@ const changeState = (
     ? favoriteRecipes.filter((item) => item.id !== id)
     : [...favoriteRecipes, { id, category, image, area, name, alcoholicOrNot }];
 
-  localStorage.setItem('favoriteRecipes', JSON.stringify(favoriteRecipes));
+  localStorage.setItem('favorite-recipes', JSON.stringify(favoriteRecipes));
 };
 
 const FavoriteButton = ({
   index, id, category, image, area, name, alcoholicOrNot,
 }) => {
-  const initialFavoriteRecipes = JSON.parse(localStorage.getItem('favoriteRecipes')) || [];
+  const initialFavoriteRecipes = JSON.parse(localStorage.getItem('favorite-recipes')) || [];
   const initialState = initialFavoriteRecipes.some((item) => item.id === id);
 
+  const { favoriteRecipes: [favoriteRecipes, setFavoriteRecipes] } = useContext(RecipesAppContext);
   const [isFavorite, setIsFavorite] = useState(initialState);
 
   return (
