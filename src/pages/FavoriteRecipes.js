@@ -16,9 +16,7 @@ const setPageElements = (
   setDisplayFooter(false);
 };
 
-const getFavoriteRecipes = (filterFoodOrDrinks) => {
-  const favoriteRecipes = JSON.parse(localStorage.getItem('favorite-recipes')) || [];
-
+const filterFavoriteRecipes = (favoriteRecipes, filterFoodOrDrinks) => {
   switch (filterFoodOrDrinks) {
     case 'Food':
       return favoriteRecipes.filter(({ type }) => type === 'comida');
@@ -36,16 +34,17 @@ const FavoriteRecipes = () => {
     displaySearchButton: [, setDisplaySearchButton],
     displayFooter: [, setDisplayFooter],
     filterFoodOrDrinks: [filterFoodOrDrinks],
+    favoriteRecipes: [favoriteRecipes],
   } = useContext(RecipesAppContext);
 
   setPageElements(setHeaderTitle, setDisplayHeader, setDisplaySearchButton, setDisplayFooter);
 
-  const favoriteRecipes = getFavoriteRecipes(filterFoodOrDrinks);
+  const filteredFavoriteRecipes = filterFavoriteRecipes(favoriteRecipes, filterFoodOrDrinks);
 
   return (
     <div>
       <FilterBarFoodOrDrinks />
-      {favoriteRecipes.map((
+      {filteredFavoriteRecipes.map((
         { type, id, image, name, category, area, alcoholicOrNot, doneDate, tags },
         index,
       ) => (
@@ -56,18 +55,19 @@ const FavoriteRecipes = () => {
           doneDate={doneDate} tags={tags}
         />
       ))}
-              {/* <HorizontalCard
+      {/* <HorizontalCard
           index={7} type={'comida'} id={'oooiiii'}
           image={imagemTeste}
           name={'ooooiii'} category={'ooiiii'} area={'aaaiiii'} alcoholicOrNot={'eeiiii'}
           doneDate={null} tags={['cachaça', 'bebida']}
         />
-                <HorizontalCard
+        <HorizontalCard
           index={3} type={'bebida'} id={'nada'}
           image={imagemTeste}
           name={'nada'} category={'nada'} area={'nenhum lugar'} alcoholicOrNot={'beber é bom'}
           doneDate={undefined} tags={null}
-        /> */}
+        /> */
+      }
     </div>
   );
 };

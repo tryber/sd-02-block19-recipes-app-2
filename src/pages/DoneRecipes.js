@@ -2,7 +2,6 @@ import React, { useContext } from 'react';
 import { RecipesAppContext } from '../context/RecipesAppContext';
 import FilterBarFoodOrDrinks from '../components/FilterBarFoodOrDrinks';
 import HorizontalCard from '../components/HorizontalCard';
-// import imagemTeste from '../images/imagemTeste.svg'
 
 const setPageElements = (
   setHeaderTitle,
