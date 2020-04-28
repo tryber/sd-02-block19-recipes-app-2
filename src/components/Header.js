@@ -28,13 +28,13 @@ export default function Header() {
             {headerTitle}
           </span>
         </div>
-        {displaySearchButton && (
-          <div>
+        <div>
+          {displaySearchButton && (
             <button data-testid="search-top-btn" type="button" onClick={toggleSearchBar}>
               <img src={SearchIcon} alt="Ícone de busca" />
             </button>
-          </div>
-        )}
+          )}
+        </div>
       </nav>
     </div>
   ) : null;
