@@ -41,7 +41,7 @@ function App() {
           <Route exact path="/explorar/bebidas" component={ExploreDrink} />
           <Route exact path="/explorar/comidas/ingredients" component={ExploreMealIngredients} />
           <Route exact path="/explorar/bebidas/ingredients" component={ExploreDrinksIngrendients} />
-          <Route exact path="/explorar/comidas/area" component={ExploreMealArea} />
+          <Route exact path="/explorar/comidas/area" component={ExploreByOrigin} />
           <Route component={NotFound} />
         </Switch>
         <Footer />
