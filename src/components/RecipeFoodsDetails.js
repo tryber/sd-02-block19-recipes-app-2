@@ -11,6 +11,8 @@ import { fetchDrinkByAllCategories } from '../services/drinkPageApis';
 import '../styles/RecipeMealDetails.css';
 import { RecipesAppContext } from '../context/RecipesAppContext';
 import CheckBox from './CheckBox';
+import ShareButton from './ShareButton';
+import FavoriteButton from './FavoriteButton';
 
 import '../styles/RecipeFoodsDetails.css';
 
@@ -56,8 +58,8 @@ const renderIngredients = (foods) => (
     <div className="ingredients-box">
       {allIngredients(foods).map((ingredients, index) => (
         <div className="ingredients-container" key={ingredients[0]}>
-          <div data-testid={`${index}-ingredient-name`}>{`- ${ingredients[0]} - `}</div>
-          <div data-testid={`${index}-ingredient-measure`}>{ingredients[1]}</div>
+          <div data-testid={`${index}-ingredient-name`}>{`- ${ingredients[0]} -`}</div>
+          <div data-testid={`${index}-ingredient-measure`}>{` - ${ingredients[1]}`}</div>
         </div>
       ))}
     </div>
@@ -257,6 +259,20 @@ const RecipeFoodDetails = ({ id, typeFood }) => {
         setRenderInProgress,
         disabled[0],
         setCanRedirect,
+      )}
+      {(!isLoading) && (
+        <div className="share-favorite-container">
+          <ShareButton id={id} type={(typeFood === 'Meal') ? 'comida' : 'bebida'} />
+          <FavoriteButton
+            id={id}
+            category={detailsRecipe[0].strCategory}
+            image={(typeFood === 'Meal') ? detailsRecipe[0].strMealThumb : detailsRecipe[0].strDrinkThumb}
+            area={(typeFood === 'Meal') ? detailsRecipe[0].strArea : null}
+            alcoholicOrNot={(typeFood === 'Meal') ? null : detailsRecipe[0].strAlcoholic}
+            name={(typeFood === 'Meal') ? detailsRecipe[0].strMeal : detailsRecipe[0].strDrink}
+            type={(typeFood === 'Meal') ? 'comida' : 'bebida'}
+          />
+        </div>
       )}
     </div>
   );
