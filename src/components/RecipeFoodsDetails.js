@@ -209,6 +209,21 @@ const fetchFoodById = async (id, setDetailsRecipe, setIsLoading, typeFood) => {
   }
 };
 
+const renderShareFavorite = (id, typeFood, detailsRecipe) => (
+  <div className="share-favorite-container">
+    <ShareButton id={id} type={(typeFood === 'Meal') ? 'comida' : 'bebida'} />
+    <FavoriteButton
+      id={id}
+      category={detailsRecipe[0].strCategory}
+      image={(typeFood === 'Meal') ? detailsRecipe[0].strMealThumb : detailsRecipe[0].strDrinkThumb}
+      area={(typeFood === 'Meal') ? detailsRecipe[0].strArea : null}
+      alcoholicOrNot={(typeFood === 'Meal') ? null : detailsRecipe[0].strAlcoholic}
+      name={(typeFood === 'Meal') ? detailsRecipe[0].strMeal : detailsRecipe[0].strDrink}
+      type={(typeFood === 'Meal') ? 'comida' : 'bebida'}
+    />
+  </div>
+)
+
 const mainRender = (
   canRedirect, isLoading, detailsRecipe, carousel, setCarousel, id, typeFood,
   renderInProgress, setRenderInProgress, disabled, setCanRedirect,
@@ -227,20 +242,7 @@ const mainRender = (
         disabled[0],
         setCanRedirect,
       )}
-      {(!isLoading) && (
-        <div className="share-favorite-container">
-          <ShareButton id={id} type={(typeFood === 'Meal') ? 'comida' : 'bebida'} />
-          <FavoriteButton
-            id={id}
-            category={detailsRecipe[0].strCategory}
-            image={(typeFood === 'Meal') ? detailsRecipe[0].strMealThumb : detailsRecipe[0].strDrinkThumb}
-            area={(typeFood === 'Meal') ? detailsRecipe[0].strArea : null}
-            alcoholicOrNot={(typeFood === 'Meal') ? null : detailsRecipe[0].strAlcoholic}
-            name={(typeFood === 'Meal') ? detailsRecipe[0].strMeal : detailsRecipe[0].strDrink}
-            type={(typeFood === 'Meal') ? 'comida' : 'bebida'}
-          />
-        </div>
-      )}
+      {(!isLoading) && (renderShareFavorite(id, typeFood, detailsRecipe))}
     </div>
   );
 }
