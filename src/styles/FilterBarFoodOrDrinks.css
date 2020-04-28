@@ -2,9 +2,10 @@
   display: flex;
   justify-content: space-around;
   text-align: center;
+  margin: 2em auto 2em;
 }
 
-button {
+.filter-bar button {
   all: unset;
   background: #c4c4c4;
   border-radius: 7.5%;
