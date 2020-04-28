@@ -1,10 +1,11 @@
 .filter-bar {
   display: flex;
   justify-content: space-around;
+  margin: 2em auto;
   text-align: center;
 }
 
-button {
+.filter-bar button {
   all: unset;
   background: #c4c4c4;
   border-radius: 7.5%;
