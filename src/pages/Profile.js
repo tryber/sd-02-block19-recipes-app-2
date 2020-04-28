@@ -52,7 +52,7 @@ const Profile = () => {
 
   return (
     <div className="profile">
-      <h1 data-testid="profile-email">{email}</h1>
+      <p data-testid="profile-email">{email}</p>
       {renderProfileButtons()}
     </div>
   );
