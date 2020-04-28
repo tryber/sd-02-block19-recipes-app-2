@@ -13,8 +13,8 @@ const FilterBarFoodOrDrinks = () => {
   );
 
   const changeFilter = ({ target }) => {
-    const { innerText } = target;
-    setFilterFoodOrDrinks(innerText);
+    const { innerHTML } = target;
+    setFilterFoodOrDrinks(innerHTML);
   };
 
   const renderButtons = () => (

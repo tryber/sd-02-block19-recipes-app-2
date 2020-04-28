@@ -6,10 +6,10 @@
   box-sizing: border-box;
   display: flex;
   flex-direction: row;
-  width: 100%;
+  margin: 0 5px 5px;
 }
 
-p {
+.horizontal-card > p {
   all: unset;
   margin: 0.5em;
 }
@@ -19,7 +19,7 @@ p {
   width: 50%;
 }
 
-.lado-esquerdo img {
+.lado-esquerdo a , .lado-esquerdo a img {
   width: 100%;
 }
 
@@ -44,13 +44,13 @@ p {
 .tags p {
   background: #ecdede;
   border-radius: 30px;
-  font-size: 1.2em;
+  font-size: 1em;
   font-style: normal;
   font-weight: 400;
   letter-spacing: 0.01em;
   line-height: 1.1em;
   margin: 0;
-  padding: 5px 20px;
+  padding: 0.3em 0.7em;
 }
 
 .parte-de-cima div p {
@@ -66,6 +66,7 @@ p {
   display: flex;
   flex-direction: row;
   justify-content: space-around;
+  width: 100%;
 }
 
 .parte-de-baixo-in-favorite-recipes {
@@ -84,12 +85,6 @@ p {
   padding: 0 8px;
 }
 
-a {
-  all: unset;
-  cursor: pointer;
-  width: 100%;
-}
-
 .name {
   all: unset;
   font-size: 1.2em;
@@ -98,6 +93,12 @@ a {
   letter-spacing: 0.01em;
   line-height: 25px;
   padding: 0 8px;
+}
+
+.name a {
+  all: unset;
+  cursor: pointer;
+  width: 100%;
 }
 
 .done-date {
