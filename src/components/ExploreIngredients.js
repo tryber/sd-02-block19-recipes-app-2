@@ -33,28 +33,41 @@ const fetchIngredients = async (type, setIngredients, setIsLocalLoading) => {
     );
 };
 
-const fetchByIngredient = async (ingredient, type, setRecipes, setCanRedirect) => {
+const fetchByIngredient = async (
+  ingredient, type, setRecipes, setCanRedirect, setIsExploring, setIsLoading,
+) => {
+  setIsExploring(true);
   if (type === 'Comidas') {
     return searchMealsByMainIngredient(ingredient)
       .then(
         (({ meals }) => {
+          setIsLoading(false);
           setRecipes(meals);
           setCanRedirect(true);
         }),
-        () => console.log('ERRO EXPLORE INGREDIENTS'),
+        (err) => {
+          console.log('ERRO EXPLORE INGREDIENTS');
+          console.log(err);
+        },
       );
   }
   return searchDrinksByMainIngredient(ingredient)
     .then(
       (({ drinks }) => {
+        setIsLoading(false);
         setRecipes(drinks);
         setCanRedirect(true);
       }),
-      () => console.log('ERRO EXPLORE INGREDIENTS'),
+      (err) => {
+        console.log('ERRO EXPLORE INGREDIENTS');
+        console.log(err);
+      },
     );
 };
 
-const renderIngredients = (ingredients, imageUrl, type, setRecipes, setCanRedirect) => {
+const renderIngredients = (
+  ingredients, imageUrl, fetchAllByIngredients,
+) => {
   const newIngredients = ingredients.slice(0, (ingredients.length / 2));
   return (
     <div className="ingredients-container">
@@ -63,9 +76,7 @@ const renderIngredients = (ingredients, imageUrl, type, setRecipes, setCanRedire
           <button
             className="button-explore-ingredients"
             type="button"
-            onClick={() => fetchByIngredient(
-              (ele.strIngredient || ele.strIngredient1), type, setRecipes, setCanRedirect,
-            )}
+            onClick={() => fetchAllByIngredients(ele)}
           >
             <img
               data-testid={`${ele.strIngredient || ele.strIngredient1}-card-img`}
@@ -93,19 +104,25 @@ const ExploreIngredients = ({ type }) => {
   const [canRedirect, setCanRedirect] = useState(false);
   const {
     displayHeader: [, setDisplayHeader], displayFooter: [, setDisplayFooter], data,
+    headerTitle: [, setHeaderTitle], isExploring: [, setIsExploring],
+    loading: [, setIsLoading],
   } = useContext(RecipesAppContext);
-
+  const fetchAllByIngredients = (ele) => fetchByIngredient(
+    (ele.strIngredient || ele.strIngredient1), type, data[1],
+    setCanRedirect, setIsExploring, setIsLoading,
+  );
   useEffect(() => {
     setDisplayHeader(true);
     setDisplayFooter(true);
+    setHeaderTitle('Explorar Ingredientes');
     fetchIngredients(type, setIngredients, setIsLocalLoading);
-  }, [setDisplayFooter, setDisplayHeader]);
+  }, [setDisplayFooter, setDisplayHeader, setHeaderTitle, type]);
 
   if (isLocalLoading) return <div>Loading...</div>;
   if (canRedirect) return (type === 'Comidas' ? <Redirect to="/comidas" /> : <Redirect to="/bebidas" />);
   return (
     <div>
-      {renderIngredients(ingredients, imageURL, type, data[1], setCanRedirect)}
+      {renderIngredients(ingredients, imageURL, fetchAllByIngredients)}
     </div>
   );
 };

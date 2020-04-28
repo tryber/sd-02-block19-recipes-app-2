@@ -45,13 +45,15 @@ export default function RecipesGenerator({ recipeType }) {
     fetchingStatus: [isFetching],
     isSearching: [isSearching],
     filtering: [isFiltering],
+    isExploring: [isExploring, setIsExploring],
   } = useContext(RecipesAppContext);
 
   const typeQueryString = recipeType === 'Comidas' ? 'meals' : 'drinks';
 
   useEffect(() => {
-    if (isSearching === false) setRecipes([]);
-  }, [setRecipes, isSearching]);
+    if (isSearching === false && isExploring === false) setRecipes([]);
+    if (isExploring) setIsLoading(false);
+  }, [setRecipes, isSearching, isExploring, setIsLoading]);
 
   useEffect(() => {
     async function fetchRandomRecipes() {
@@ -71,18 +73,24 @@ export default function RecipesGenerator({ recipeType }) {
         .then(() => setIsLoading(false));
     }
     const isNotFilteringOrSearching = !toggleCat && !isFetching && !isSearching && !isFiltering;
-    if (isNotFilteringOrSearching && recipes && recipes.length < 12) fetchRandomRecipes();
+    if (isNotFilteringOrSearching && !isExploring
+      && recipes && recipes.length < 12) fetchRandomRecipes();
   }, [
     isFetching, recipeType, recipes, isSearching, setIsLoading,
-    setRecipes, toggleCat, typeQueryString, isFiltering,
+    setRecipes, toggleCat, typeQueryString, isFiltering, isExploring,
   ]);
-
+  console.log('isLoading? ', isLoading);
   return (
-    <div className="recipes-container">
-      {!isLoading && recipes && recipes.length > 0 ? recipes.map((recipe, index) => (
-        (index <= 11)
-        && <RecipeCard key={`${index + 1}`} recipe={recipe} recipeType={recipeType} index={index} />
-      )) : (!isLoading) && <span>Não foi encontrado nenhum resultado.</span>}
+    <div>
+      <div>
+        {isExploring && <button type="button" onClick={() => setIsExploring(false)}>Sair da exploração</button>}
+      </div>
+      <div className="recipes-container">
+        {!isLoading && recipes && recipes.length > 0 ? recipes.map((recipe, index) => (
+          (index <= 11)
+          && <RecipeCard key={`${index + 1}`} recipe={recipe} recipeType={recipeType} index={index} />
+        )) : !isLoading && <span>Não foi encontrado nenhum resultado.</span>}
+      </div>
     </div>
   );
 }
