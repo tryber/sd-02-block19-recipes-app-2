@@ -34,14 +34,12 @@ const fetchIngredients = async (type, setIngredients, setIsLocalLoading) => {
 };
 
 const fetchByIngredient = async (
-  ingredient, type, setRecipes, setCanRedirect, setIsExploring, setIsLoading,
+  ingredient, type, setRecipes, setCanRedirect,
 ) => {
-  setIsExploring(true);
   if (type === 'Comidas') {
     return searchMealsByMainIngredient(ingredient)
       .then(
         (({ meals }) => {
-          setIsLoading(false);
           setRecipes(meals);
           setCanRedirect(true);
         }),
@@ -54,7 +52,6 @@ const fetchByIngredient = async (
   return searchDrinksByMainIngredient(ingredient)
     .then(
       (({ drinks }) => {
-        setIsLoading(false);
         setRecipes(drinks);
         setCanRedirect(true);
       }),
@@ -66,7 +63,7 @@ const fetchByIngredient = async (
 };
 
 const renderIngredients = (
-  ingredients, imageUrl, fetchAllByIngredients,
+  ingredients, imageUrl, type, setRecipes, setCanRedirect,
 ) => {
   const newIngredients = ingredients.slice(0, (ingredients.length / 2));
   return (
@@ -76,7 +73,10 @@ const renderIngredients = (
           <button
             className="button-explore-ingredients"
             type="button"
-            onClick={() => fetchAllByIngredients(ele)}
+            onClick={() => fetchByIngredient(
+              (ele.strIngredient || ele.strIngredient1), type, setRecipes,
+              setCanRedirect,
+            )}
           >
             <img
               data-testid={`${ele.strIngredient || ele.strIngredient1}-card-img`}
@@ -108,11 +108,6 @@ const ExploreIngredients = ({ type }) => {
     loading: [, setIsLoading],
   } = useContext(RecipesAppContext);
 
-  const fetchAllByIngredients = (ele) => fetchByIngredient(
-    (ele.strIngredient || ele.strIngredient1), type, data[1],
-    setCanRedirect, setIsExploring, setIsLoading,
-  );
-
   useEffect(() => {
     setDisplayHeader(true);
     setDisplayFooter(true);
@@ -122,13 +117,16 @@ const ExploreIngredients = ({ type }) => {
   useEffect(() => {
     fetchIngredients(type, setIngredients, setIsLocalLoading);
   }, [type]);
-
+  if (canRedirect) {
+    setIsExploring(true);
+    setIsLoading(false);
+  }
   if (canRedirect) return (type === 'Comidas' ? <Redirect to="/comidas" /> : <Redirect to="/bebidas" />);
 
   return (
     <div>
       {isLocalLoading && <div>Loading...</div>}
-      {renderIngredients(ingredients, imageURL, fetchAllByIngredients)}
+      {renderIngredients(ingredients, imageURL, type, data[1], setCanRedirect)}
     </div>
   );
 };
