@@ -120,8 +120,8 @@ const ExploreIngredients = ({ type }) => {
   if (canRedirect) {
     setIsExploring(true);
     setIsLoading(false);
+    return (type === 'Comidas' ? <Redirect to="/comidas" /> : <Redirect to="/bebidas" />);
   }
-  if (canRedirect) return (type === 'Comidas' ? <Redirect to="/comidas" /> : <Redirect to="/bebidas" />);
 
   return (
     <div>
