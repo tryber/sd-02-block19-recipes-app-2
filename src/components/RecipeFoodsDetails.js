@@ -174,7 +174,7 @@ const mainRender = (
   canRedirect, isLoading, detailsRecipe, carousel, setCarousel, id, typeFood,
   renderInProgress, setRenderInProgress, disabled, setCanRedirect,
 ) => {
-  if (canRedirect) return <Redirect to="/asdasdasd" />;
+  if (canRedirect) return <Redirect to="/receitas-feitas" />;
   return (
     <div>
       {(isLoading) ? <div>Loading...</div> : detailsRecipe && renderAllDetails(

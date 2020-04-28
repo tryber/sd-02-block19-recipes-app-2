@@ -1,4 +1,4 @@
-button:disabled {
+.start-button:disabled {
   background-color: grey;
 }
 
