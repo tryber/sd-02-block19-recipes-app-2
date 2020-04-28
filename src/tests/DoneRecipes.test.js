@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, cleanup, fireEvent } from '@testing-library/react';
-import FavoriteRecipes from '../pages/FavoriteRecipes';
+import DoneRecipes from '../pages/DoneRecipes';
 import RecipesAppProvider from '../context/RecipesAppContext';
 import imagemTeste from '../images/imagemTeste.svg';
 
@@ -13,8 +13,8 @@ const localStorageMock = [
     category: 'uma categoria',
     area: 'uma área',
     alcoholicOrNot: null,
-    doneDate: null,
-    tags: null,
+    doneDate: '01/04/2019',
+    tags: ['uma tag', 'outra tag'],
   },
   {
     type: 'bebida',
@@ -24,7 +24,7 @@ const localStorageMock = [
     category: 'outra categoria',
     area: null,
     alcoholicOrNot: 'alcoólico',
-    doneDate: null,
+    doneDate: '05/03/2020',
     tags: null,
   },
 ];
@@ -34,7 +34,7 @@ afterEach(cleanup);
 test('renderiza a barra de filtros', () => {
   const { getByText } = render(
     <RecipesAppProvider>
-      <FavoriteRecipes />
+      <DoneRecipes />
     </RecipesAppProvider>,
   );
 
@@ -48,11 +48,11 @@ test('renderiza a barra de filtros', () => {
 });
 
 test('renderiza os cards', () => {
-  localStorage.setItem('favorite-recipes', JSON.stringify(localStorageMock));
+  localStorage.setItem('done-recipes', JSON.stringify(localStorageMock));
 
   const { getByText } = render(
     <RecipesAppProvider>
-      <FavoriteRecipes />
+      <DoneRecipes />
     </RecipesAppProvider>,
   );
 
@@ -64,11 +64,11 @@ test('renderiza os cards', () => {
 });
 
 test('renderiza os cards de acordo com o tipo escolhido, comida ou bebida', () => {
-  localStorage.setItem('favorite-recipes', JSON.stringify(localStorageMock));
+  localStorage.setItem('done-recipes', JSON.stringify(localStorageMock));
 
   const { getByText, queryByText } = render(
     <RecipesAppProvider>
-      <FavoriteRecipes />
+      <DoneRecipes />
     </RecipesAppProvider>,
   );
 
