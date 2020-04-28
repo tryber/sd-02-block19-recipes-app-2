@@ -79,11 +79,15 @@ export default function RecipesGenerator({ recipeType }) {
     isFetching, recipeType, recipes, isSearching, setIsLoading,
     setRecipes, toggleCat, typeQueryString, isFiltering, isExploring,
   ]);
-  console.log('isLoading? ', isLoading);
+
   return (
     <div>
       <div>
-        {isExploring && <button type="button" onClick={() => setIsExploring(false)}>Sair da exploração</button>}
+        {isExploring && (
+        <button type="button" onClick={() => setIsExploring(false)}>
+          Sair da exploração
+        </button>
+        )}
       </div>
       <div className="recipes-container">
         {!isLoading && recipes && recipes.length > 0 ? recipes.map((recipe, index) => (

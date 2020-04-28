@@ -107,6 +107,9 @@ const ExploreIngredients = ({ type }) => {
     headerTitle: [, setHeaderTitle], isExploring: [, setIsExploring],
     loading: [, setIsLoading],
   } = useContext(RecipesAppContext);
+
+  if (canRedirect) return (type === 'Comidas' ? <Redirect to="/comidas" /> : <Redirect to="/bebidas" />);
+
   const fetchAllByIngredients = (ele) => fetchByIngredient(
     (ele.strIngredient || ele.strIngredient1), type, data[1],
     setCanRedirect, setIsExploring, setIsLoading,
@@ -118,10 +121,9 @@ const ExploreIngredients = ({ type }) => {
     fetchIngredients(type, setIngredients, setIsLocalLoading);
   }, [setDisplayFooter, setDisplayHeader, setHeaderTitle, type]);
 
-  if (isLocalLoading) return <div>Loading...</div>;
-  if (canRedirect) return (type === 'Comidas' ? <Redirect to="/comidas" /> : <Redirect to="/bebidas" />);
   return (
     <div>
+      {isLocalLoading && <div>Loading...</div>}
       {renderIngredients(ingredients, imageURL, fetchAllByIngredients)}
     </div>
   );
