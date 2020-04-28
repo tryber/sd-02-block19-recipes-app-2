@@ -11,7 +11,7 @@ const HorizontalCard = ({ index, type, id, image, name, category, area, alcoholi
   return (
     <div className="horizontal-card">
       <div className="lado-esquerdo">
-        <a to={`/receitas/${type}/${id}`}>
+        <a href={`/receitas/${type}/${id}`}>
           <img alt="" src={image} data-testid={`${index}-horizontal-image`} />
         </a>
       </div>
@@ -22,7 +22,7 @@ const HorizontalCard = ({ index, type, id, image, name, category, area, alcoholi
               {(type === 'comida') ? `${area} - ${category}` : alcoholicOrNot}
             </p>
             <p data-testid={`${index}-horizontal-name`} className="name">
-              <a to={`/receitas/${type}/${id}`}>
+              <a href={`/receitas/${type}/${id}`}>
                 {name}
               </a>
             </p>

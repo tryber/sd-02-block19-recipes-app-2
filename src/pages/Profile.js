@@ -20,17 +20,17 @@ const logout = () => {
 
 const renderProfileButtons = () => (
   <div className="profile-buttons">
-    <a to="/receitas-feitas">
+    <a href="/receitas-feitas">
       <button data-testid="profile-done-btn">
         Receitas Feitas
       </button>
     </a>
-    <a to="/receitas-favoritas">
+    <a href="/receitas-favoritas">
       <button data-testid="profile-favorite-btn">
         Receitas Favoritas
       </button>
     </a>
-    <a to="/">
+    <a href="/">
       <button onClick={logout} data-testid="profile-logout-btn">
         Sair
       </button>
