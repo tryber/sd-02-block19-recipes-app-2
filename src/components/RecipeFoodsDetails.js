@@ -3,11 +3,9 @@ import { Redirect } from 'react-router-dom';
 import propTypes from 'prop-types';
 import YouTube from 'react-youtube';
 
-import Carousel from 'react-multi-carousel';
-import 'react-multi-carousel/lib/styles.css';
+
 import { searchMealDetailsById, searchDrinkDetailsById } from '../services/recipeDetailsApi';
-import { fetchMealByAllCategories } from '../services/mealPageApis';
-import { fetchDrinkByAllCategories } from '../services/drinkPageApis';
+
 import '../styles/RecipeMealDetails.css';
 import { RecipesAppContext } from '../context/RecipesAppContext';
 import CheckBox from './CheckBox';
@@ -16,25 +14,8 @@ import FavoriteButton from './FavoriteButton';
 import Ingredients, { allIngredients } from './Ingredients';
 
 import '../styles/RecipeFoodsDetails.css';
-
-const responsive = {
-  superLargeDesktop: {
-    breakpoint: { max: 4000, min: 3000 },
-    items: 5,
-  },
-  desktop: {
-    breakpoint: { max: 3000, min: 1024 },
-    items: 3,
-  },
-  tablet: {
-    breakpoint: { max: 1024, min: 464 },
-    items: 2,
-  },
-  mobile: {
-    breakpoint: { max: 464, min: 0 },
-    items: 2,
-  },
-};
+import Instructions from './Instructions';
+import RenderCarousel from './RenderCarousel';
 
 const renderCheckBox = (foods, typeFood) => (
   <CheckBox foods={foods} allIngredients={allIngredients} typeFood={typeFood} />
@@ -45,10 +26,7 @@ const renderIngredients = (foods) => (
 );
 
 const renderInstructions = (instructions) => (
-  <div className="instructions-content">
-    <div className="instructions-title">Instructions:</div>
-    <p className="instructions-details" data-testid="instructions">{instructions}</p>
-  </div>
+  <Instructions instructions={instructions} />
 );
 
 const renderVideo = (youtube) => (
@@ -64,59 +42,9 @@ const renderVideo = (youtube) => (
   )
 );
 
-const fetchRecomendedRecipes = async (setCarousel, typeFood) => {
-  switch (typeFood) {
-    case 'Meal':
-      await fetchDrinkByAllCategories()
-        .then(
-          (({ drinks }) => {
-            setCarousel((prevState) => (
-              {
-                ...prevState,
-                data: [...prevState.data, ...drinks],
-              }));
-          }),
-          () => console.log('ERROR DETAILS'),
-        );
-      break;
-    default:
-      await fetchMealByAllCategories()
-        .then(
-          (({ meals }) => {
-            setCarousel((prevState) => (
-              {
-                ...prevState,
-                data: [...prevState.data, ...meals],
-              }));
-          }),
-          () => console.log('ERROR DETAILS'),
-        );
-  }
-};
-
-const createImageCarousel = (title, category, Thumb, index) => (
-  <div data-testid={`${index}-recomendation-card`} key={title}>
-    <img className="image-carousel" src={Thumb} alt="Imagem" />
-    <div>{category}</div>
-    <div>{title}</div>
-  </div>
+const renderCarousel = (carousel, setCarousel, typeFood) => (
+  <RenderCarousel carousel={carousel} setCarousel={setCarousel} typeFood={typeFood} />
 );
-
-const renderCarousel = (carousel, setCarousel, typeFood) => {
-  const tagCarousel = (typeFood === 'Drink') ? 'Meal' : 'Drink';
-  if (carousel.data.length < 6) {
-    fetchRecomendedRecipes(setCarousel, typeFood);
-    return <div>Waiting...</div>;
-  }
-  return (
-    <Carousel responsive={responsive}>
-      {carousel.data.map((element, index) => (
-        createImageCarousel(
-          element[`str${tagCarousel}`], element.strCategory, element[`str${tagCarousel}Thumb`], index,
-        )))}
-    </Carousel>
-  );
-};
 
 const addIdLocalStorage = (id, inProgress, setRenderInProgress) => {
   if (!inProgress) {
