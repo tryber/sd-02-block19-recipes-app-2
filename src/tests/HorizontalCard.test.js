@@ -12,16 +12,15 @@ import imagemTeste from '../images/imagemTeste.svg';
 afterEach(cleanup);
 
 test('renderiza todos os elementos do card', () => {
-  const { getByTestId, history } = renderWithRouter(
-    // <DoneRecipes>
-        <HorizontalCard
-          index={2} type="comida" id="453"
-          image={imagemTeste}
-          name="Chelsea Buns" category="Dessert" area="British"
-          doneDate="01/12/2019" tags={['bun', 'baking']}
-        />,
-        { route: '/receitas-feitas' },
-    // </DoneRecipes>,
+  const { getByTestId, history } = render(
+    <RecipesAppProvider>
+      <HorizontalCard
+        index={2} type="comida" id="453"
+        image={imagemTeste}
+        name="Chelsea Buns" category="Dessert" area="British"
+        doneDate="01/12/2019" tags={['bun', 'baking']}
+      />
+    </RecipesAppProvider>,
   );
 
   // console.log(history.location.pathname)
