@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
 import ShareButton from './ShareButton';
 import FavoriteButton from './FavoriteButton';
 import '../styles/HorizontalCard.css';
@@ -12,9 +11,9 @@ const HorizontalCard = ({ index, type, id, image, name, category, area, alcoholi
   return (
     <div className="horizontal-card">
       <div className="lado-esquerdo">
-        <Link to={`/receitas/${type}/${id}`}>
+        <a to={`/receitas/${type}/${id}`}>
           <img alt="" src={image} data-testid={`${index}-horizontal-image`} />
-        </Link>
+        </a>
       </div>
       <div className="lado-direito">
         <div className="parte-de-cima">
@@ -23,9 +22,9 @@ const HorizontalCard = ({ index, type, id, image, name, category, area, alcoholi
               {(type === 'comida') ? `${area} - ${category}` : alcoholicOrNot}
             </p>
             <p data-testid={`${index}-horizontal-name`} className="name">
-              <Link to={`/receitas/${type}/${id}`}>
+              <a to={`/receitas/${type}/${id}`}>
                 {name}
-              </Link>
+              </a>
             </p>
           </div>
           {inDoneRecipes && <ShareButton index={index} id={id} type={type} />}
@@ -42,8 +41,8 @@ const HorizontalCard = ({ index, type, id, image, name, category, area, alcoholi
           <div className="parte-de-baixo-in-favorite-recipes">
             <ShareButton index={index} id={id} type={type} />
             <FavoriteButton
-              index={index} id={id} category={category} image={image}
-              area={area} alcoholicOrNot={alcoholicOrNot} name={name}
+              index={index} id={id} category={category} image={image} area={area}
+              alcoholicOrNot={alcoholicOrNot} name={name} type={type}
             />
           </div>
         }
