@@ -191,7 +191,7 @@ const mainRender = (
       {(!isLoading) && (renderShareFavorite(id, typeFood, detailsRecipe))}
     </div>
   );
-}
+};
 
 const RecipeFoodDetails = ({ id, typeFood }) => {
   const [detailsRecipe, setDetailsRecipe] = useState('');
