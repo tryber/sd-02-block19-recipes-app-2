@@ -18,6 +18,8 @@ let [isFetching, setIsFetching] = [false, jest.fn()];
 let [isSearching, setIsSearching] = [false, jest.fn()];
 let [toggleCategory, setToggleCategory] = [{ category: '', toggleCat: false }, jest.fn()];
 let [isFiltering, setIsFiltering] = [false, jest.fn()];
+let [isExploring, setIsExploring] = [false, jest.fn()];
+
 
 let store = {
   headerTitle: [headerTitle, setHeaderTitle],
@@ -34,6 +36,7 @@ let store = {
   toggleCategory: [toggleCategory, setToggleCategory],
   toggleHeaderAndFooter: jest.fn(),
   filtering: [isFiltering, setIsFiltering],
+  isExploring: [isExploring, setIsExploring],
 };
 
 afterEach(cleanup);
@@ -81,7 +84,7 @@ describe('Tests for Footer component', () => {
 
     fireEvent.click(exploreButton);
 
-    expect(getByText(/explorar comidas/gi)).toBeInTheDocument();
+    expect(getByTestId('explore-food')).toBeInTheDocument();
   });
 
   it('In clicking Cocktails button, user is taken to Cocktail page', () => {
