@@ -13,6 +13,7 @@ import { RecipesAppContext } from '../context/RecipesAppContext';
 import CheckBox from './CheckBox';
 import ShareButton from './ShareButton';
 import FavoriteButton from './FavoriteButton';
+import Ingredients, { allIngredients } from './Ingredients';
 
 import '../styles/RecipeFoodsDetails.css';
 
@@ -35,35 +36,12 @@ const responsive = {
   },
 };
 
-const allIngredients = (meals) => {
-  const ingredients = Object.entries(meals[0])
-    .filter((el) => el[0].match(/strIngredient/i));
-  const measures = Object.entries(meals[0])
-    .filter((el) => el[0].match(/strMeasure/i));
-  return ingredients.reduce((acc, cur, index) => {
-    if (cur[1]) {
-      return [...acc, [cur[1], measures[index][1]]];
-    }
-    return [...acc];
-  }, []);
-};
-
 const renderCheckBox = (foods, typeFood) => (
   <CheckBox foods={foods} allIngredients={allIngredients} typeFood={typeFood} />
 );
 
 const renderIngredients = (foods) => (
-  <div className="ingredients-content">
-    <div className="ingredient-title">Ingredients:</div>
-    <div className="ingredients-box">
-      {allIngredients(foods).map((ingredients, index) => (
-        <div className="ingredients-container" key={ingredients[0]}>
-          <div data-testid={`${index}-ingredient-name`}>{`- ${ingredients[0]} -`}</div>
-          <div data-testid={`${index}-ingredient-measure`}>{` - ${ingredients[1]}`}</div>
-        </div>
-      ))}
-    </div>
-  </div>
+  <Ingredients foods={foods} />
 );
 
 const renderInstructions = (instructions) => (
@@ -231,21 +209,10 @@ const fetchFoodById = async (id, setDetailsRecipe, setIsLoading, typeFood) => {
   }
 };
 
-const RecipeFoodDetails = ({ id, typeFood }) => {
-  const [detailsRecipe, setDetailsRecipe] = useState('');
-  const [isLoading, setIsLoading] = useState(true);
-  const [carousel, setCarousel] = useState({ isLoading: false, data: [] });
-  const [renderInProgress, setRenderInProgress] = useState(false);
-  const [canRedirect, setCanRedirect] = useState(false);
-  const {
-    displayHeader: [, setDisplayHeader], displayFooter: [, setDisplayFooter], disabled,
-  } = useContext(RecipesAppContext);
-  useEffect(() => {
-    setDisplayHeader(false);
-    setDisplayFooter(false);
-    fetchFoodById(id, setDetailsRecipe, setIsLoading, typeFood)
-      .then(() => setIsLoading(false));
-  }, [setIsLoading, setDetailsRecipe, id, setDisplayFooter, setDisplayHeader, typeFood]);
+const mainRender = (
+  canRedirect, isLoading, detailsRecipe, carousel, setCarousel, id, typeFood,
+  renderInProgress, setRenderInProgress, disabled, setCanRedirect,
+) => {
   if (canRedirect) return <Redirect to="/asdasdasd" />;
   return (
     <div>
@@ -275,6 +242,27 @@ const RecipeFoodDetails = ({ id, typeFood }) => {
         </div>
       )}
     </div>
+  );
+}
+
+const RecipeFoodDetails = ({ id, typeFood }) => {
+  const [detailsRecipe, setDetailsRecipe] = useState('');
+  const [isLoading, setIsLoading] = useState(true);
+  const [carousel, setCarousel] = useState({ isLoading: false, data: [] });
+  const [renderInProgress, setRenderInProgress] = useState(false);
+  const [canRedirect, setCanRedirect] = useState(false);
+  const {
+    displayHeader: [, setDisplayHeader], displayFooter: [, setDisplayFooter], disabled,
+  } = useContext(RecipesAppContext);
+  useEffect(() => {
+    setDisplayHeader(false);
+    setDisplayFooter(false);
+    fetchFoodById(id, setDetailsRecipe, setIsLoading, typeFood)
+      .then(() => setIsLoading(false));
+  }, [setIsLoading, setDetailsRecipe, id, setDisplayFooter, setDisplayHeader, typeFood]);
+  return mainRender(
+    canRedirect, isLoading, detailsRecipe, carousel, setCarousel, id, typeFood,
+    renderInProgress, setRenderInProgress, disabled, setCanRedirect,
   );
 };
 
