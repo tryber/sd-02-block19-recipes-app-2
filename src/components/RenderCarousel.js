@@ -6,6 +6,7 @@ import 'react-multi-carousel/lib/styles.css';
 
 import { fetchMealByAllCategories } from '../services/mealPageApis';
 import { fetchDrinkByAllCategories } from '../services/drinkPageApis';
+import { Link } from 'react-router-dom';
 
 const responsive = {
   superLargeDesktop: {
@@ -66,6 +67,7 @@ const createImageCarousel = (title, category, Thumb, index) => (
 
 const RenderCarousel = ({ carousel, setCarousel, typeFood }) => {
   const tagCarousel = (typeFood === 'Drink') ? 'Meal' : 'Drink';
+  const type = (typeFood === 'Drink') ? 'comida' : 'bebida';
   if (carousel.data.length < 6) {
     fetchRecomendedRecipes(setCarousel, typeFood);
     return <div>Waiting...</div>;
@@ -73,9 +75,12 @@ const RenderCarousel = ({ carousel, setCarousel, typeFood }) => {
   return (
     <Carousel responsive={responsive}>
       {carousel.data.map((element, index) => (
-        createImageCarousel(
-          element[`str${tagCarousel}`], element.strCategory, element[`str${tagCarousel}Thumb`], index,
-        )))}
+        <Link to={`/receitas/${type}/${element[`id${tagCarousel}`]}`}>
+          {createImageCarousel(
+            element[`str${tagCarousel}`], element.strCategory, element[`str${tagCarousel}Thumb`], index,
+          )}
+        </Link>
+      ))}
     </Carousel>
   );
 };
