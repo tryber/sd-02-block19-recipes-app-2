@@ -45,21 +45,14 @@ const FavoriteRecipes = () => {
     <div>
       <FilterBarFoodOrDrinks />
       {filteredFavoriteRecipes.map((
-        { type, id, image, name, category, area, alcoholicOrNot, doneDate, tags },
+        { type, id, image, name, category, area, alcoholicOrNot },
         index,
       ) => (
         <HorizontalCard
-          index={index} type={type} id={id} image={image} name={name} category={category}
-          area={area} alcoholicOrNot={alcoholicOrNot} doneDate={doneDate} tags={tags} key={id}
+          key={id} index={index} type={type} id={id} image={image} name={name}
+          category={category} area={area} alcoholicOrNot={alcoholicOrNot}
         />
       ))}
-      {/* <HorizontalCard index={7} type={'comida'} id={'oooiiii'} image={imagemTeste}
-          name={'ooooiii'} category={'ooiiii'} area={'aaaiiii'} alcoholicOrNot={'eeiiii'}
-          doneDate={'01/04/1997'} tags={['cachaça', 'bebida']} />
-        <HorizontalCard index={3} type={'bebida'} id={'nada'} image={imagemTeste} name={'nada'}
-          category={'nada'} area={'nenhum lugar'} alcoholicOrNot={'beber é bom'}
-          doneDate={'01/04/2900'} tags={null} />
-      */}
     </div>
   );
 };

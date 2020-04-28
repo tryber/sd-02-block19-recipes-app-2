@@ -50,10 +50,9 @@ const DoneRecipes = () => {
         index,
       ) => (
         <HorizontalCard
-          index={index} type={type} id={id}
-          image={image}
-          name={name} category={category} area={area} alcoholicOrNot={alcoholicOrNot}
-          doneDate={doneDate} tags={tags}
+          index={index} type={type} id={id} image={image} name={name}
+          category={category} area={area} alcoholicOrNot={alcoholicOrNot}
+          doneDate={doneDate} tags={tags} key={id}
         />
       ))}
     </div>
