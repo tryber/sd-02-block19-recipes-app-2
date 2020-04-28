@@ -11,7 +11,7 @@ import ExploreMeal from './pages/ExploreMeal';
 import ExploreDrink from './pages/ExploreDrink';
 import ExploreMealIngredients from './pages/ExploreMealIngredients';
 import ExploreDrinksIngrendients from './pages/ExploreDrinksIngrendients';
-import ExploreMealArea from './pages/ExploreMealArea';
+import ExploreByOrigin from './pages/ExploreByOrigin';
 import Explore from './pages/Explore';
 import NotFound from './pages/NotFound';
 import Profile from './pages/Profile';
@@ -41,7 +41,7 @@ function App() {
           <Route exact path="/explorar/bebidas" component={ExploreDrink} />
           <Route exact path="/explorar/comidas/ingredients" component={ExploreMealIngredients} />
           <Route exact path="/explorar/bebidas/ingredients" component={ExploreDrinksIngrendients} />
-          <Route exact path="/explorar/comidas/area" component={ExploreMealArea} />
+          <Route exact path="/explorar/comidas/area" component={ExploreByOrigin} />
           <Route component={NotFound} />
         </Switch>
         <Footer />

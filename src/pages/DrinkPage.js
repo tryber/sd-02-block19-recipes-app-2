@@ -78,7 +78,6 @@ const renderCategories = (
 );
 
 const fetchCategories = async (setIsLoading, setCategories) => {
-  setIsLoading(true);
   await listDrinkCategories()
     .then(
       (({ drinks }) => {
