@@ -48,7 +48,7 @@ const Profile = () => {
 
   setPageElements(setHeaderTitle, setDisplayHeader, setDisplaySearchButton, setDisplayFooter);
 
-  const email = JSON.parse(localStorage.getItem('user')).email;
+  const email = (JSON.parse(localStorage.getItem('user')) || {}).email;
 
   return (
     <div className="profile">

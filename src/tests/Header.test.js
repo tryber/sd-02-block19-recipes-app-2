@@ -83,7 +83,7 @@ describe('Tests for Header component', () => {
 
     fireEvent.click(profileButton);
 
-    expect(getByText('Profile Page')).toBeInTheDocument();
+    expect(getByText('Sair')).toBeInTheDocument();
   });
 
   it('displaySearchButton state is false, its not displayed', () => {
