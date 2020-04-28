@@ -65,23 +65,23 @@ const endRecipe = (target, setRenderInProgress, setCanRedirect) => {
 const renderStartRecipeButton = (
   inProgress, id, renderInProgress, setRenderInProgress, disabled, setCanRedirect,
 ) => (
-    <div className="start-button-container">
-      <button
-        disabled={(renderInProgress) ? disabled : false}
-        className="start-button"
-        data-testid="start-recipe-btn"
-        type="button"
-        onClick={({ target }) => (
-          (inProgress)
-            ? endRecipe(target, setRenderInProgress, setCanRedirect)
-            : addIdLocalStorage(id, inProgress, setRenderInProgress))}
-      >
-        {(renderInProgress)
-          ? 'Finalizar Receita'
-          : buttonName(inProgress)}
-      </button>
-    </div>
-  );
+  <div className="start-button-container">
+    <button
+      disabled={(renderInProgress) ? disabled : false}
+      className="start-button"
+      data-testid="start-recipe-btn"
+      type="button"
+      onClick={({ target }) => (
+        (inProgress)
+          ? endRecipe(target, setRenderInProgress, setCanRedirect)
+          : addIdLocalStorage(id, inProgress, setRenderInProgress))}
+    >
+      {(renderInProgress)
+        ? 'Finalizar Receita'
+        : buttonName(inProgress)}
+    </button>
+  </div>
+);
 
 const renderAllDetails = (
   foods, carousel, setCarousel, id, typeFood, renderInProgress,
