@@ -1,7 +1,11 @@
 import React from 'react';
 
+import ExploreIngredients from '../components/ExploreIngredients';
+
 const ExploreMealIngredients = () => (
-  <div>Explore Meal Ingredients Page</div>
+  <div>
+    <ExploreIngredients type="Comidas" />
+  </div>
 );
 
 export default ExploreMealIngredients;

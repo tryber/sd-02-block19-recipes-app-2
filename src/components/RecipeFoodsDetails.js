@@ -240,7 +240,7 @@ const RecipeFoodDetails = ({ id, typeFood }) => {
     setDisplayFooter(false);
     fetchFoodById(id, setDetailsRecipe, setIsLoading, typeFood)
       .then(() => setIsLoading(false));
-  }, [setIsLoading, setDetailsRecipe, id, setDisplayFooter, setDisplayHeader]);
+  }, [setIsLoading, setDetailsRecipe, id, setDisplayFooter, setDisplayHeader, typeFood]);
   return (
     <div>
       {(isLoading) ? <div>Loading...</div> : detailsRecipe && renderAllDetails(
