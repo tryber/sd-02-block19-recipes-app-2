@@ -108,18 +108,22 @@ const ExploreIngredients = ({ type }) => {
     loading: [, setIsLoading],
   } = useContext(RecipesAppContext);
 
-  if (canRedirect) return (type === 'Comidas' ? <Redirect to="/comidas" /> : <Redirect to="/bebidas" />);
-
   const fetchAllByIngredients = (ele) => fetchByIngredient(
     (ele.strIngredient || ele.strIngredient1), type, data[1],
     setCanRedirect, setIsExploring, setIsLoading,
   );
+
   useEffect(() => {
     setDisplayHeader(true);
     setDisplayFooter(true);
     setHeaderTitle('Explorar Ingredientes');
+  }, [setDisplayFooter, setDisplayHeader, setHeaderTitle]);
+
+  useEffect(() => {
     fetchIngredients(type, setIngredients, setIsLocalLoading);
-  }, [setDisplayFooter, setDisplayHeader, setHeaderTitle, type]);
+  }, [type]);
+
+  if (canRedirect) return (type === 'Comidas' ? <Redirect to="/comidas" /> : <Redirect to="/bebidas" />);
 
   return (
     <div>

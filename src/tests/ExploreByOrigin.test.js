@@ -18,6 +18,7 @@ const [isFetching, setIsFetching] = [false, jest.fn()];
 const [isSearching, setIsSearching] = [false, jest.fn()];
 const [toggleCategory, setToggleCategory] = [{ category: '', toggleCat: false }, jest.fn()];
 const [isFiltering, setIsFiltering] = [false, jest.fn()];
+const [isExploring, setIsExploring] = [false, jest.fn()];
 
 const store = {
   headerTitle: [headerTitle, setHeaderTitle],
@@ -34,6 +35,7 @@ const store = {
   toggleCategory: [toggleCategory, setToggleCategory],
   toggleHeaderAndFooter: jest.fn(),
   filtering: [isFiltering, setIsFiltering],
+  isExploring: [isExploring, setIsExploring],
 };
 
 afterEach(cleanup);
