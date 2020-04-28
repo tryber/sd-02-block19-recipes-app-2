@@ -18,6 +18,7 @@ export default function RecipesAppProvider({ children }) {
   const [toggleCategory, setToggleCategory] = useState({ category: '', toggleCat: false });
   const [isFiltering, setIsFiltering] = useState(false);
   const [filterFoodOrDrinks, setFilterFoodOrDrinks] = useState('All');
+  const [disabled, setDisabled] = useState(false);
 
   function toggleHeaderAndFooter() {
     setDisplayHeader(!displayHeader);
@@ -40,6 +41,7 @@ export default function RecipesAppProvider({ children }) {
     toggleHeaderAndFooter,
     filtering: [isFiltering, setIsFiltering],
     filterFoodOrDrinks: [filterFoodOrDrinks, setFilterFoodOrDrinks],
+    disabled: [disabled, setDisabled],
   };
 
   return <RecipesAppContext.Provider value={store}>{children}</RecipesAppContext.Provider>;

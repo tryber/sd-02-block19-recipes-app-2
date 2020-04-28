@@ -1,5 +1,15 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import propTypes from 'prop-types';
+
+import '../styles/Checkbox.css';
+import { RecipesAppContext } from '../context/RecipesAppContext';
+
+export const verifyAllChecked = (id, setDisabled) => {
+  const newArray = (JSON.parse(localStorage.getItem('checkbox')) || []);
+  const verifyArray = newArray.filter((el) => el[id]);
+  const resp = Object.values(verifyArray[0][id][0]);
+  setDisabled(!resp.every((ele) => ele));
+};
 
 const verifyLocalStorage = (id) => {
   const existId = (JSON.parse(localStorage.getItem('checkbox')) || [])
@@ -30,21 +40,25 @@ const setInitialArray = (inputsCheckbox, id) => {
   );
 };
 
-const handleClick = ({ checked }, setCheckbox, checkbox, index) => {
-  setCheckbox([{ ...checkbox[0], [index]: checked }]);
+const handleClick = (target, setCheckbox, checkbox, index) => {
+  setCheckbox([{ ...checkbox[0], [index]: target.checked }]);
 };
 
 const renderCheckBox = (inputsCheckbox, checkbox, setCheckbox) => (
   inputsCheckbox.map((el, index) => (
-    <label htmlFor={el[0]}>
+    <label key={el} className="label-checkbox" htmlFor={el[0]}>
       <input
+        className="input-checkbox"
         type="checkbox"
         name={el[0]}
         id={el[0]}
         checked={checkbox[0][index]}
-        onChange={({ target }) => handleClick(target, setCheckbox, checkbox, index)}
+        onChange={({ target }) => (
+          handleClick(target, setCheckbox, checkbox, index))}
       />
-      {`- ${el[0]} - ${el[1]}`}
+      <span className={(checkbox[0][index]) ? 'checkbox-text' : ''}>
+        {`- ${el[0]} - ${el[1]}`}
+      </span>
     </label>
   ))
 );
@@ -53,6 +67,7 @@ const CheckBox = ({ foods, allIngredients, typeFood }) => {
   const inputsCheckbox = allIngredients(foods);
   const id = foods[0][`id${typeFood}`];
   const [checkbox, setCheckbox] = useState(setInitialArray(inputsCheckbox, id));
+  const { disabled: [, setDisabled] } = useContext(RecipesAppContext);
   useEffect(() => {
     if (verifyLocalStorage(id) === -1) {
       const existLocalStorage = JSON.parse(localStorage.getItem('checkbox')) || [];
@@ -63,10 +78,11 @@ const CheckBox = ({ foods, allIngredients, typeFood }) => {
     } else {
       addLocalStorage(id, checkbox);
     }
-  }, [checkbox, id]);
+    verifyAllChecked(id, setDisabled);
+  }, [checkbox, id, setDisabled]);
   return (
-    <div>
-      {renderCheckBox(inputsCheckbox, checkbox, setCheckbox)}
+    <div className="checkbox-container">
+      {renderCheckBox(inputsCheckbox, checkbox, setCheckbox, id, setDisabled)}
     </div>
   );
 };

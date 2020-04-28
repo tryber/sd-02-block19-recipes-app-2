@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useContext } from 'react';
+import { Redirect } from 'react-router-dom';
 import propTypes from 'prop-types';
 import YouTube from 'react-youtube';
 
@@ -10,6 +11,8 @@ import { fetchDrinkByAllCategories } from '../services/drinkPageApis';
 import '../styles/RecipeMealDetails.css';
 import { RecipesAppContext } from '../context/RecipesAppContext';
 import CheckBox from './CheckBox';
+
+import '../styles/RecipeFoodsDetails.css';
 
 const responsive = {
   superLargeDesktop: {
@@ -51,16 +54,12 @@ const renderIngredients = (foods) => (
   <div className="ingredients-content">
     <div className="ingredient-title">Ingredients:</div>
     <div className="ingredients-box">
-      {
-        allIngredients(foods).map((ingredients, index) => (
-          <div className="ingredients-container" key={ingredients[0]}>
-            <div data-testid={`${index}-ingredient-name`}>
-              {`- ${ingredients[0]} - `}
-            </div>
-            <div data-testid={`${index}-ingredient-measure`}>{ingredients[1]}</div>
-          </div>
-        ))
-      }
+      {allIngredients(foods).map((ingredients, index) => (
+        <div className="ingredients-container" key={ingredients[0]}>
+          <div data-testid={`${index}-ingredient-name`}>{`- ${ingredients[0]} - `}</div>
+          <div data-testid={`${index}-ingredient-measure`}>{ingredients[1]}</div>
+        </div>
+      ))}
     </div>
   </div>
 );
@@ -78,10 +77,7 @@ const renderVideo = (youtube) => (
       <div className="video-title">Video:</div>
       <div>
         <div className="video-details" data-testid="video">
-          <YouTube
-            className="video-youtube"
-            videoId={youtube.split('=')[1]}
-          />
+          <YouTube className="video-youtube" videoId={youtube.split('=')[1]} />
         </div>
       </div>
     </div>
@@ -137,8 +133,7 @@ const renderCarousel = (carousel, setCarousel, typeFood) => {
       {carousel.data.map((element, index) => (
         createImageCarousel(
           element[`str${tagCarousel}`], element.strCategory, element[`str${tagCarousel}Thumb`], index,
-        )
-      ))}
+        )))}
     </Carousel>
   );
 };
@@ -154,29 +149,35 @@ const addIdLocalStorage = (id, inProgress, setRenderInProgress) => {
 
 const buttonName = (inProgress) => ((inProgress) ? 'Continuar Receita' : 'Iniciar Receita');
 
+const endRecipe = (target, setRenderInProgress, setCanRedirect) => {
+  if (target.innerHTML === 'Finalizar Receita') setCanRedirect(true);
+  setRenderInProgress(true);
+};
+
 const renderStartRecipeButton = (
-  inProgress, id, renderInProgress, setRenderInProgress,
+  inProgress, id, renderInProgress, setRenderInProgress, disabled, setCanRedirect,
 ) => (
-  <div className="start-button-container">
-    <button
-      className="start-button"
-      data-testid="start-recipe-btn"
-      type="button"
-      onClick={() => (
-        (inProgress)
-          ? setRenderInProgress(true)
-          : addIdLocalStorage(id, inProgress, setRenderInProgress)
-      )}
-    >
-      {(renderInProgress)
-        ? 'Finalizar Receita'
-        : buttonName(inProgress)}
-    </button>
-  </div>
-);
+    <div className="start-button-container">
+      <button
+        disabled={(renderInProgress) ? disabled : false}
+        className="start-button"
+        data-testid="start-recipe-btn"
+        type="button"
+        onClick={({ target }) => (
+          (inProgress)
+            ? endRecipe(target, setRenderInProgress, setCanRedirect)
+            : addIdLocalStorage(id, inProgress, setRenderInProgress))}
+      >
+        {(renderInProgress)
+          ? 'Finalizar Receita'
+          : buttonName(inProgress)}
+      </button>
+    </div>
+  );
 
 const renderAllDetails = (
-  foods, carousel, setCarousel, id, typeFood, renderInProgress, setRenderInProgress,
+  foods, carousel, setCarousel, id, typeFood, renderInProgress,
+  setRenderInProgress, disabled, setCanRedirect,
 ) => {
   const inProgress = (JSON.parse(localStorage.getItem('in-progress')) || [])
     .some((inProgressId) => inProgressId === Number(id));
@@ -195,12 +196,13 @@ const renderAllDetails = (
           ? renderFood.strAlcoholic
           : renderFood.strCategory}
       </p>
-      {(!renderInProgress) ? renderIngredients(foods) : renderCheckBox(foods, typeFood)}
+      {(!renderInProgress) ? renderIngredients(foods)
+        : renderCheckBox(foods, typeFood)}
       {renderInstructions(renderFood.strInstructions)}
       {(!renderInProgress) && renderVideo(renderFood.strYoutube)}
       {(!renderInProgress) && renderCarousel(carousel, setCarousel, typeFood)}
       {renderStartRecipeButton(
-        inProgress, Number(id), renderInProgress, setRenderInProgress,
+        inProgress, Number(id), renderInProgress, setRenderInProgress, disabled, setCanRedirect,
       )}
     </div>
   );
@@ -232,8 +234,9 @@ const RecipeFoodDetails = ({ id, typeFood }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [carousel, setCarousel] = useState({ isLoading: false, data: [] });
   const [renderInProgress, setRenderInProgress] = useState(false);
+  const [canRedirect, setCanRedirect] = useState(false);
   const {
-    displayHeader: [, setDisplayHeader], displayFooter: [, setDisplayFooter],
+    displayHeader: [, setDisplayHeader], displayFooter: [, setDisplayFooter], disabled,
   } = useContext(RecipesAppContext);
   useEffect(() => {
     setDisplayHeader(false);
@@ -241,6 +244,7 @@ const RecipeFoodDetails = ({ id, typeFood }) => {
     fetchFoodById(id, setDetailsRecipe, setIsLoading, typeFood)
       .then(() => setIsLoading(false));
   }, [setIsLoading, setDetailsRecipe, id, setDisplayFooter, setDisplayHeader, typeFood]);
+  if (canRedirect) return <Redirect to="/asdasdasd" />;
   return (
     <div>
       {(isLoading) ? <div>Loading...</div> : detailsRecipe && renderAllDetails(
@@ -251,6 +255,8 @@ const RecipeFoodDetails = ({ id, typeFood }) => {
         typeFood,
         renderInProgress,
         setRenderInProgress,
+        disabled[0],
+        setCanRedirect,
       )}
     </div>
   );
