@@ -13,7 +13,6 @@ import CheckBox from './CheckBox';
 
 const responsive = {
   superLargeDesktop: {
-    // the naming can be any, depends on you.
     breakpoint: { max: 4000, min: 3000 },
     items: 5,
   },
@@ -48,28 +47,23 @@ const renderCheckBox = (foods, typeFood) => (
   <CheckBox foods={foods} allIngredients={allIngredients} typeFood={typeFood} />
 );
 
-
-const renderIngredients = (foods) => {
-  return (
-    <div className="ingredients-content">
-      <div className="ingredient-title">Ingredients:</div>
-      <div className="ingredients-box">
-        {
-          allIngredients(foods).map((ingredients, index) => {
-            return (
-              <div className="ingredients-container" key={ingredients[0]}>
-                <div data-testid={`${index}-ingredient-name`}>
-                  {`- ${ingredients[0]} - `}
-                </div>
-                <div data-testid={`${index}-ingredient-measure`}>{ingredients[1]}</div>
-              </div>
-            );
-          })
-        }
-      </div>
+const renderIngredients = (foods) => (
+  <div className="ingredients-content">
+    <div className="ingredient-title">Ingredients:</div>
+    <div className="ingredients-box">
+      {
+        allIngredients(foods).map((ingredients, index) => (
+          <div className="ingredients-container" key={ingredients[0]}>
+            <div data-testid={`${index}-ingredient-name`}>
+              {`- ${ingredients[0]} - `}
+            </div>
+            <div data-testid={`${index}-ingredient-measure`}>{ingredients[1]}</div>
+          </div>
+        ))
+      }
     </div>
-  );
-};
+  </div>
+);
 
 const renderInstructions = (instructions) => (
   <div className="instructions-content">
@@ -163,23 +157,23 @@ const buttonName = (inProgress) => ((inProgress) ? 'Continuar Receita' : 'Inicia
 const renderStartRecipeButton = (
   inProgress, id, renderInProgress, setRenderInProgress,
 ) => (
-    <div className="start-button-container">
-      <button
-        className="start-button"
-        data-testid="start-recipe-btn"
-        type="button"
-        onClick={() => (
-          (inProgress)
-            ? setRenderInProgress(true)
-            : addIdLocalStorage(id, inProgress, setRenderInProgress)
-        )}
-      >
-        {(renderInProgress)
-          ? 'Finalizar Receita'
-          : buttonName(inProgress)}
-      </button>
-    </div>
-  );
+  <div className="start-button-container">
+    <button
+      className="start-button"
+      data-testid="start-recipe-btn"
+      type="button"
+      onClick={() => (
+        (inProgress)
+          ? setRenderInProgress(true)
+          : addIdLocalStorage(id, inProgress, setRenderInProgress)
+      )}
+    >
+      {(renderInProgress)
+        ? 'Finalizar Receita'
+        : buttonName(inProgress)}
+    </button>
+  </div>
+);
 
 const renderAllDetails = (
   foods, carousel, setCarousel, id, typeFood, renderInProgress, setRenderInProgress,
@@ -215,16 +209,15 @@ const renderAllDetails = (
 const fetchFoodById = async (id, setDetailsRecipe, setIsLoading, typeFood) => {
   switch (typeFood) {
     case 'Meal':
-      await searchMealDetailsById(id)
+      return searchMealDetailsById(id)
         .then(
           (({ meals }) => {
             setDetailsRecipe(meals);
           }),
           () => console.log('error'),
         );
-      break;
     default:
-      await searchDrinkDetailsById(id)
+      return searchDrinkDetailsById(id)
         .then(
           (({ drinks }) => {
             setDetailsRecipe(drinks);

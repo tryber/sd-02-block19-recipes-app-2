@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import propTypes from 'prop-types';
 
 const verifyLocalStorage = (id) => {
   const existId = (JSON.parse(localStorage.getItem('checkbox')) || [])
@@ -33,22 +34,20 @@ const handleClick = ({ checked }, setCheckbox, checkbox, index) => {
   setCheckbox([{ ...checkbox[0], [index]: checked }]);
 };
 
-const renderCheckBox = (inputsCheckbox, checkbox, setCheckbox) => {
-  return (
-    inputsCheckbox.map((el, index) => (
-      <label htmlFor={el[0]}>
-        <input
-          type="checkbox"
-          name={el[0]}
-          id={el[0]}
-          checked={checkbox[0][index]}
-          onChange={({ target }) => handleClick(target, setCheckbox, checkbox, index)}
-        />
-        {`- ${el[0]} - ${el[1]}`}
-      </label>
-    ))
-  );
-};
+const renderCheckBox = (inputsCheckbox, checkbox, setCheckbox) => (
+  inputsCheckbox.map((el, index) => (
+    <label htmlFor={el[0]}>
+      <input
+        type="checkbox"
+        name={el[0]}
+        id={el[0]}
+        checked={checkbox[0][index]}
+        onChange={({ target }) => handleClick(target, setCheckbox, checkbox, index)}
+      />
+      {`- ${el[0]} - ${el[1]}`}
+    </label>
+  ))
+);
 
 const CheckBox = ({ foods, allIngredients, typeFood }) => {
   const inputsCheckbox = allIngredients(foods);
@@ -70,6 +69,12 @@ const CheckBox = ({ foods, allIngredients, typeFood }) => {
       {renderCheckBox(inputsCheckbox, checkbox, setCheckbox)}
     </div>
   );
+};
+
+CheckBox.propTypes = {
+  foods: propTypes.instanceOf(Array).isRequired,
+  allIngredients: propTypes.func.isRequired,
+  typeFood: propTypes.string.isRequired,
 };
 
 export default CheckBox;
