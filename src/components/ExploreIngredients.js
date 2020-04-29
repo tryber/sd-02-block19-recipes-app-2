@@ -67,9 +67,9 @@ const renderIngredients = (
 ) => {
   const newIngredients = ingredients.slice(0, (ingredients.length / 2));
   return (
-    <div className="ingredients-container">
+    <div className="ingredients-container-explore">
       {newIngredients.map((ele) => (
-        <div className="ingredients-content" key={ele.strIngredient || ele.strIngredient1}>
+        <div className="ingredients-content-explore" key={ele.strIngredient || ele.strIngredient1}>
           <button
             className="button-explore-ingredients"
             type="button"

@@ -1,19 +1,20 @@
-.ingredients-container {
+.ingredients-container-explore {
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-between;
+  justify-content: space-around;
 }
 
-.ingredients-content {
+.ingredients-content-explore {
   border: black 20px;
+  margin-top: 2%;
   width: 40%;
 }
 
-.ingredients-content button img {
-  margin: 0 20%;
+.ingredients-content-explore button img {
+  margin: 0 auto;
 }
 
-.ingredients-content button div {
+.ingredients-content-explore button div {
   text-align: center;
 }
 

@@ -1,0 +1,10 @@
+.start-button:disabled {
+  background-color: grey;
+}
+
+.share-favorite-container {
+  display: flex;
+  position: absolute;
+  right: 15vw;
+  top: 110vw;
+}

@@ -1,0 +1,13 @@
+.checkbox-container {
+  background: rgb(236, 236, 236);
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.label-checkbox {
+  width: 100%;
+}
+
+.checkbox-text {
+  text-decoration: line-through;
+}

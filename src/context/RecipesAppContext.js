@@ -18,8 +18,10 @@ export default function RecipesAppProvider({ children }) {
   const [toggleCategory, setToggleCategory] = useState({ category: '', toggleCat: false });
   const [isFiltering, setIsFiltering] = useState(false);
   const [filterFoodOrDrinks, setFilterFoodOrDrinks] = useState('All');
+  const [disabled, setDisabled] = useState(false);
   const initialFavoriteRecipes = JSON.parse(localStorage.getItem('favorite-recipes')) || [];
   const [favoriteRecipes, setFavoriteRecipes] = useState(initialFavoriteRecipes);
+  const [recipeDetails, setRecipeDetails] = useState('');
   const [isExploring, setIsExploring] = useState(false);
 
   function toggleHeaderAndFooter() {
@@ -43,7 +45,9 @@ export default function RecipesAppProvider({ children }) {
     toggleHeaderAndFooter,
     filtering: [isFiltering, setIsFiltering],
     filterFoodOrDrinks: [filterFoodOrDrinks, setFilterFoodOrDrinks],
+    disabled: [disabled, setDisabled],
     favoriteRecipes: [favoriteRecipes, setFavoriteRecipes],
+    recipeDetails: [recipeDetails, setRecipeDetails],
     isExploring: [isExploring, setIsExploring],
   };
 
