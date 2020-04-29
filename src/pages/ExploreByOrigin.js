@@ -59,8 +59,7 @@ function renderComponentsOfExplorebyOriginPage(
 export default function ExploreByOrigin() {
   const {
     data: [recipes, setRecipes], recipeType: [recipeType], filtering: [, setIsFiltering],
-    loading: [isLoading, setIsLoading], headerTitle: [, setHeaderTitle],
-    setDisplay,
+    loading: [isLoading, setIsLoading], headerTitle: [, setHeaderTitle], setDisplay,
   } = useContext(RecipesAppContext);
   const [foodAreas, setFoodAreas] = useState([]);
   const [filterByOrigin, setFilterByOrigin] = useState('Todas');
