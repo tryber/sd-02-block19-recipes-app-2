@@ -21,6 +21,7 @@ export default function RecipesAppProvider({ children }) {
   const [disabled, setDisabled] = useState(false);
   const initialFavoriteRecipes = JSON.parse(localStorage.getItem('favorite-recipes')) || [];
   const [favoriteRecipes, setFavoriteRecipes] = useState(initialFavoriteRecipes);
+  const [recipeDetails, setRecipeDetails] = useState('');
 
   function toggleHeaderAndFooter() {
     setDisplayHeader(!displayHeader);
@@ -45,6 +46,7 @@ export default function RecipesAppProvider({ children }) {
     filterFoodOrDrinks: [filterFoodOrDrinks, setFilterFoodOrDrinks],
     disabled: [disabled, setDisabled],
     favoriteRecipes: [favoriteRecipes, setFavoriteRecipes],
+    recipeDetails: [recipeDetails, setRecipeDetails],
   };
 
   return <RecipesAppContext.Provider value={store}>{children}</RecipesAppContext.Provider>;

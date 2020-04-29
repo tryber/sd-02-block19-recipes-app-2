@@ -99,7 +99,7 @@ const ExploreIngredients = ({ type }) => {
     setDisplayHeader(true);
     setDisplayFooter(true);
     fetchIngredients(type, setIngredients, setIsLocalLoading);
-  }, [setDisplayFooter, setDisplayHeader]);
+  }, [setDisplayFooter, setDisplayHeader, type]);
 
   if (isLocalLoading) return <div>Loading...</div>;
   if (canRedirect) return (type === 'Comidas' ? <Redirect to="/comidas" /> : <Redirect to="/bebidas" />);

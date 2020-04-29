@@ -18,6 +18,8 @@ import Profile from './pages/Profile';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import SearchBar from './components/SearchBar';
+import InProgressMeal from './pages/InProgressMeal';
+import InProgressDrink from './pages/InProgressDrink';
 import { RecipesAppContext } from './context/RecipesAppContext';
 
 function App() {
@@ -35,6 +37,8 @@ function App() {
           <Route exact path="/explorar" component={Explore} />
           <Route exact path="/receitas/comida/:id" component={RecipeMealDetails} />
           <Route exact path="/receitas/bebida/:id" component={RecipeDrinkDetails} />
+          <Route exact path="/receitas/comida/:id/in-progress" component={InProgressMeal} />
+          <Route exact path="/receitas/bebida/:id/in-progress" component={InProgressDrink} />
           <Route exact path="/receitas-feitas" component={DoneRecipes} />
           <Route exact path="/receitas-favoritas" component={FavoriteRecipes} />
           <Route exact path="/explorar/comidas" component={ExploreMeal} />

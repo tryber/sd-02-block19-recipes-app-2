@@ -75,7 +75,7 @@ const RenderCarousel = ({ carousel, setCarousel, typeFood }) => {
   return (
     <Carousel responsive={responsive}>
       {carousel.data.map((element, index) => (
-        <Link to={`/receitas/${type}/${element[`id${tagCarousel}`]}`}>
+        <Link key={element[`str${tagCarousel}`]} to={`/receitas/${type}/${element[`id${tagCarousel}`]}`}>
           {createImageCarousel(
             element[`str${tagCarousel}`], element.strCategory, element[`str${tagCarousel}Thumb`], index,
           )}
@@ -86,7 +86,7 @@ const RenderCarousel = ({ carousel, setCarousel, typeFood }) => {
 };
 
 RenderCarousel.propTypes = {
-  carousel: propTypes.instanceOf(Array).isRequired,
+  carousel: propTypes.instanceOf(Object).isRequired,
   setCarousel: propTypes.func.isRequired,
   typeFood: propTypes.string.isRequired,
 };
