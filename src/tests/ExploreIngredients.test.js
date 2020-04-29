@@ -103,12 +103,12 @@ describe('Explore ingredients tests', () => {
           <ExploreIngredients type="Bebidas" />
         </RecipesAppProvider>,
         {
-          route: '/explorar/bebidas/ingredients',
+          route: '/explorar/bebidas/ingredientes',
         },
       );
       expect(queryByText(/Loading.../i)).toBeInTheDocument();
       await wait(() => expect(queryByText(/Loading.../i)).toBeNull());
-      expect(history.location.pathname).toBe('/explorar/bebidas/ingredients');
+      expect(history.location.pathname).toBe('/explorar/bebidas/ingredientes');
     });
     test('if rendering drink ingredients', async () => {
       jest.restoreAllMocks();
@@ -118,7 +118,7 @@ describe('Explore ingredients tests', () => {
           <ExploreIngredients type="Bebidas" />
         </RecipesAppProvider>,
         {
-          route: '/explorar/bebidas/ingredients',
+          route: '/explorar/bebidas/ingredientes',
         },
       );
 
@@ -142,7 +142,7 @@ describe('Explore ingredients tests', () => {
           <ExploreIngredients type="Bebidas" />
         </RecipesAppProvider>,
         {
-          route: '/explorar/bebidas/ingredients',
+          route: '/explorar/bebidas/ingredientes',
         },
       );
 

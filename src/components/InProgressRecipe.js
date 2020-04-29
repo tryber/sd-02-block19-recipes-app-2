@@ -16,7 +16,7 @@ const InProgressRecipe = ({ typeFood, id }) => {
 
   useEffect(() => {
     if (recipeDetails.length > 0) setIsLoading(false);
-  }, [recipeDetails]);
+  }, [recipeDetails, setIsLoading]);
 
   if (isLoading) return <div>Loading...</div>;
   return (

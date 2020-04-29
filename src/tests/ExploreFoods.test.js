@@ -132,7 +132,7 @@ describe('Explore foods tests', () => {
       );
 
       fireEvent.click(queryByTestId(/explore-by-ingredient/i));
-      expect(history.location.pathname).toBe('/explorar/bebidas/ingredients');
+      expect(history.location.pathname).toBe('/explorar/bebidas/ingredientes');
     });
     test('if "explore-surprise" is clicked', async () => {
       const { queryByTestId, history } = renderWithRouter(

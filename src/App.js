@@ -43,8 +43,8 @@ function App() {
           <Route exact path="/receitas-favoritas" component={FavoriteRecipes} />
           <Route exact path="/explorar/comidas" component={ExploreMeal} />
           <Route exact path="/explorar/bebidas" component={ExploreDrink} />
-          <Route exact path="/explorar/comidas/ingredients" component={ExploreMealIngredients} />
-          <Route exact path="/explorar/bebidas/ingredients" component={ExploreDrinksIngrendients} />
+          <Route exact path="/explorar/comidas/ingredientes" component={ExploreMealIngredients} />
+          <Route exact path="/explorar/bebidas/ingredientes" component={ExploreDrinksIngrendients} />
           <Route exact path="/explorar/comidas/area" component={ExploreByOrigin} />
           <Route component={NotFound} />
         </Switch>

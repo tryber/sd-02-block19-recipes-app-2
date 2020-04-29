@@ -30,7 +30,7 @@ const fetchByRandomMeal = async (type, setIsLoadingLocal, setIdFood) => {
 };
 
 const renderByIngredients = (type) => (
-  <Link className="link-origin" to={`/explorar/${type.toLowerCase()}/ingredients`}>
+  <Link className="link-origin" to={`/explorar/${type.toLowerCase()}/ingredientes`}>
     <button
       className="link-button"
       type="button"

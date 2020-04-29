@@ -52,7 +52,7 @@ const CurrentDetailsButton = ({
   useEffect(() => {
     setDisplayHeader(false);
     setDisplayFooter(false);
-  }, [setDisplayFooter, setDisplayHeader, recipe]);
+  }, [setDisplayFooter, setDisplayHeader]);
   if (canRedirectDone) {
     addDoneRecipesLocalStorage(recipe, type, typeFood);
     return <Redirect to="/receitas-feitas" />;
