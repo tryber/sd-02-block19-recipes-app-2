@@ -46,14 +46,18 @@ export default function RecipesGenerator({ recipeType }) {
     isSearching: [isSearching],
     filtering: [isFiltering],
     isExploring: [isExploring, setIsExploring],
+    setDisplay,
   } = useContext(RecipesAppContext);
 
   const typeQueryString = recipeType === 'Comidas' ? 'meals' : 'drinks';
 
+  useEffect(() => setDisplay(true, true, true), [setDisplay]);
+
   useEffect(() => {
     if (isSearching === false && isExploring === false) setRecipes([]);
     if (isExploring) setIsLoading(false);
-  }, [setRecipes, isSearching, isExploring, setIsLoading]);
+    return (() => setIsExploring(false));
+  }, [setRecipes, isSearching, isExploring, setIsLoading, setIsExploring]);
 
   useEffect(() => {
     async function fetchRandomRecipes() {
