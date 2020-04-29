@@ -117,7 +117,9 @@ const SearchBar = ({ history, recipeType }) => {
     text, radio, didFetch,
   } = useDebounce(inputValue.text, inputValue.radio, inputValue.didFetch, 600);
 
-  if ((text === '' || radio === '') && !didFetch) setIsSearching(false);
+  if ((text === '' || radio === '') && !didFetch) {
+    setIsSearching(false);
+  }
 
   useEffect(() => {
     const callApi = async () => {

@@ -13,6 +13,18 @@ export const searchMealByName = (mealName) => (
     ))
 );
 
+export const fetchFoodAreas = () => (
+  fetch('https://www.themealdb.com/api/json/v1/1/list.php?a=list')
+    .then((response) => response.json())
+    .then((data) => data)
+);
+
+export const searchFoodByArea = (area) => (
+  fetch(`https://www.themealdb.com/api/json/v1/1/filter.php?a=${area}`)
+    .then((response) => response.json())
+    .then((data) => data)
+);
+
 export const searchAllMealsByFirstLetter = (mealFirstLetter) => (
   fetch(`${SEARCH_ALL_MEALS_BY_FIRST_LETTER}${mealFirstLetter}`)
     .then((response) => (
