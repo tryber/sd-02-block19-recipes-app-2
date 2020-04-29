@@ -50,6 +50,10 @@ let store = {
 };
 
 
+beforeEach(() => {
+  jest.resetModules();
+});
+
 afterEach(cleanup);
 
 describe('Tests for Header component', () => {

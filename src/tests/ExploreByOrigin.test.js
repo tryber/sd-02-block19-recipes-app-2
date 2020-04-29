@@ -50,6 +50,10 @@ let store = {
   setDisplay,
 };
 
+beforeEach(() => {
+  jest.resetModules();
+});
+
 afterEach(cleanup);
 
 describe('ExploreByOrigin page tests', () => {

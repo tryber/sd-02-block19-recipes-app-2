@@ -49,6 +49,10 @@ let store = {
   setDisplay,
 };
 
+beforeEach(() => {
+  jest.resetModules();
+});
+
 afterEach(cleanup);
 
 describe('Tests for Footer component', () => {

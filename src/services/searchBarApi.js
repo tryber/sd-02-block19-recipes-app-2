@@ -66,7 +66,7 @@ export const searchDrinksByMainIngredient = (drinkIngredient) => (
 );
 
 export const getRandomRecipe = (recipeType) => {
-  const typeSubstring = recipeType === 'Comidas' ? 'meal' : 'cocktail';
+  const typeSubstring = recipeType === 'Comidas' ? 'meal' : recipeType === 'Bebidas' && 'cocktail';
   return fetch(`https://www.the${typeSubstring}db.com/api/json/v1/1/random.php`)
     .then((response) => (
       response.json()
