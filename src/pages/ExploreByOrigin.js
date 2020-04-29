@@ -66,15 +66,14 @@ export default function ExploreByOrigin() {
   const [filterByOrigin, setFilterByOrigin] = useState('Todas');
   const filteredRecipes = useFilterByOrigin(recipes, filterByOrigin, setIsLoading);
 
-  useEffect(() => setDisplay(true, true, true), [setDisplay]);
-
   useEffect(() => {
     const fetchAreas = async () => (fetchFoodAreas().then(({ meals }) => meals)
       .then((meals) => setFoodAreas(meals.map(({ strArea }) => strArea)))
     );
+    setDisplay(true, true, true);
     setHeaderTitle('Explorar Origem');
     fetchAreas();
-  }, [setHeaderTitle]);
+  }, [setHeaderTitle, setDisplay]);
 
   useEffect(() => {
     if (filterByOrigin === 'Todas') return setIsFiltering(false);
