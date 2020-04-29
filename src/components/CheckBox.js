@@ -46,12 +46,12 @@ const handleClick = (target, setCheckbox, checkbox, index) => {
 
 const renderCheckBox = (inputsCheckbox, checkbox, setCheckbox) => (
   inputsCheckbox.map((el, index) => (
-    <label key={el} className="label-checkbox" htmlFor={el[0]}>
+    <label key={el} className="label-checkbox" htmlFor={`- ${el[0]} - ${el[1]}`}>
       <input
         className="input-checkbox"
         type="checkbox"
-        name={el[0]}
-        id={el[0]}
+        name={`- ${el[0]} - ${el[1]}`}
+        id={`- ${el[0]} - ${el[1]}`}
         checked={checkbox[0][index]}
         onChange={({ target }) => (
           handleClick(target, setCheckbox, checkbox, index))}

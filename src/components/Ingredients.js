@@ -19,7 +19,7 @@ const Ingredients = ({ foods }) => (
     <div className="ingredient-title">Ingredients:</div>
     <div className="ingredients-box">
       {allIngredients(foods).map((ingredients, index) => (
-        <div className="ingredients-container" key={ingredients[0]}>
+        <div className="ingredients-container" key={`-${ingredients[0]}-${ingredients[1]}`}>
           <div data-testid={`${index}-ingredient-name`}>{`- ${ingredients[0]} -`}</div>
           <div data-testid={`${index}-ingredient-measure`}>{` - ${ingredients[1]}`}</div>
         </div>
