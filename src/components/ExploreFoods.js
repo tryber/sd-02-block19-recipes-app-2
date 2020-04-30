@@ -69,17 +69,14 @@ const ExploreFoods = ({ type }) => {
   const [isLoadingLocal, setIsLoadingLocal] = useState(true);
   const [idFood, setIdFood] = useState('');
   const {
-    displayHeader: [, setDisplayHeader], displayFooter: [, setDisplayFooter],
-    headerTitle: [, setHeaderTitle], recipeType: [, setRecipeType],
-
+    setDisplay, headerTitle: [, setHeaderTitle], recipeType: [, setRecipeType],
   } = useContext(RecipesAppContext);
 
   useEffect(() => {
-    setDisplayHeader(true);
-    setDisplayFooter(true);
-    setHeaderTitle(`Explorar ${type}`);
+    setDisplay(true, true, true);
+    setHeaderTitle(`Explorar - ${type}`);
     setRecipeType(type);
-  }, [setDisplayFooter, setDisplayHeader, setHeaderTitle, type, setRecipeType]);
+  }, [setDisplay, setHeaderTitle, type, setRecipeType]);
 
   if (!isLoadingLocal) {
     return (

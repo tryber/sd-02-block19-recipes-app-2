@@ -16,14 +16,12 @@ const renderExploreButtons = (type, testid) => (
 );
 
 const Explore = () => {
-  const {
-    displayHeader: [, setDisplayHeader], displayFooter: [, setDisplayFooter],
-  } = useContext(RecipesAppContext);
+  const { setDisplay, headerTitle: [, setHeadertitle] } = useContext(RecipesAppContext);
 
   useEffect(() => {
-    setDisplayHeader(true);
-    setDisplayFooter(true);
-  }, [setDisplayFooter, setDisplayHeader]);
+    setDisplay(true, true, true);
+    setHeadertitle('Explorar');
+  }, [setDisplay, setHeadertitle]);
 
   return (
     <div>
