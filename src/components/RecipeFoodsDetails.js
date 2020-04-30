@@ -42,7 +42,7 @@ const RecipeFoodDetails = ({ id, typeFood }) => {
 
   if (isLoading) return <div>Loading...</div>;
   return (
-    <div>
+    <div className="details-container">
       <ImgCatTitleDetails foods={detailsRecipe} typeFood={typeFood} />
       <Ingredients foods={detailsRecipe} />
       <Instructions instructions={detailsRecipe[0].strInstructions} />

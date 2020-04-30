@@ -1,3 +1,13 @@
+.details-container {
+  margin-bottom: 50px;
+}
+
+.start-button {
+  position: fixed;
+  bottom: 1%;
+  left: 1%;
+}
+
 .start-button:disabled {
   background-color: grey;
 }
