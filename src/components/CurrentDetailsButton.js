@@ -50,7 +50,6 @@ const CurrentDetailsButton = ({
   const {
     displayHeader: [, setDisplayHeader], displayFooter: [, setDisplayFooter], disabled,
   } = useContext(RecipesAppContext);
-  console.log(recipe);
   useEffect(() => {
     setDisplayHeader(false);
     setDisplayFooter(false);

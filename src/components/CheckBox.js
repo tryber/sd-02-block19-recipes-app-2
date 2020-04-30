@@ -48,6 +48,7 @@ const renderCheckBox = (inputsCheckbox, checkbox, setCheckbox) => (
   inputsCheckbox.map((el, index) => (
     <label key={el} className="label-checkbox" htmlFor={`- ${el[0]} - ${el[1]}`}>
       <input
+        data-testid={`- ${el[0]} - ${el[1]} - ingredients`}
         className="input-checkbox"
         type="checkbox"
         name={`- ${el[0]} - ${el[1]}`}
