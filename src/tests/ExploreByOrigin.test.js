@@ -19,8 +19,15 @@ const [isSearching, setIsSearching] = [false, jest.fn()];
 const [toggleCategory, setToggleCategory] = [{ category: '', toggleCat: false }, jest.fn()];
 const [isFiltering, setIsFiltering] = [false, jest.fn()];
 const [isExploring, setIsExploring] = [false, jest.fn()];
+const [filterFoodOrDrinks, setFilterFoodOrDrinks] = ['All', jest.fn()];
+const [disabled, setDisabled] = [false, jest.fn()];
+const initialFavoriteRecipes = JSON.parse(localStorage.getItem('favorite-recipes')) || [];
+const [favoriteRecipes, setFavoriteRecipes] = [initialFavoriteRecipes, jest.fn()];
+const [recipeDetails, setRecipeDetails] = ['', jest.fn()];
+const toggleHeaderAndFooter = jest.fn();
+const setDisplay = jest.fn();
 
-const store = {
+let store = {
   headerTitle: [headerTitle, setHeaderTitle],
   displayHeader: [displayHeader, setDisplayHeader],
   displaySearchButton: [displaySearchButton, setDisplaySearchButton],
@@ -33,18 +40,29 @@ const store = {
   fetchingStatus: [isFetching, setIsFetching],
   isSearching: [isSearching, setIsSearching],
   toggleCategory: [toggleCategory, setToggleCategory],
-  toggleHeaderAndFooter: jest.fn(),
+  toggleHeaderAndFooter,
   filtering: [isFiltering, setIsFiltering],
+  filterFoodOrDrinks: [filterFoodOrDrinks, setFilterFoodOrDrinks],
+  disabled: [disabled, setDisabled],
+  favoriteRecipes: [favoriteRecipes, setFavoriteRecipes],
+  recipeDetails: [recipeDetails, setRecipeDetails],
   isExploring: [isExploring, setIsExploring],
+  setDisplay,
 };
+
+beforeEach(() => {
+  jest.resetModules();
+});
 
 afterEach(cleanup);
 
 describe('ExploreByOrigin page tests', () => {
   it('if recipeType is "Bebidas", then the page be displayed with message', () => {
     [recipeType, setRecipeType] = ['Bebidas', jest.fn()];
+    store = { ...store, recipeType: [recipeType, setRecipeType] };
+
     const { queryByTestId, getByText } = renderWithRouter(
-      <RecipesAppContext.Provider value={{ ...store, recipeType: [recipeType, setRecipeType] }}>
+      <RecipesAppContext.Provider value={store}>
         <ExploreByOrigin />
       </RecipesAppContext.Provider>,
     );
@@ -95,9 +113,8 @@ describe('ExploreByOrigin page tests', () => {
     expect(setIsFiltering).toHaveBeenLastCalledWith(false);
 
     await wait(() => getByTestId('11-card-name'));
-    const firstReceiptCard = getByTestId('11-card-name');
-    console.log(firstReceiptCard);
+    const eleventhRecipe = getByTestId('11-card-name');
 
-    expect(firstReceiptCard).toBeInTheDocument();
-  });
+    expect(eleventhRecipe).toBeInTheDocument();
+  }, 15000);
 });

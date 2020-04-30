@@ -4,7 +4,7 @@ import {
 } from '@testing-library/react';
 
 import renderWithRouter from '../services/renderWithRouter';
-import RecipesAppProvider from '../context/RecipesAppContext';
+import RecipesAppProvider, { RecipesAppContext } from '../context/RecipesAppContext';
 import SearchBar from '../components/SearchBar';
 import {
   byName,
@@ -57,6 +57,56 @@ const callError = () => {
   });
   return mockFetchPromise;
 };
+
+const [headerTitle, setHeaderTitle] = ['Receitas', jest.fn()];
+const [displayHeader, setDisplayHeader] = [true, jest.fn()];
+let [displaySearchBar, setDisplaySearchBar] = [true, jest.fn()];
+const [displaySearchButton, setDisplaySearchButton] = [false, jest.fn()];
+const [displayFooter, setDisplayFooter] = [true, jest.fn()];
+const [isLoading, setIsLoading] = [true, jest.fn()];
+let [recipes, setRecipes] = [[], jest.fn()];
+const [recipeType, setRecipeType] = ['Comidas', jest.fn()];
+let [inputValue, setInputValue] = [{ radio: '', text: '', didFetch: false }, jest.fn()];
+const [isFetching, setIsFetching] = [false, jest.fn()];
+const [isSearching, setIsSearching] = [false, jest.fn()];
+const [toggleCategory, setToggleCategory] = [{ category: '', toggleCat: false }, jest.fn()];
+const [isFiltering, setIsFiltering] = [false, jest.fn()];
+const [isExploring, setIsExploring] = [false, jest.fn()];
+const [filterFoodOrDrinks, setFilterFoodOrDrinks] = ['All', jest.fn()];
+const [disabled, setDisabled] = [false, jest.fn()];
+const initialFavoriteRecipes = JSON.parse(localStorage.getItem('favorite-recipes')) || [];
+const [favoriteRecipes, setFavoriteRecipes] = [initialFavoriteRecipes, jest.fn()];
+const [recipeDetails, setRecipeDetails] = ['', jest.fn()];
+const toggleHeaderAndFooter = jest.fn();
+const setDisplay = jest.fn();
+
+let store = {
+  headerTitle: [headerTitle, setHeaderTitle],
+  displayHeader: [displayHeader, setDisplayHeader],
+  displaySearchButton: [displaySearchButton, setDisplaySearchButton],
+  displaySearchBar: [displaySearchBar, setDisplaySearchBar],
+  displayFooter: [displayFooter, setDisplayFooter],
+  loading: [isLoading, setIsLoading],
+  data: [recipes, setRecipes],
+  recipeType: [recipeType, setRecipeType],
+  inputValue: [inputValue, setInputValue],
+  fetchingStatus: [isFetching, setIsFetching],
+  isSearching: [isSearching, setIsSearching],
+  toggleCategory: [toggleCategory, setToggleCategory],
+  toggleHeaderAndFooter,
+  filtering: [isFiltering, setIsFiltering],
+  filterFoodOrDrinks: [filterFoodOrDrinks, setFilterFoodOrDrinks],
+  disabled: [disabled, setDisabled],
+  favoriteRecipes: [favoriteRecipes, setFavoriteRecipes],
+  recipeDetails: [recipeDetails, setRecipeDetails],
+  isExploring: [isExploring, setIsExploring],
+  setDisplay,
+};
+
+beforeEach(() => {
+  jest.resetModules();
+});
+
 
 afterEach(cleanup);
 
@@ -366,6 +416,7 @@ describe('SearchBar tests', () => {
       expect(window.alert).toHaveBeenCalled();
       expect(window.alert).toHaveBeenLastCalledWith('Não foi encontrado nenhum resultado de bebida.');
     });
+
     test('show error if fetch name return error', async () => {
       const { queryByTestId } = renderWithRouter(
         <RecipesAppProvider>
@@ -375,18 +426,97 @@ describe('SearchBar tests', () => {
 
       await wait();
 
-      window.alert = jest.fn().mockImplementationOnce(() => true);
+      jest.spyOn(window, 'alert').mockImplementation(() => {});
 
       fireEvent.change(queryByTestId(/search-input/i), { target: { value: 'Cake' } });
       fireEvent.click(queryByTestId(/name-search-radio/i));
       expect(queryByTestId(/search-input/i).value).toBe('Cake');
       expect(queryByTestId(/name-search-radio/i).value).toBe('name');
 
-      jest.restoreAllMocks();
-      jest.spyOn(global, 'fetch').mockImplementationOnce(() => callError());
-      await wait(() => expect(global.fetch).toHaveBeenCalled());
-      expect(window.alert).toHaveBeenCalled();
+      await wait(() => expect(window.alert).toHaveBeenCalled());
       expect(window.alert).toHaveBeenLastCalledWith('Não foi encontrado nenhum resultado de bebida.');
+    });
+
+    test('show error if fetch name return error', async () => {
+      const { queryByTestId } = renderWithRouter(
+        <RecipesAppProvider>
+          <SearchBar recipeType="Bebida" />
+        </RecipesAppProvider>,
+      );
+
+      await wait();
+
+      jest.spyOn(window, 'alert').mockImplementation(() => {});
+
+      fireEvent.change(queryByTestId(/search-input/i), { target: { value: 'Cake' } });
+      fireEvent.click(queryByTestId(/name-search-radio/i));
+      expect(queryByTestId(/search-input/i).value).toBe('Cake');
+      expect(queryByTestId(/name-search-radio/i).value).toBe('name');
+
+      await wait(() => expect(window.alert).toHaveBeenCalled());
+      expect(window.alert).toHaveBeenLastCalledWith('Não foi encontrado nenhum resultado de bebida.');
+    });
+
+    test('if in meal page, it fills up recipes', async () => {
+      [recipes, setRecipes] = [{ meals: ['test', 'two'] }, jest.fn()];
+      [inputValue, setInputValue] = [{ radio: 'name', text: 'Cake', didFetch: false }, jest.fn()];
+      store = {
+        ...store,
+        data: [recipes, setRecipes],
+        inputValue: [inputValue, setInputValue],
+      };
+      const { queryByTestId, history } = renderWithRouter(
+        <RecipesAppContext.Provider value={store}>
+          <SearchBar recipeType="Comidas" />
+        </RecipesAppContext.Provider>,
+        {
+          route: '/comidas',
+        },
+      );
+
+      await wait(() => expect(setRecipes).toHaveBeenCalled());
+      expect(setRecipes).toHaveBeenCalledWith(expect.arrayContaining([expect.any(Object)]));
+    });
+
+    test('if in drinks page, it fills up recipes', async () => {
+      [recipes, setRecipes] = [{ meals: ['test', 'two'] }, jest.fn()];
+      [inputValue, setInputValue] = [{ radio: 'name', text: 'lemon', didFetch: false }, jest.fn()];
+      store = {
+        ...store,
+        data: [recipes, setRecipes],
+        inputValue: [inputValue, setInputValue],
+      };
+      const { queryByTestId, history } = renderWithRouter(
+        <RecipesAppContext.Provider value={store}>
+          <SearchBar recipeType="Bebidas" />
+        </RecipesAppContext.Provider>,
+        {
+          route: '/bebidas',
+        },
+      );
+
+      await wait(() => expect(setRecipes).toHaveBeenCalled());
+      expect(setRecipes).toHaveBeenCalledWith(expect.arrayContaining([expect.any(Object)]));
+    });
+
+    test('if displays alert when searching string with more than 1 letter in first-letter mode', async () => {
+      [recipes, setRecipes] = [{ meals: ['test', 'two'] }, jest.fn()];
+      [inputValue, setInputValue] = [{ radio: 'first-letter', text: 'lemon', didFetch: false }, jest.fn()];
+      store = {
+        ...store,
+        data: [recipes, setRecipes],
+        inputValue: [inputValue, setInputValue],
+      };
+      const { queryByTestId, history } = renderWithRouter(
+        <RecipesAppContext.Provider value={store}>
+          <SearchBar recipeType="Bebidas" />
+        </RecipesAppContext.Provider>,
+      );
+
+      jest.spyOn(window, 'alert').mockImplementation(() => {});
+
+      await wait(() => expect(window.alert).toHaveBeenCalled());
+      expect(window.alert).toHaveBeenLastCalledWith('Sua busca deve conter somente 1 (um) caracter');
     });
   });
 });

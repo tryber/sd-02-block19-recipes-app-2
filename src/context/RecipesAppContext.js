@@ -29,6 +29,13 @@ export default function RecipesAppProvider({ children }) {
     setDisplayFooter(!displayFooter);
   }
 
+  function setDisplay(bool1, bool2, bool3) {
+    setDisplayHeader(bool1);
+    setDisplayFooter(bool3);
+    setDisplaySearchButton(bool2);
+  }
+
+
   const store = {
     headerTitle: [headerTitle, setHeaderTitle],
     displayHeader: [displayHeader, setDisplayHeader],
@@ -49,6 +56,7 @@ export default function RecipesAppProvider({ children }) {
     favoriteRecipes: [favoriteRecipes, setFavoriteRecipes],
     recipeDetails: [recipeDetails, setRecipeDetails],
     isExploring: [isExploring, setIsExploring],
+    setDisplay,
   };
 
   return <RecipesAppContext.Provider value={store}>{children}</RecipesAppContext.Provider>;

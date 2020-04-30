@@ -19,9 +19,9 @@ function originSelectionDropdown(setFilterByOrigin, foodAreas, setIsFiltering, s
     >
       <option
         data-testid="all-option"
-        value="All"
+        value="Todas"
       >
-        All
+        Todas
       </option>
       {foodAreas && foodAreas.length > 1 ? foodAreas.map((area, index) => (
         <option
@@ -59,22 +59,23 @@ function renderComponentsOfExplorebyOriginPage(
 export default function ExploreByOrigin() {
   const {
     data: [recipes, setRecipes], recipeType: [recipeType], filtering: [, setIsFiltering],
-    loading: [isLoading, setIsLoading], headerTitle: [, setHeaderTitle],
+    loading: [isLoading, setIsLoading], headerTitle: [, setHeaderTitle], setDisplay,
   } = useContext(RecipesAppContext);
   const [foodAreas, setFoodAreas] = useState([]);
-  const [filterByOrigin, setFilterByOrigin] = useState('All');
+  const [filterByOrigin, setFilterByOrigin] = useState('Todas');
   const filteredRecipes = useFilterByOrigin(recipes, filterByOrigin, setIsLoading);
 
   useEffect(() => {
     const fetchAreas = async () => (fetchFoodAreas().then(({ meals }) => meals)
       .then((meals) => setFoodAreas(meals.map(({ strArea }) => strArea)))
     );
+    setDisplay(true, true, true);
     setHeaderTitle('Explorar Origem');
     fetchAreas();
-  }, [setHeaderTitle]);
+  }, [setHeaderTitle, setDisplay]);
 
   useEffect(() => {
-    if (filterByOrigin === 'All') return setIsFiltering(false);
+    if (filterByOrigin === 'Todas') return setIsFiltering(false);
     setRecipes(filteredRecipes);
     setIsFiltering(true);
     return (() => setRecipes([]));

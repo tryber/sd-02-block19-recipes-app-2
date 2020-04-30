@@ -68,10 +68,10 @@ describe('Explore foods tests', () => {
       );
 
       fireEvent.click(queryByTestId(/explore-by-ingredient/i));
-      expect(history.location.pathname).toBe('/explorar/comidas/ingredients');
+      expect(history.location.pathname).toBe('/explorar/comidas/ingredientes');
     });
     test('if "explore-area" is clicked', () => {
-      const { queryByTestId, history } = renderWithRouter(
+      const { queryByTestId } = renderWithRouter(
         <RecipesAppProvider>
           <ExploreFoods type="Comidas" />
         </RecipesAppProvider>,
