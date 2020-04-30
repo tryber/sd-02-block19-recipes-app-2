@@ -43,12 +43,13 @@ const CurrentDetailsButton = ({
   const [canRedirectDone, setCanRedirectDone] = useState(false);
   const [canRedirectProgress, setCanRedirectProgress] = useState(false);
   const type = (typeFood === 'Meal') ? 'comida' : 'bebida';
+  const recipeArray = JSON.parse(localStorage.getItem('done-recipes')) || [];
+  const existArray = recipeArray.some((ele) => ele.id === recipe[0][`id${typeFood}`]);
   const inProgress = (JSON.parse(localStorage.getItem('in-progress')) || [])
     .some((inProgressId) => inProgressId === Number(id));
   const {
     displayHeader: [, setDisplayHeader], displayFooter: [, setDisplayFooter], disabled,
   } = useContext(RecipesAppContext);
-
   useEffect(() => {
     setDisplayHeader(false);
     setDisplayFooter(false);
@@ -58,7 +59,7 @@ const CurrentDetailsButton = ({
     return <Redirect to="/receitas-feitas" />;
   }
   if (canRedirectProgress) return <Redirect to={`/receitas/${type}/${id}/in-progress`} />;
-  return (
+  return (existArray) || (
     <div className="start-button-container">
       <button
         disabled={(renderInProgress) ? disabled[0] : false}

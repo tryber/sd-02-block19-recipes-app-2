@@ -30,25 +30,27 @@ const RecipeFoodDetails = ({ id, typeFood }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [carousel, setCarousel] = useState({ isLoading: false, data: [] });
   const detailsRecipe = useFoodById(id, typeFood) || [];
-  const {
-    displayHeader: [, setDisplayHeader], displayFooter: [, setDisplayFooter],
-  } = useContext(RecipesAppContext);
+  const { setDisplay } = useContext(RecipesAppContext);
 
   useEffect(() => {
-    setDisplayHeader(false);
-    setDisplayFooter(false);
+    setDisplay(false, false, false);
     if (detailsRecipe.length > 0) setIsLoading(false);
-  }, [setDisplayFooter, setDisplayHeader, detailsRecipe]);
+  }, [setDisplay, detailsRecipe]);
 
   if (isLoading) return <div>Loading...</div>;
   return (
-    <div>
+    <div className="details-container">
       <ImgCatTitleDetails foods={detailsRecipe} typeFood={typeFood} />
       <Ingredients foods={detailsRecipe} />
       <Instructions instructions={detailsRecipe[0].strInstructions} />
       {renderVideo(detailsRecipe[0].strYoutube || detailsRecipe[0].strVideo)}
       <RenderCarousel carousel={carousel} setCarousel={setCarousel} typeFood={typeFood} />
-      <CurrentDetailsButton id={Number(id)} typeFood={typeFood} renderInProgress={false} />
+      <CurrentDetailsButton
+        id={Number(id)}
+        typeFood={typeFood}
+        renderInProgress={false}
+        recipe={detailsRecipe}
+      />
       <RenderShareFavorite id={id} typeFood={typeFood} detailsRecipe={detailsRecipe} />
     </div>
   );

@@ -20,7 +20,7 @@ const InProgressRecipe = ({ typeFood, id }) => {
 
   if (isLoading) return <div>Loading...</div>;
   return (
-    <div>
+    <div className="details-container">
       <ImgCatTitleDetails foods={recipeDetails} typeFood={typeFood} />
       <CheckBox foods={recipeDetails} typeFood={typeFood} allIngredients={allIngredients} />
       <Instructions instructions={recipeDetails[0].strInstructions} />
