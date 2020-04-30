@@ -3,9 +3,9 @@
 }
 
 .start-button {
-  position: fixed;
   bottom: 1%;
   left: 1%;
+  position: fixed;
 }
 
 .start-button:disabled {
