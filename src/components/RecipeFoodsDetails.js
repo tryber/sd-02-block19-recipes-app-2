@@ -48,7 +48,12 @@ const RecipeFoodDetails = ({ id, typeFood }) => {
       <Instructions instructions={detailsRecipe[0].strInstructions} />
       {renderVideo(detailsRecipe[0].strYoutube || detailsRecipe[0].strVideo)}
       <RenderCarousel carousel={carousel} setCarousel={setCarousel} typeFood={typeFood} />
-      <CurrentDetailsButton id={Number(id)} typeFood={typeFood} renderInProgress={false} />
+      <CurrentDetailsButton
+        id={Number(id)}
+        typeFood={typeFood}
+        renderInProgress={false}
+        recipe={detailsRecipe}
+      />
       <RenderShareFavorite id={id} typeFood={typeFood} detailsRecipe={detailsRecipe} />
     </div>
   );
