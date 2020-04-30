@@ -6,7 +6,7 @@ import {
 import renderWithRouter from '../services/renderWithRouter';
 import RecipesAppProvider from '../context/RecipesAppContext';
 import InProgressMeal from '../pages/InProgressMeal';
-import { detailMeal, detailDrink } from '../__mocks__/recipeDetailsMock';
+import { detailMeal } from '../__mocks__/recipeDetailsMock';
 
 const callOneMealFood = ({ meals }) => {
   const mockSuccessResponse = {
