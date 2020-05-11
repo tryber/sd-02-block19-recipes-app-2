@@ -71,6 +71,7 @@ const renderRadioButton = (radioValue, type, setInputValue, inputValue) => (
 
 const redirectMealRecipes = (mealRecipes, history, setRecipes) => {
   if (!mealRecipes || mealRecipes === null || mealRecipes === undefined) {
+    setRecipes([]);
     return alert('Não foi encontrado nenhum resultado de comida.');
   }
   if (mealRecipes && mealRecipes.length === 1) return history.push(`/receitas/comida/${mealRecipes[0].idMeal}`);
@@ -81,6 +82,7 @@ const redirectMealRecipes = (mealRecipes, history, setRecipes) => {
 
 const redirectDrinkRecipes = (drinkRecipes, history, setRecipes) => {
   if (!drinkRecipes || drinkRecipes === null || drinkRecipes === undefined) {
+    setRecipes([]);
     return alert('Não foi encontrado nenhum resultado de bebida.');
   }
   if (drinkRecipes && drinkRecipes.length === 1) return history.push(`/receitas/bebida/${drinkRecipes[0].idDrink}`);
@@ -110,7 +112,6 @@ const SearchBar = ({ history, recipeType }) => {
     loading: [, setIsLoading],
     isSearching: [, setIsSearching],
     inputValue: [inputValue, setInputValue],
-    filtering: [isFiltering],
   } = useContext(RecipesAppContext);
 
   const {
@@ -140,10 +141,10 @@ const SearchBar = ({ history, recipeType }) => {
         })
         .then(() => setInputValue(((prevState) => ({ ...prevState, didFetch: false }))));
     };
-    if (text && radio && !didFetch && !isFiltering) callApi();
+    if (text && radio && !didFetch) callApi();
   }, [
     text, radio, setIsLoading, setIsSearching, setRecipes,
-    recipeType, setInputValue, didFetch, history, isFiltering]);
+    recipeType, setInputValue, didFetch, history]);
 
   return <RenderInputItems inputValue={inputValue} setInputValue={setInputValue} />;
 };
