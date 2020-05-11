@@ -96,11 +96,13 @@ const MealPage = () => {
     setDisplayFooter(true);
   }, [setDisplayFooter, setDisplayHeader]);
   return (
-    <RenderRecipePage
-      kindOfRecipe="Comidas"
-      fetchCategories={fetchCategories}
-      renderCategories={renderCategories}
-    />
+    <div className="recipes-page-container">
+      <RenderRecipePage
+        kindOfRecipe="Comidas"
+        fetchCategories={fetchCategories}
+        renderCategories={renderCategories}
+      />
+    </div>
   );
 };
 

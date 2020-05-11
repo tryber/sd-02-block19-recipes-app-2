@@ -1,9 +1,11 @@
 .footer-container {
   background: #c4c4c4;
+  bottom: 0;
   display: flex;
   flex-flow: column nowrap;
   height: 58px;
   justify-content: center;
+  position: fixed;
   width: 100%;
 }
 

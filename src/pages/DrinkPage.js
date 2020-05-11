@@ -96,11 +96,13 @@ const DrinkPage = () => {
     setDisplayFooter(true);
   }, [setDisplayFooter, setDisplayHeader]);
   return (
-    <RenderRecipePage
-      kindOfRecipe="Bebidas"
-      fetchCategories={fetchCategories}
-      renderCategories={renderCategories}
-    />
+    <div className="recipes-page-container">
+      <RenderRecipePage
+        kindOfRecipe="Bebidas"
+        fetchCategories={fetchCategories}
+        renderCategories={renderCategories}
+      />
+    </div>
   );
 };
 
