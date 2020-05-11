@@ -112,7 +112,6 @@ const SearchBar = ({ history, recipeType }) => {
     loading: [, setIsLoading],
     isSearching: [, setIsSearching],
     inputValue: [inputValue, setInputValue],
-    filtering: [isFiltering],
   } = useContext(RecipesAppContext);
 
   const {
@@ -142,10 +141,10 @@ const SearchBar = ({ history, recipeType }) => {
         })
         .then(() => setInputValue(((prevState) => ({ ...prevState, didFetch: false }))));
     };
-    if (text && radio && !didFetch && !isFiltering) callApi();
+    if (text && radio && !didFetch) callApi();
   }, [
     text, radio, setIsLoading, setIsSearching, setRecipes,
-    recipeType, setInputValue, didFetch, history, isFiltering]);
+    recipeType, setInputValue, didFetch, history]);
 
   return <RenderInputItems inputValue={inputValue} setInputValue={setInputValue} />;
 };

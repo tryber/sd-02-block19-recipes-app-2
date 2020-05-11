@@ -46,7 +46,7 @@ export default function RenderRecipePage({ kindOfRecipe, fetchCategories, render
       <nav>
         {categories
         && renderCategories(categories, toggleCategory, setRecipes,
-          setIsFetching, setIsFiltering)}
+          setIsFetching, setIsFiltering, setIsSearching)}
       </nav>
       {(isLoading) && <div>Loading...</div>}
       <RecipesGenerator recipeType={kindOfRecipe} />
