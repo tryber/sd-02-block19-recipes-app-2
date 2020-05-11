@@ -30,13 +30,13 @@ const RecipeFoodDetails = ({ id, typeFood }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [carousel, setCarousel] = useState({ isLoading: false, data: [] });
   const detailsRecipe = useFoodById(id, typeFood) || [];
-  const { setDisplay, displaySearchBar: [, setDisplaySearchBar], } = useContext(RecipesAppContext);
+  const { setDisplay, displaySearchBar: [, setDisplaySearchBar] } = useContext(RecipesAppContext);
 
   useEffect(() => {
     setDisplay(false, false, false);
     if (detailsRecipe.length > 0) setIsLoading(false);
     setDisplaySearchBar(false);
-  }, [setDisplay, detailsRecipe]);
+  }, [setDisplay, detailsRecipe, setDisplaySearchBar]);
 
   if (isLoading) return <div>Loading...</div>;
   return (
