@@ -16,7 +16,7 @@ O layout tem como foco dispositivos móveis, então todos os protótipos vão es
 
 Você pode acessar um protótipo no link abaixo:
 
-https://www.figma.com/file/XfGoCuEf4U9ZSipFnZs3u7/App-Receitas?node-id=0%3A1
+https://www.figma.com/file/WatDxtKl7g54QxhDi9qdbq/App-Receitas?node-id=0%3A1
 
 Lembre-se de escrever testes unitários e sinta-se livre para alterar a UI, só respeite os atributos `data-testid`, eles serão usados na correção do exercício.
 
