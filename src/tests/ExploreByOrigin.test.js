@@ -109,7 +109,7 @@ describe('ExploreByOrigin page tests', () => {
     fireEvent.change(areaDropdown, { target: { value: 'American' } });
     await wait();
 
-    expect(fetchMock).toHaveBeenLastCalledWith('https://www.themealdb.com/api/json/v1/1/filter.php?a=American');
+    expect(fetchMock).toHaveBeenCalledWith('https://www.themealdb.com/api/json/v1/1/filter.php?a=American');
     expect(setIsFiltering).toHaveBeenLastCalledWith(false);
 
     await wait(() => getByTestId('11-card-name'));
